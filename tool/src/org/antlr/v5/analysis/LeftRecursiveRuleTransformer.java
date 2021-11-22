@@ -151,7 +151,6 @@ public class LeftRecursiveRuleTransformer {
 
 		r.recOpAlts = new OrderedHashMap<Integer, LeftRecursiveRuleAltInfo>();
 		r.recOpAlts.putAll(leftRecursiveRuleWalker.binaryAlts);
-		r.recOpAlts.putAll(leftRecursiveRuleWalker.ternaryAlts);
 		r.recOpAlts.putAll(leftRecursiveRuleWalker.suffixAlts);
 
 		// walk alt info records and set their altAST to point to appropriate ALT subtree
