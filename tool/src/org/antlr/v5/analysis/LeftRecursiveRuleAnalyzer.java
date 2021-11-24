@@ -4,21 +4,19 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
+
 package org.antlr.v5.analysis;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.v5.Tool;
 import org.antlr.v5.codegen.CodeGenerator;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.parse.GrammarASTAdaptor;
-import org.antlr.v5.parse.LeftRecursiveRuleWalker;
 import org.antlr.v5.runtime.misc.IntervalSet;
 import org.antlr.v5.runtime.misc.Pair;
-import org.antlr.v5.tool.ErrorType;
+import org.antlr.v5.tool.LeftRecursiveRule;
 import org.antlr.v5.tool.ast.AltAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 import org.antlr.v5.tool.ast.GrammarASTWithOptions;
@@ -29,38 +27,31 @@ import org.stringtemplate.v4.STGroupFile;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Using a tree walker on the rules, determine if a rule is directly left-recursive and if it follows
- *  our pattern.
- */
-public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
-	public static enum ASSOC { left, right }
-	public enum AltType {binaryLR, suffixLR, prefix, other }
+import static org.antlr.v5.parse.ANTLRLexer.PLUS_ASSIGN;
+import static org.antlr.v5.parse.ANTLRLexer.POUND;
+import static org.antlr.v5.parse.ANTLRParser.*;
 
+public class LeftRecursiveRuleAnalyzer {
 	public Tool tool;
-	public String ruleName;
-	public LinkedHashMap<Integer, LeftRecursiveRuleAltInfo> binaryAlts = new LinkedHashMap<Integer, LeftRecursiveRuleAltInfo>();
-	public LinkedHashMap<Integer, LeftRecursiveRuleAltInfo> suffixAlts = new LinkedHashMap<Integer, LeftRecursiveRuleAltInfo>();
-	public List<LeftRecursiveRuleAltInfo> prefixAndOtherAlts = new ArrayList<LeftRecursiveRuleAltInfo>();
+	public LeftRecursiveRule rule;
+
+	public LinkedHashMap<Integer, LeftRecursiveRuleAltInfo> binaryAlts = new LinkedHashMap<>();
+	public LinkedHashMap<Integer, LeftRecursiveRuleAltInfo> suffixAlts = new LinkedHashMap<>();
+	public List<LeftRecursiveRuleAltInfo> prefixAndOtherAlts = new ArrayList<>();
+
+	public final TokenStream tokenStream;
 
 	/** Pointer to ID node of ^(= ID element) */
 	public List<Pair<GrammarAST,String>> leftRecursiveRuleRefLabels =
-		new ArrayList<Pair<GrammarAST,String>>();
-
-	/** Tokens from which rule AST comes from */
-	public final TokenStream tokenStream;
-
-	public GrammarAST retvals;
+			new ArrayList<>();
 
 	public final static STGroup recRuleTemplates;
 	public final STGroup codegenTemplates;
 	public final String language;
-
-	public Map<Integer, ASSOC> altAssociativity = new HashMap<Integer, ASSOC>();
 
 	static {
 		String templateGroupFile = "org/antlr/v5/tool/templates/LeftRecursiveRules.stg";
@@ -74,14 +65,11 @@ public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
 		}
 	}
 
-	public LeftRecursiveRuleAnalyzer(GrammarAST ruleAST,
-									 Tool tool, String ruleName, String language)
-	{
-		super(new CommonTreeNodeStream(new GrammarASTAdaptor(ruleAST.token.getInputStream()), ruleAST));
+	public LeftRecursiveRuleAnalyzer(Tool tool, LeftRecursiveRule rule, TokenStream tokenStream, String language) {
 		this.tool = tool;
-		this.ruleName = ruleName;
+		this.rule = rule;
 		this.language = language;
-		this.tokenStream = ruleAST.g.tokenStream;
+		this.tokenStream = tokenStream;
 		if (this.tokenStream == null) {
 			throw new NullPointerException("grammar must have a token stream");
 		}
@@ -90,70 +78,27 @@ public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
 		codegenTemplates = CodeGenerator.create(tool, null, language).getTemplates();
 	}
 
-	@Override
-	public void setReturnValues(GrammarAST t) {
-		retvals = t;
-	}
-
-	@Override
-	public void setAltAssoc(AltAST t, int alt) {
-		ASSOC assoc = ASSOC.left;
-		if ( t.getOptions()!=null ) {
-			String a = t.getOptionString("assoc");
-			if ( a!=null ) {
-				if ( a.equals(ASSOC.right.toString()) ) {
-					assoc = ASSOC.right;
-				}
-				else if ( a.equals(ASSOC.left.toString()) ) {
-					assoc = ASSOC.left;
-				}
-				else {
-					tool.errMgr.grammarError(ErrorType.ILLEGAL_OPTION_VALUE, t.g.fileName, t.getOptionAST("assoc").getToken(), "assoc", assoc);
-				}
-			}
+	public void analyze() {
+		List<RuleAltInfo> ruleAltInfos = rule.ruleInfo.ruleAltInfos;
+		for (RuleAltInfo ruleAltInfo : ruleAltInfos) {
+			processAlternative(ruleAltInfo);
 		}
-
-		if ( altAssociativity.get(alt)!=null && altAssociativity.get(alt)!=assoc ) {
-			tool.errMgr.toolError(ErrorType.INTERNAL_ERROR, "all operators of alt " + alt + " of left-recursive rule must have same associativity");
-		}
-		altAssociativity.put(alt, assoc);
-
-//		System.out.println("setAltAssoc: op " + alt + ": " + t.getText()+", assoc="+assoc);
 	}
 
-	@Override
-	public void binaryAlt(AltAST originalAltTree, int alt) {
-		processAlt(originalAltTree, alt, AltType.binaryLR);
-	}
-
-	@Override
-	public void prefixAlt(AltAST originalAltTree, int alt) {
-		processAlt(originalAltTree, alt, AltType.prefix);
-	}
-
-	@Override
-	public void suffixAlt(AltAST originalAltTree, int alt) {
-		processAlt(originalAltTree, alt, AltType.suffixLR);
-	}
-
-	@Override
-	public void otherAlt(AltAST originalAltTree, int alt) {
-		processAlt(originalAltTree, alt, AltType.other);
-	}
-
-	private void processAlt(AltAST originalAltTree, int alt, AltType altType) {
-		AltAST altTree = (AltAST) originalAltTree.dupTree();
-		String altLabel = altTree.altLabel!=null ? altTree.altLabel.getText() : null;
+	private void processAlternative(RuleAltInfo ruleAltInfo) {
+		AltAST altTree = (AltAST) ruleAltInfo.ast.dupTree();
+		int altNumber = ruleAltInfo.number;
 		stripAltLabel(altTree);
 		String label = null;
 		boolean isListLabel = false;
 
+		AltType altType = ruleAltInfo.type;
 		if (altType == AltType.binaryLR || altType == AltType.suffixLR) {
 			GrammarAST lrlabel = stripLeftRecursion(altTree);
 			if (lrlabel != null) {
 				label = lrlabel.getText();
 				isListLabel = lrlabel.getParent().getType() == PLUS_ASSIGN;
-				leftRecursiveRuleRefLabels.add(new Pair<>(lrlabel, altLabel));
+				leftRecursiveRuleRefLabels.add(new Pair<>(lrlabel, ruleAltInfo.label));
 			}
 		}
 
@@ -161,135 +106,43 @@ public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
 		boolean isBinaryOrPrefix = altType == AltType.binaryLR || altType == AltType.prefix;
 		if (isBinaryOrPrefix) {
 			// rewrite e to be e_[rec_arg]
-			nextPrec = altType == AltType.binaryLR ? nextPrecedence(alt) : precedence(alt);
+			nextPrec = altType == AltType.binaryLR ? nextPrecedence(altNumber, ruleAltInfo.assocType) : precedence(altNumber);
 			altTree = addPrecedenceArgToRules(altTree, nextPrec);
 		}
 
 		String altText = text(altTree).trim();
-		LeftRecursiveRuleAltInfo a = new LeftRecursiveRuleAltInfo(alt, altText, label, altLabel, isListLabel, originalAltTree);
+		LeftRecursiveRuleAltInfo lrInfo = new LeftRecursiveRuleAltInfo(altNumber, altText, label, ruleAltInfo.label, isListLabel, ruleAltInfo.ast);
 
 		if (isBinaryOrPrefix) {
-			a.nextPrec = nextPrec;
+			lrInfo.nextPrec = nextPrec;
 		}
 
 		if (altType == AltType.binaryLR) {
-			binaryAlts.put(alt, a);
+			binaryAlts.put(altNumber, lrInfo);
 		} else if (altType == AltType.suffixLR) {
-			suffixAlts.put(alt, a);
+			suffixAlts.put(altNumber, lrInfo);
 		} else {
-			prefixAndOtherAlts.add(a);
+			prefixAndOtherAlts.add(lrInfo);
 		}
 	}
 
-	// --------- get transformed rules ----------------
-
-	public String getArtificialOpPrecRule() {
-		ST ruleST = recRuleTemplates.getInstanceOf("recRule");
-		ruleST.add("ruleName", ruleName);
-		ST ruleArgST = codegenTemplates.getInstanceOf("recRuleArg");
-		ruleST.add("argName", ruleArgST);
-		ST setResultST = codegenTemplates.getInstanceOf("recRuleSetResultAction");
-		ruleST.add("setResultAction", setResultST);
-		ruleST.add("userRetvals", retvals);
-
-		LinkedHashMap<Integer, LeftRecursiveRuleAltInfo> opPrecRuleAlts = new LinkedHashMap<Integer, LeftRecursiveRuleAltInfo>();
-		opPrecRuleAlts.putAll(binaryAlts);
-		opPrecRuleAlts.putAll(suffixAlts);
-		for (int alt : opPrecRuleAlts.keySet()) {
-			LeftRecursiveRuleAltInfo altInfo = opPrecRuleAlts.get(alt);
-			ST altST = recRuleTemplates.getInstanceOf("recRuleAlt");
-			ST predST = codegenTemplates.getInstanceOf("recRuleAltPredicate");
-			predST.add("opPrec", precedence(alt));
-			predST.add("ruleName", ruleName);
-			altST.add("pred", predST);
-			altST.add("alt", altInfo);
-			altST.add("precOption", LeftRecursiveRuleTransformer.PRECEDENCE_OPTION_NAME);
-			altST.add("opPrec", precedence(alt));
-			ruleST.add("opAlts", altST);
-		}
-
-		ruleST.add("primaryAlts", prefixAndOtherAlts);
-
-		String renderResult = ruleST.render();
-		tool.log("left-recursion", renderResult);
-		return renderResult;
-	}
-
-	public AltAST addPrecedenceArgToRules(AltAST t, int prec) {
-		if ( t==null ) return null;
-		// get all top-level rule refs from ALT
-		List<GrammarAST> outerAltRuleRefs = t.getNodesWithTypePreorderDFS(IntervalSet.of(RULE_REF));
-		for (GrammarAST x : outerAltRuleRefs) {
-			RuleRefAST rref = (RuleRefAST)x;
-			boolean recursive = rref.getText().equals(ruleName);
-			boolean rightmost = rref == outerAltRuleRefs.get(outerAltRuleRefs.size()-1);
-			if ( recursive && rightmost ) {
-				GrammarAST dummyValueNode = new GrammarAST(new CommonToken(ANTLRParser.INT, String.valueOf(prec)));
-				rref.setOption(LeftRecursiveRuleTransformer.PRECEDENCE_OPTION_NAME, dummyValueNode);
+	/** Strip last 2 tokens if → label; alter indexes in altAST */
+	private void stripAltLabel(GrammarAST altAST) {
+		int start = altAST.getTokenStartIndex();
+		int stop = altAST.getTokenStopIndex();
+		// find =>
+		for (int i=stop; i>=start; i--) {
+			if ( tokenStream.get(i).getType()==POUND ) {
+				altAST.setTokenStopIndex(i-1);
+				return;
 			}
 		}
-		return t;
-	}
-
-	/**
-	 * Match (RULE RULE_REF (BLOCK (ALT .*) (ALT RULE_REF[self] .*) (ALT .*)))
-	 * Match (RULE RULE_REF (BLOCK (ALT .*) (ALT (ASSIGN ID RULE_REF[self]) .*) (ALT .*)))
-	 */
-	public static boolean hasImmediateRecursiveRuleRefs(GrammarAST t, String ruleName) {
-		if ( t==null ) return false;
-		GrammarAST blk = (GrammarAST)t.getFirstChildWithType(BLOCK);
-		if ( blk==null ) return false;
-		int n = blk.getChildren().size();
-		for (int i = 0; i < n; i++) {
-			GrammarAST alt = (GrammarAST)blk.getChildren().get(i);
-			if (isImmediateLeftRecursion(alt, ruleName)) return true;
-		}
-		return false;
-	}
-
-	private static boolean isImmediateLeftRecursion(Tree tree, String ruleName) {
-		if (tree == null) return false;
-
-		// TODO: Partially left recursive rules, for instance: e : e? '+' ID | ID;
-		// TODO: closures
-		switch (tree.getType()) {
-			// Just an alternative
-			// e
-			//     : e ID
-			case ALT:
-				return isImmediateLeftRecursion(tree.getChild(0), ruleName);
-			// All alternatives should be left recursive
-			// e
-			//     : (e '+' e | e '-' e)
-			case BLOCK:
-				for (int i = 0; i < tree.getChildCount(); i++) {
-					if (!isImmediateLeftRecursion(tree.getChild(i), ruleName)) {
-						return false;
-					}
-				}
-				return true;
-			// Option
-			// e
-			//     : <assoc=right> e '+' e
-			case ELEMENT_OPTIONS:
-				return isImmediateLeftRecursion(tree.getParent().getChild(1), ruleName);
-			// Label
-			// e
-			//     : l1=e '+' l2=e
-			case ASSIGN:
-			case PLUS_ASSIGN:
-				return isImmediateLeftRecursion(tree.getChild(1), ruleName);
-			case RULE_REF:
-				return tree.getText().equals(ruleName);
-		}
-
-		return false;
 	}
 
 	// TODO: this strips the tree properly, but since text()
 	// uses the start of stop token index and gets text from that
 	// ineffectively ignores this routine.
-	public GrammarAST stripLeftRecursion(Tree tree) {
+	private GrammarAST stripLeftRecursion(Tree tree) {
 		GrammarAST lrLabel = null;
 		switch (tree.getType()) {
 			case ALT:
@@ -321,26 +174,76 @@ public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
 				// reset index so it prints properly (sets token range of
 				// ALT to start to right of left recur rule we deleted)
 				GrammarAST newFirstChild = (GrammarAST)parent.getChild(index);
-				parent.setTokenStartIndex(newFirstChild.getTokenStartIndex());
+				if (newFirstChild != null) {
+					parent.setTokenStartIndex(newFirstChild.getTokenStartIndex());
+				}
 				break;
 		}
 		return null;
 	}
 
-	/** Strip last 2 tokens if → label; alter indexes in altAST */
-	public void stripAltLabel(GrammarAST altAST) {
-		int start = altAST.getTokenStartIndex();
-		int stop = altAST.getTokenStopIndex();
-		// find =>
-		for (int i=stop; i>=start; i--) {
-			if ( tokenStream.get(i).getType()==POUND ) {
-				altAST.setTokenStopIndex(i-1);
-				return;
-			}
-		}
+	private int precedence(int altNumber) {
+		return rule.ruleInfo.ruleAltInfos.size()-altNumber+1;
 	}
 
-	public String text(GrammarAST t) {
+	// Assumes left assoc
+	private int nextPrecedence(int altNumber, AssocType assocType) {
+		int p = precedence(altNumber);
+		if (assocType == AssocType.right) return p;
+		return p+1;
+	}
+
+	// --------- get transformed rules ----------------
+
+	public String getArtificialOpPrecRule() {
+		ST ruleST = recRuleTemplates.getInstanceOf("recRule");
+		ruleST.add("ruleName", rule.name);
+		ST ruleArgST = codegenTemplates.getInstanceOf("recRuleArg");
+		ruleST.add("argName", ruleArgST);
+		ST setResultST = codegenTemplates.getInstanceOf("recRuleSetResultAction");
+		ruleST.add("setResultAction", setResultST);
+		ruleST.add("userRetvals", rule.ruleInfo.retvals);
+
+		LinkedHashMap<Integer, LeftRecursiveRuleAltInfo> opPrecRuleAlts = new LinkedHashMap<>();
+		opPrecRuleAlts.putAll(binaryAlts);
+		opPrecRuleAlts.putAll(suffixAlts);
+		for (int alt : opPrecRuleAlts.keySet()) {
+			LeftRecursiveRuleAltInfo altInfo = opPrecRuleAlts.get(alt);
+			ST altST = recRuleTemplates.getInstanceOf("recRuleAlt");
+			ST predST = codegenTemplates.getInstanceOf("recRuleAltPredicate");
+			predST.add("opPrec", precedence(alt));
+			predST.add("ruleName", rule.name);
+			altST.add("pred", predST);
+			altST.add("alt", altInfo);
+			altST.add("precOption", LeftRecursiveRuleTransformer.PRECEDENCE_OPTION_NAME);
+			altST.add("opPrec", precedence(alt));
+			ruleST.add("opAlts", altST);
+		}
+
+		ruleST.add("primaryAlts", prefixAndOtherAlts);
+
+		String renderResult = ruleST.render();
+		tool.log("left-recursion", renderResult);
+		return renderResult;
+	}
+
+	private AltAST addPrecedenceArgToRules(AltAST t, int prec) {
+		if ( t==null ) return null;
+		// get all top-level rule refs from ALT
+		List<GrammarAST> outerAltRuleRefs = t.getNodesWithTypePreorderDFS(IntervalSet.of(RULE_REF));
+		for (GrammarAST x : outerAltRuleRefs) {
+			RuleRefAST rref = (RuleRefAST)x;
+			boolean recursive = rref.getText().equals(rule.name);
+			boolean rightmost = rref == outerAltRuleRefs.get(outerAltRuleRefs.size()-1);
+			if ( recursive && rightmost ) {
+				GrammarAST dummyValueNode = new GrammarAST(new CommonToken(ANTLRParser.INT, String.valueOf(prec)));
+				rref.setOption(LeftRecursiveRuleTransformer.PRECEDENCE_OPTION_NAME, dummyValueNode);
+			}
+		}
+		return t;
+	}
+
+	private String text(GrammarAST t) {
 		if ( t==null ) return "";
 
 		int tokenStartIndex = t.getTokenStartIndex();
@@ -381,14 +284,14 @@ public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
 			if (!noOptions.contains(i)) {
 				GrammarAST node = t.getNodeWithTokenIndex(tok.getTokenIndex());
 				if ( node!=null &&
-					 (tok.getType()==TOKEN_REF ||
-					  tok.getType()==STRING_LITERAL ||
-					  tok.getType()==RULE_REF) )
+						(tok.getType()==TOKEN_REF ||
+								tok.getType()==STRING_LITERAL ||
+								tok.getType()==RULE_REF) )
 				{
 					elementOptions.append("tokenIndex=").append(tok.getTokenIndex());
 				}
 
-				if ( node instanceof GrammarASTWithOptions ) {
+				if ( node instanceof GrammarASTWithOptions) {
 					GrammarASTWithOptions o = (GrammarASTWithOptions)node;
 					for (Map.Entry<String, GrammarAST> entry : o.getOptions().entrySet()) {
 						if (elementOptions.length() > 0) {
@@ -417,25 +320,5 @@ public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
 			}
 		}
 		return buf.toString();
-	}
-
-	public int precedence(int alt) {
-		return numAlts-alt+1;
-	}
-
-	// Assumes left assoc
-	public int nextPrecedence(int alt) {
-		int p = precedence(alt);
-		if ( altAssociativity.get(alt)==ASSOC.right ) return p;
-		return p+1;
-	}
-
-	@Override
-	public String toString() {
-		return "PrecRuleOperatorCollector{" +
-			   "binaryAlts=" + binaryAlts +
-			   ", suffixAlts=" + suffixAlts +
-			   ", prefixAndOtherAlts=" +prefixAndOtherAlts+
-			   '}';
 	}
 }

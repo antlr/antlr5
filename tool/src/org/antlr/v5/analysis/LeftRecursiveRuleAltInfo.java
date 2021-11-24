@@ -18,10 +18,6 @@ public class LeftRecursiveRuleAltInfo {
 	public AltAST originalAltAST;
 	public int nextPrec;
 
-	public LeftRecursiveRuleAltInfo(int altNum, String altText) {
-		this(altNum, altText, null, null, false, null);
-	}
-
 	public LeftRecursiveRuleAltInfo(int altNum, String altText,
 									String leftRecursiveRuleRefLabel,
 									String altLabel,

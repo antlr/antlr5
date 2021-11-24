@@ -7,6 +7,7 @@
 package org.antlr.v5.tool;
 
 import org.antlr.v5.analysis.LeftRecursiveRuleAltInfo;
+import org.antlr.v5.analysis.RuleInfo;
 import org.antlr.v5.misc.OrderedHashMap;
 import org.antlr.v5.runtime.misc.Pair;
 import org.antlr.v5.tool.ast.AltAST;
@@ -22,15 +23,17 @@ public class LeftRecursiveRule extends Rule {
 	public List<LeftRecursiveRuleAltInfo> recPrimaryAlts;
 	public OrderedHashMap<Integer, LeftRecursiveRuleAltInfo> recOpAlts;
 	public RuleAST originalAST;
+	public RuleInfo ruleInfo;
 
 	/** Did we delete any labels on direct left-recur refs? Points at ID of ^(= ID el) */
 	public List<Pair<GrammarAST,String>> leftRecursiveRuleRefLabels =
 		new ArrayList<Pair<GrammarAST,String>>();
 
-	public LeftRecursiveRule(Grammar g, String name, RuleAST ast) {
+	public LeftRecursiveRule(Grammar g, String name, RuleAST ast, RuleInfo ruleInfo) {
 		super(g, name, ast, 1);
 		originalAST = ast;
 		alt = new Alternative[numberOfAlts+1]; // always just one
+		this.ruleInfo = ruleInfo;
 		for (int i=1; i<=numberOfAlts; i++) alt[i] = new Alternative(this, i);
 	}
 
