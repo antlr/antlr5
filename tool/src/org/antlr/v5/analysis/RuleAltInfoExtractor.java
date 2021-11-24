@@ -11,6 +11,8 @@ import org.antlr.v5.Tool;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.AltAST;
+import org.antlr.v5.tool.ast.GrammarAST;
+import org.antlr.v5.tool.ast.RuleRefAST;
 
 import static org.antlr.v5.parse.ANTLRParser.*;
 import static org.antlr.v5.parse.ANTLRParser.RULE_REF;
@@ -87,6 +89,9 @@ public class RuleAltInfoExtractor {
 			//     : l1=e '+' l2=e
 			case ASSIGN:
 			case PLUS_ASSIGN:
+				if (leftmost) {
+					ruleAltInfo.leftRecursiveRuleRefLabel = (GrammarAST) tree.getChild(0);
+				}
 				return extract(ruleAltInfo, tree.getChild(1), leftmost, rightmost);
 			case RULE_REF:
 				Tree firstChild = tree.getChild(0);
@@ -96,11 +101,15 @@ public class RuleAltInfoExtractor {
 				}
 
 				if (tree.getText().equals(ruleName)) {
-					return leftmost
-							? AltType.suffixLR
-							: rightmost
-							? AltType.prefix
-							: AltType.other;
+					if (leftmost) {
+						ruleAltInfo.leftRecursiveLeftmostRuleRefs.add((RuleRefAST) tree);
+						return AltType.suffixLR;
+					} else if (rightmost) {
+						ruleAltInfo.leftRecursiveRightmostRuleRefs.add((RuleRefAST) tree);
+						return AltType.prefix;
+					} else {
+						return AltType.other;
+					}
 				} else {
 					return AltType.other;
 				}

@@ -7,6 +7,10 @@
 package org.antlr.v5.analysis;
 
 import org.antlr.v5.tool.ast.AltAST;
+import org.antlr.v5.tool.ast.GrammarAST;
+import org.antlr.v5.tool.ast.RuleRefAST;
+
+import java.util.HashSet;
 
 public class RuleAltInfo {
 	public int number; // original alt index (from 1)
@@ -15,9 +19,9 @@ public class RuleAltInfo {
 	public AltType type = AltType.other;
 	public boolean nonConformingLeftRecursion = false;
 	public AssocType assocType = AssocType.left;
-
-	public RuleAltInfo() {
-	}
+	public HashSet<RuleRefAST> leftRecursiveLeftmostRuleRefs = new HashSet<>();
+	public HashSet<RuleRefAST> leftRecursiveRightmostRuleRefs = new HashSet<>();
+	public GrammarAST leftRecursiveRuleRefLabel;
 
 	public boolean isLeftRecursive() {
 		return type == AltType.suffixLR || type == AltType.binaryLR;
