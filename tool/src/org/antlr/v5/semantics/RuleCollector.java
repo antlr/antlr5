@@ -6,7 +6,7 @@
 
 package org.antlr.v5.semantics;
 
-import org.antlr.v5.analysis.LeftRecursiveRuleAnalyzer;
+import org.antlr.v5.analysis.RuleInfo;
 import org.antlr.v5.misc.OrderedHashMap;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.GrammarTreeVisitor;
@@ -54,8 +54,9 @@ public class RuleCollector extends GrammarTreeVisitor {
 	{
 		int numAlts = block.getChildCount();
 		Rule r;
-		if ( LeftRecursiveRuleAnalyzer.hasImmediateRecursiveRuleRefs(rule, ID.getText()) ) {
-			r = new LeftRecursiveRule(g, ID.getText(), rule);
+		RuleInfo ruleInfo = RuleInfo.collectRuleInfo(g.tool, rule);
+		if (ruleInfo.isLeftRecursive) {
+			r = new LeftRecursiveRule(g, ID.getText(), rule, ruleInfo);
 		}
 		else {
 			r = new Rule(g, ID.getText(), rule, numAlts);
