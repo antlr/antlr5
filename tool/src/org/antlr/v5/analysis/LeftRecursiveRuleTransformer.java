@@ -65,15 +65,16 @@ public class LeftRecursiveRuleTransformer {
 		// translate all recursive rules
 		List<String> leftRecursiveRuleNames = new ArrayList<>();
 		for (Rule r : rules) {
-			if ( !Grammar.isTokenName(r.name) ) {
-				if (r instanceof  LeftRecursiveRule) {
-					LeftRecursiveRule leftRecursiveRule = (LeftRecursiveRule)r;
+			if (!Grammar.isTokenName(r.name)) {
+				if (r instanceof LeftRecursiveRule) {
+					LeftRecursiveRule leftRecursiveRule = (LeftRecursiveRule) r;
 					if (!leftRecursiveRule.ruleInfo.nonConformingLeftRecursion) {
 						translateLeftRecursiveRule(ast, leftRecursiveRule, language);
 						leftRecursiveRuleNames.add(r.name);
-					} else {
+					}
+					else {
 						// TODO: better given an error that non-conforming left-recursion exists
-						tool.errMgr.grammarError(ErrorType.NONCONFORMING_LR_RULE, g.fileName, ((GrammarAST)r.ast.getChild(0)).token, r.name);
+						tool.errMgr.grammarError(ErrorType.NONCONFORMING_LR_RULE, g.fileName, ((GrammarAST) r.ast.getChild(0)).token, r.name);
 					}
 				}
 			}
