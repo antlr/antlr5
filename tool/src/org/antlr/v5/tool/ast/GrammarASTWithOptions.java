@@ -7,7 +7,7 @@
 package org.antlr.v5.tool.ast;
 
 import org.antlr.runtime.Token;
-import org.antlr.v5.misc.CharSupport;
+import org.antlr.v5.misc.AntlrCharSupport;
 import org.antlr.v5.tool.ErrorType;
 
 import java.util.Collections;
@@ -41,7 +41,7 @@ public abstract class GrammarASTWithOptions extends GrammarAST {
 		else {
 			String v = value.getText();
 			if ( v.startsWith("'") || v.startsWith("\"") ) {
-				v = CharSupport.getStringFromGrammarStringLiteral(v);
+				v = AntlrCharSupport.getStringFromGrammarStringLiteral(v);
 				if (v == null) {
 					g.tool.errMgr.grammarError(ErrorType.INVALID_ESCAPE_SEQUENCE, g.fileName, value.getToken(), value.getText());
 					v = "";

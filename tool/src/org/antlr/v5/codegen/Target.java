@@ -9,7 +9,7 @@ package org.antlr.v5.codegen;
 import org.antlr.v5.Tool;
 import org.antlr.v5.codegen.model.RuleFunction;
 import org.antlr.v5.codegen.model.SerializedATN;
-import org.antlr.v5.misc.CharSupport;
+import org.antlr.v5.misc.AntlrCharSupport;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.runtime.RuntimeMetaData;
@@ -286,7 +286,7 @@ public abstract class Target {
 						if ( i+toAdvance <= literal.length() ) { // we might have an invalid \\uAB or something
 							String fullEscape = literal.substring(i, i+toAdvance);
 							appendUnicodeEscapedCodePoint(
-								CharSupport.getCharValueFromCharInGrammarLiteral(fullEscape),
+								AntlrCharSupport.getCharValueFromCharInGrammarLiteral(fullEscape),
 								sb,
 								escapeSpecial);
 						}
