@@ -12,7 +12,6 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.v5.analysis.LeftRecursiveRuleTransformer;
-import org.antlr.v5.misc.AntlrCharSupport;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.ATNBuilder;
 import org.antlr.v5.parse.GrammarASTAdaptor;
@@ -250,7 +249,7 @@ public class ParserATNFactory implements ATNFactory {
 	protected int getTokenType(GrammarAST atom) {
 		int ttype;
 		if ( g.isLexer() ) {
-			ttype = AntlrCharSupport.getCharValueFromGrammarCharLiteral(atom.getText());
+			ttype = GrammarLiteralParser.parseCharFromStringLiteral(atom.getText()).codePoint;
 		}
 		else {
 			ttype = g.getTokenType(atom.getText());
