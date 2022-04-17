@@ -8,24 +8,27 @@ package org.antlr.v5.runtime.misc;
 
 import org.antlr.v5.runtime.Lexer;
 
-public class CharSupport {
-	public final static int[] EscapedCharValue = new int[255];
+import java.util.HashMap;
+import java.util.Map;
 
-	public final static String[] CharValueEscape = new String[255];
+public class CharSupport {
+	public final static Map<Character, Character> EscapedCharValue = new HashMap<>();
+
+	public final static Map<Character, String> CharValueEscape = new HashMap<>();
 
 	static {
-		EscapedCharValue['n'] = '\n';
-		EscapedCharValue['r'] = '\r';
-		EscapedCharValue['t'] = '\t';
-		EscapedCharValue['b'] = '\b';
-		EscapedCharValue['f'] = '\f';
-		EscapedCharValue['\\'] = '\\';
-		CharValueEscape['\n'] = "\\n";
-		CharValueEscape['\r'] = "\\r";
-		CharValueEscape['\t'] = "\\t";
-		CharValueEscape['\b'] = "\\b";
-		CharValueEscape['\f'] = "\\f";
-		CharValueEscape['\\'] = "\\\\";
+		EscapedCharValue.put('n', '\n');
+		EscapedCharValue.put('r', '\r');
+		EscapedCharValue.put('t', '\t');
+		EscapedCharValue.put('b', '\b');
+		EscapedCharValue.put('f', '\f');
+		EscapedCharValue.put('\\', '\\');
+		CharValueEscape.put('\n', "\\n");
+		CharValueEscape.put('\r', "\\r");
+		CharValueEscape.put('\t', "\\t");
+		CharValueEscape.put('\b', "\\b");
+		CharValueEscape.put('\f', "\\f");
+		CharValueEscape.put('\\', "\\\\");
 	}
 
 	public static String getPrintable(int c) {
@@ -43,7 +46,7 @@ public class CharSupport {
 			result = "<INVALID>";
 		}
 		else {
-			String charValueEscape = c < CharValueEscape.length ? CharValueEscape[c] : null;
+			String charValueEscape = CharValueEscape.get((char) c);
 			if (charValueEscape != null) {
 				result = charValueEscape;
 			}
