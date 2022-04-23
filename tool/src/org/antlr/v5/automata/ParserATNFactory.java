@@ -12,6 +12,7 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.v5.analysis.LeftRecursiveRuleTransformer;
+import org.antlr.v5.automata.optimization.ATNOptimizer;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.ATNBuilder;
 import org.antlr.v5.parse.GrammarASTAdaptor;
@@ -430,10 +431,6 @@ public class ParserATNFactory implements ATNFactory {
 			// hook alts up to decision block
 			epsilon(start, alt.left);
 			epsilon(alt.right, end);
-			// no back link in ATN so must walk entire alt to see if we can
-			// strip out the epsilon to 'end' state
-			TailEpsilonRemover opt = new TailEpsilonRemover(atn);
-			opt.visit(alt.left);
 		}
 		Handle h = new Handle(start, end);
 //		FASerializer ser = new FASerializer(g, h.left);
@@ -452,44 +449,22 @@ public class ParserATNFactory implements ATNFactory {
 
 	public Handle elemList(List<Handle> els) {
 		int n = els.size();
-		for (int i = 0; i < n - 1; i++) {	// hook up elements (visit all but last)
-			Handle el = els.get(i);
-			// if el is of form o-x->o for x in {rule, action, pred, token, ...}
-			// and not last in alt
-            Transition tr = null;
-            if ( el.left.getNumberOfTransitions()==1 ) tr = el.left.transition(0);
-            boolean isRuleTrans = tr instanceof RuleTransition;
-            if ( el.left.getStateType() == ATNState.BASIC &&
-				el.right != null &&
-				el.right.getStateType()== ATNState.BASIC &&
-				tr!=null && (isRuleTrans && ((RuleTransition)tr).followState == el.right || tr.target == el.right) ) {
-				// we can avoid epsilon edge to next el
-				Handle handle = null;
-				if (i + 1 < els.size()) {
-					handle = els.get(i + 1);
-				}
-				if (handle != null) {
-					if (isRuleTrans) {
-						((RuleTransition) tr).followState = handle.left;
-					} else {
-						tr.target = handle.left;
-					}
-				}
-				atn.removeState(el.right); // we skipped over this state
-			}
-			else { // need epsilon if previous block's right end node is complicated
-				epsilon(el.right, els.get(i+1).left);
+		Handle first = els.get(0);
+		Handle nextEl = first;
+		for (int i = 1; i < n; i++) {
+			Handle el = nextEl;
+			nextEl = els.get(i);
+			if (el != null && nextEl != null) {
+				epsilon(el.right, nextEl.left);
 			}
 		}
-		Handle first = els.get(0);
-		Handle last = els.get(n - 1);
 		ATNState left = null;
 		if (first != null) {
 			left = first.left;
 		}
 		ATNState right = null;
-		if (last != null) {
-			right = last.right;
+		if (nextEl != null) {
+			right = nextEl.right;
 		}
 		return new Handle(left, right);
 	}
