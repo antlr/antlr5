@@ -12,8 +12,28 @@ import java.net.URI;
 import java.util.*;
 
 public class RuntimeTestDescriptorParser {
+	private final static String NOTES_SECTION_NAME = "notes";
+	private final static String TYPE_SECTION_NAME = "type";
+	private final static String GRAMMAR_SECTION_NAME = "grammar";
+	private final static String SLAVE_GRAMMAR_SECTION_NAME = "slaveGrammar";
+	private final static String START_SECTION_NAME = "start";
+	private final static String INPUT_SECTION_NAME = "input";
+	private final static String OUTPUT_SECTION_NAME = "output";
+	private final static String ERRORS_SECTION_NAME = "errors";
+	private final static String FLAGS_SECTION_NAME = "flags";
+	private final static String SKIP_SECTION_NAME = "skip";
+
 	private final static Set<String> sections = new HashSet<>(Arrays.asList(
-			"notes", "type", "grammar", "slaveGrammar", "start", "input", "output", "errors", "flags", "skip"
+		NOTES_SECTION_NAME,
+		TYPE_SECTION_NAME,
+		GRAMMAR_SECTION_NAME,
+		SLAVE_GRAMMAR_SECTION_NAME,
+		START_SECTION_NAME,
+		INPUT_SECTION_NAME,
+		OUTPUT_SECTION_NAME,
+		ERRORS_SECTION_NAME,
+		FLAGS_SECTION_NAME,
+		SKIP_SECTION_NAME
 	));
 
 	/**  Read stuff like:
@@ -120,32 +140,32 @@ public class RuntimeTestDescriptorParser {
 				value = value + "\n"; // if multi line and not quoted, leave \n on end.
 			}
 			switch (section) {
-				case "notes":
+				case NOTES_SECTION_NAME:
 					notes = value;
 					break;
-				case "type":
+				case TYPE_SECTION_NAME:
 					testType = Enum.valueOf(GrammarType.class, value);
 					break;
-				case "grammar":
+				case GRAMMAR_SECTION_NAME:
 					grammarName = getGrammarName(value.split("\n")[0]);
 					grammar = value;
 					break;
-				case "slaveGrammar":
+				case SLAVE_GRAMMAR_SECTION_NAME:
 					String gname = getGrammarName(value.split("\n")[0]);
 					slaveGrammars.add(new Pair<>(gname, value));
-				case "start":
+				case START_SECTION_NAME:
 					startRule = value;
 					break;
-				case "input":
+				case INPUT_SECTION_NAME:
 					input = value;
 					break;
-				case "output":
+				case OUTPUT_SECTION_NAME:
 					output = value;
 					break;
-				case "errors":
+				case ERRORS_SECTION_NAME:
 					errors = value;
 					break;
-				case "flags":
+				case FLAGS_SECTION_NAME:
 					String[] flags = value.split("\n");
 					for (String f : flags) {
 						String[] parts = f.split("=", 2);
@@ -165,10 +185,12 @@ public class RuntimeTestDescriptorParser {
 							case "notBuildParseTree":
 								buildParseTree = false;
 								break;
+							default:
+								throw new RuntimeException("Unknown flag: " + parts[0]);
 						}
 					}
 					break;
-				case "skip":
+				case SKIP_SECTION_NAME:
 					skipTargets = value.split("\n");
 					break;
 				default:
