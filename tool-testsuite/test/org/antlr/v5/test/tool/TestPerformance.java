@@ -41,11 +41,11 @@ import org.antlr.v5.runtime.tree.ParseTreeWalker;
 import org.antlr.v5.runtime.tree.TerminalNode;
 import org.antlr.v5.test.runtime.*;
 import org.antlr.v5.test.runtime.java.JavaRunner;
+import org.antlr.v5.test.runtime.states.GeneratedState;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -56,7 +56,6 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -78,10 +77,8 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.antlr.v5.test.runtime.FileUtils.writeFile;
 import static org.antlr.v5.test.runtime.RuntimeTestUtils.NewLine;
-import static org.antlr.v5.test.tool.ToolTestUtils.createOptionsForJavaToolTests;
-import static org.antlr.v5.test.tool.ToolTestUtils.load;
+import static org.antlr.v5.test.tool.ToolTestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -1101,9 +1098,8 @@ public class TestPerformance {
 		}
         String[] extraOptionsArray = extraOptions.toArray(new String[0]);
 
-		RunOptions runOptions = createOptionsForJavaToolTests(grammarFileName, body, parserName, lexerName,
-				false, true, null, null,
-				false, false, Stage.Compile);
+		RunOptions runOptions = RunOptions.createCompilationOptions(new String[] {body}, null,
+				false, true, null, null);
 		try (RuntimeRunner runner = new JavaRunner()) {
 			return (JavaCompiledState) runner.run(runOptions);
 		}
@@ -1936,8 +1932,7 @@ public class TestPerformance {
 
 	@Test
 	@Timeout(20)
-	public void testExponentialInclude(@TempDir Path tempDir) {
-		String tempDirPath = tempDir.toString();
+	public void testExponentialInclude() {
 		String grammarFormat =
 			"parser grammar Level_%d_%d;\n" +
 			"\n" +
@@ -1945,23 +1940,26 @@ public class TestPerformance {
 			"\n" +
 			"rule_%d_%d : EOF;\n";
 
-		FileUtils.mkdir(tempDirPath);
-
-		long startTime = System.nanoTime();
+		String mainGrammar = null;
+		List<String> slaveGrammars = new ArrayList<>();
 
 		int levels = 20;
 		for (int level = 0; level < levels; level++) {
 			String leafPrefix = level == levels - 1 ? "//" : "";
 			String grammar1 = String.format(grammarFormat, level, 1, leafPrefix, level + 1, level + 1, level, 1);
-			writeFile(tempDirPath, "Level_" + level + "_1.g4", grammar1);
-			if (level > 0) {
-				String grammar2 = String.format(grammarFormat, level, 2, leafPrefix, level + 1, level + 1, level, 1);
-				writeFile(tempDirPath, "Level_" + level + "_2.g4", grammar2);
+			if (level == 0) {
+				mainGrammar = grammar1;
+			} else {
+				slaveGrammars.add(grammar1);
+				slaveGrammars.add(String.format(grammarFormat, level, 2, leafPrefix, level + 1, level + 1, level, 1));
 			}
 		}
 
-		ErrorQueue equeue = Generator.antlrOnString(tempDirPath, "Java", "Level_0_1.g4", false);
-		assertTrue(equeue.errors.isEmpty());
+		long startTime = System.nanoTime();
+
+		GeneratedState state = generate(mainGrammar, slaveGrammars.toArray(new String[0]), null, null, false);
+		if (state.containsErrors())
+			fail(state.getErrorMessage());
 
 		long endTime = System.nanoTime();
 		System.out.format("%s milliseconds.%n", (endTime - startTime) / 1000000.0);

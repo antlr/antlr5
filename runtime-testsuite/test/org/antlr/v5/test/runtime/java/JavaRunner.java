@@ -55,17 +55,17 @@ public class JavaRunner extends JvmRunner<Lexer, Parser> {
 	protected void initRuntime(RunOptions runOptions) { compiler = ToolProvider.getSystemJavaCompiler(); }
 
 	@Override
-	protected void compileClassFiles(RunOptions runOptions) {
+	protected void compileClassFiles(RunOptions runOptions, GeneratedState generatedState) {
 		String tempTestDir = getTempDirPath();
 
 		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
 		List<File> files = new ArrayList<>();
-		if (runOptions.lexerName != null) {
-			files.add(new File(tempTestDir, runOptions.lexerName + "." + getExtension()));
+		if (generatedState.lexerName != null) {
+			files.add(new File(tempTestDir, generatedState.lexerName + "." + Generator.getExtension(getLanguage())));
 		}
-		if (runOptions.parserName != null) {
-			files.add(new File(tempTestDir, runOptions.parserName + "." + getExtension()));
+		if (generatedState.parserName != null) {
+			files.add(new File(tempTestDir, generatedState.parserName + "." + Generator.getExtension(getLanguage())));
 		}
 
 		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(files);
@@ -101,9 +101,11 @@ public class JavaRunner extends JvmRunner<Lexer, Parser> {
 			PrintStream outStream = new PrintStream(outputStreamHelper.pipedOutputStream);
 			CustomStreamErrorListener errorListener = new CustomStreamErrorListener(new PrintStream(errorsStreamHelper.pipedOutputStream));
 
+			GeneratedState generatedState = (GeneratedState) compiledState.previousState;
+
 			CommonTokenStream tokenStream;
 			RuntimeTestLexer lexer;
-			if (runOptions.lexerName != null) {
+			if (generatedState.lexerName != null) {
 				lexer = (RuntimeTestLexer) javaCompiledState.initializeLexer(runOptions.input);
 				lexer.setOutStream(outStream);
 				lexer.removeErrorListeners();
@@ -114,7 +116,7 @@ public class JavaRunner extends JvmRunner<Lexer, Parser> {
 				tokenStream = null;
 			}
 
-			if (runOptions.parserName != null) {
+			if (generatedState.parserName != null) {
 				RuntimeTestParser parser = (RuntimeTestParser) javaCompiledState.initializeParser(tokenStream);
 				parser.setOutStream(outStream);
 				parser.removeErrorListeners();
