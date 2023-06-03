@@ -54,7 +54,7 @@ public abstract class JvmRunner<TLexer, TParser> extends RuntimeRunner {
 	protected void writeInputFile(RunOptions runOptions) {}
 
 	@Override
-	protected void writeRecognizerFile(RunOptions runOptions) {}
+	protected void writeRecognizerFile(RunOptions runOptions, GeneratedState generatedState) {}
 
 	@Override
 	protected CompiledState compile(RunOptions runOptions, GeneratedState generatedState) {
@@ -63,7 +63,7 @@ public abstract class JvmRunner<TLexer, TParser> extends RuntimeRunner {
 		List<GeneratedFile> generatedFiles = generatedState.generatedFiles;
 		GeneratedFile firstFile = generatedFiles.get(0);
 
-		if (!firstFile.isParser) {
+		if (firstFile.type != GeneratedFile.Type.Parser) {
 			try {
 				fixRecognizerSupertype(firstFile.name);
 			} catch (IOException e) {
@@ -77,14 +77,14 @@ public abstract class JvmRunner<TLexer, TParser> extends RuntimeRunner {
 		Exception exception = null;
 
 		try {
-			compileClassFiles(runOptions);
+			compileClassFiles(runOptions, generatedState);
 
 			loader = new URLClassLoader(new URL[]{new File(tempTestDir).toURI().toURL()}, ClassLoader.getSystemClassLoader());
-			if (runOptions.lexerName != null) {
-				lexer = (Class<? extends TLexer>)loader.loadClass(runOptions.lexerName);
+			if (generatedState.lexerName != null) {
+				lexer = (Class<? extends TLexer>)loader.loadClass(generatedState.lexerName);
 			}
-			if (runOptions.parserName != null) {
-				parser = (Class<? extends TParser>)loader.loadClass(runOptions.parserName);
+			if (generatedState.parserName != null) {
+				parser = (Class<? extends TParser>)loader.loadClass(generatedState.parserName);
 			}
 		} catch (Exception ex) {
 			exception = ex;
@@ -105,7 +105,7 @@ public abstract class JvmRunner<TLexer, TParser> extends RuntimeRunner {
 			recognizerSuperTypeStartMarker + lexerHelperFQN.get(getLanguage()) + recognizerSuperTypeEndMarker);
 	}
 
-	protected abstract void compileClassFiles(RunOptions runOptions) throws Exception;
+	protected abstract void compileClassFiles(RunOptions runOptions, GeneratedState generatedState) throws Exception;
 
 	protected abstract CompiledState createCompiledState(GeneratedState generatedState, ClassLoader loader,
 														 Class<? extends TLexer> lexer, Class<? extends TParser> parser,

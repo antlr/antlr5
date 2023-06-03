@@ -2,15 +2,21 @@ package org.antlr.v5.test.runtime;
 
 public class GeneratedFile {
 	public final String name;
-	public final boolean isParser;
+	public final Type type;
 
-	public GeneratedFile(String name, boolean isParser) {
+	public enum Type {
+		Lexer,
+		Parser,
+		Other
+	}
+
+	public GeneratedFile(String name, Type type) {
 		this.name = name;
-		this.isParser = isParser;
+		this.type = type;
 	}
 
 	@Override
 	public String toString() {
-		return name + "; isParser:" + isParser;
+		return name + "; FileType:" + type;
 	}
 }

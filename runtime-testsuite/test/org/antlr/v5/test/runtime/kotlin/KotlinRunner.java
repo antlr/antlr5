@@ -35,9 +35,6 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	public String getLanguage() { return "Kotlin"; }
 
 	@Override
-	protected String getExtension() { return "kt"; }
-
-	@Override
 	protected String getCompilerName() { return "kotlinc"; }
 
 	@Override
@@ -47,7 +44,7 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	protected String getRecognizerSuperTypeEndMarker() { return "(input) {"; }
 
 	@Override
-	protected void compileClassFiles(RunOptions runOptions) {
+	protected void compileClassFiles(RunOptions runOptions, GeneratedState generatedState) {
 		K2JVMCompilerArguments arguments = new K2JVMCompilerArguments();
 		arguments.setFreeArgs(new ArrayList<>(List.of(getTempDirPath())));
 		arguments.setDestination(getTempDirPath());
@@ -83,9 +80,11 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 			RuntimeTestPrintStream outStream = new RuntimeTestPrintStream(outputStreamHelper.pipedOutputStream);
 			CustomStreamErrorListener errorListener = new CustomStreamErrorListener(new PrintStream(errorsStreamHelper.pipedOutputStream));
 
+			GeneratedState generatedState = (GeneratedState) compiledState.previousState;
+
 			CommonTokenStream tokenStream;
 			RuntimeTestLexer lexer;
-			if (runOptions.lexerName != null) {
+			if (generatedState.lexerName != null) {
 				lexer = (RuntimeTestLexer) kotlinCompiledState.initializeLexer(runOptions.input);
 				lexer.setOutStream(outStream);
 				lexer.removeErrorListeners();
@@ -96,7 +95,7 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 				tokenStream = null;
 			}
 
-			if (runOptions.parserName != null) {
+			if (generatedState.parserName != null) {
 				RuntimeTestParser parser = (RuntimeTestParser) kotlinCompiledState.initializeParser(tokenStream);
 				parser.setOutStream(outStream);
 				parser.removeErrorListeners();

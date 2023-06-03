@@ -14,7 +14,10 @@ import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.stringtemplate.v4.*;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
+import org.stringtemplate.v4.StringRenderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +28,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static org.antlr.v5.test.runtime.FileUtils.writeFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
@@ -116,43 +118,13 @@ public abstract class RuntimeTests {
 			return;
 		}
 
-		FileUtils.mkdir(runner.getTempDirPath());
+		Pair<String[], String[]> allGrammars = prepareGrammars(descriptor, runner);
 
-		String grammarName = descriptor.grammarName;
-		String grammar = prepareGrammars(descriptor, runner);
-
-		String lexerName, parserName;
-		boolean useListenerOrVisitor;
-		String superClass;
-		if (descriptor.testType == GrammarType.Parser) {
-			lexerName = grammarName + "Lexer";
-			parserName = grammarName + "Parser";
-			useListenerOrVisitor = true;
-			if (runner instanceof JvmRunner) {
-				superClass = JvmRunner.parserHelperFQN.get(targetName);
-			}
-			else {
-				superClass = null;
-			}
-		}
-		else {
-			lexerName = grammarName;
-			parserName = null;
-			useListenerOrVisitor = false;
-			if (runner instanceof JvmRunner) {
-				superClass = JvmRunner.lexerHelperFQN.get(targetName);
-			}
-			else {
-				superClass = null;
-			}
-		}
-
-		RunOptions runOptions = new RunOptions(grammarName + ".g4",
-				grammar,
-				parserName,
-				lexerName,
-				useListenerOrVisitor,
-				useListenerOrVisitor,
+		RunOptions runOptions = new RunOptions(
+				allGrammars.a,
+				allGrammars.b,
+				true,
+				true,
 				descriptor.startRule,
 				descriptor.input,
 				false,
@@ -160,10 +132,10 @@ public abstract class RuntimeTests {
 				descriptor.traceATN,
 				descriptor.showDFA,
 				Stage.Execute,
-				targetName,
-				superClass,
+				null,
 				descriptor.predictionMode,
-				descriptor.buildParseTree
+				descriptor.buildParseTree,
+				null
 		);
 
 		State result = runner.run(runOptions);
@@ -171,7 +143,7 @@ public abstract class RuntimeTests {
 		checkOutput(descriptor, result, runner);
 	}
 
-	private static String prepareGrammars(RuntimeTestDescriptor descriptor, RuntimeRunner runner) {
+	private static Pair<String[], String[]> prepareGrammars(RuntimeTestDescriptor descriptor, RuntimeRunner runner) {
 		String targetName = runner.getLanguage();
 
 		STGroup targetTemplates;
@@ -187,22 +159,23 @@ public abstract class RuntimeTests {
 			}
 		}
 
-		// write out any slave grammars
-		List<Pair<String, String>> slaveGrammars = descriptor.slaveGrammars;
-		if (slaveGrammars != null) {
-			for (Pair<String, String> spair : slaveGrammars) {
-				STGroup g = new STGroup('<', '>');
-				g.registerRenderer(String.class, rendered);
-				g.importTemplates(targetTemplates);
-				ST grammarST = new ST(g, spair.b);
-				writeFile(runner.getTempDirPath(), spair.a + ".g4", grammarST.render());
-			}
+		List<String> grammars = new ArrayList<>(descriptor.grammars.length);
+		List<String> slaveGrammars = new ArrayList<>(descriptor.slaveGrammars.length);
+		for (String grammar : descriptor.grammars) {
+			grammars.add(prepareGrammar(targetTemplates, grammar));
+		}
+		for (String grammar : descriptor.slaveGrammars) {
+			slaveGrammars.add(prepareGrammar(targetTemplates, grammar));
 		}
 
+		return new Pair<>(grammars.toArray(new String[0]), slaveGrammars.toArray(new String[0]));
+	}
+
+	private static String prepareGrammar(STGroup targetTemplates, String grammar) {
 		STGroup g = new STGroup('<', '>');
-		g.importTemplates(targetTemplates);
 		g.registerRenderer(String.class, rendered);
-		ST grammarST = new ST(g, descriptor.grammar);
+		g.importTemplates(targetTemplates);
+		ST grammarST = new ST(g, grammar);
 		return grammarST.render();
 	}
 
