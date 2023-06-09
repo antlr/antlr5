@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static org.antlr.v4.test.runtime.FileUtils.writeFile;
-import static org.antlr.v4.test.runtime.RuntimeTestUtils.joinLines;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
@@ -98,11 +98,7 @@ public abstract class RuntimeTests {
 			for (RuntimeTestDescriptor descriptor : descriptors) {
 				descriptorTests.add(dynamicTest(descriptor.name, descriptor.uri, () -> {
 					try (RuntimeRunner runner = createRuntimeRunner()) {
-						String errorMessage = test(descriptor, runner);
-						if (errorMessage != null) {
-							runner.setSaveTestDir(true);
-							fail(joinLines("Test: " + descriptor.name + "; " + errorMessage, "Test directory: " + runner.getTempDirPath()));
-						}
+						test(descriptor, runner);
 					}
 				}));
 			}
@@ -114,11 +110,11 @@ public abstract class RuntimeTests {
 		return result;
 	}
 
-	private static String test(RuntimeTestDescriptor descriptor, RuntimeRunner runner) {
+	private static void test(RuntimeTestDescriptor descriptor, RuntimeRunner runner) {
 		String targetName = runner.getLanguage();
 		if (descriptor.ignore(targetName)) {
 			System.out.println("Ignore " + descriptor);
-			return null;
+			return;
 		}
 
 		FileUtils.mkdir(runner.getTempDirPath());
@@ -173,7 +169,7 @@ public abstract class RuntimeTests {
 
 		State result = runner.run(runOptions);
 
-		return assertCorrectOutput(descriptor, targetName, result);
+		checkOutput(descriptor, result, runner);
 	}
 
 	private static String prepareGrammars(RuntimeTestDescriptor descriptor, RuntimeRunner runner) {
@@ -211,38 +207,31 @@ public abstract class RuntimeTests {
 		return grammarST.render();
 	}
 
-	public static String assertCorrectOutput(RuntimeTestDescriptor descriptor, String targetName, State state) {
-		ExecutedState executedState;
+	public static void checkOutput(RuntimeTestDescriptor descriptor, State state, RuntimeRunner runner) {
+		String tempDirPath = runner.getTempDirPath();
+		String testDescriptor = "\nTest: " + descriptor.name + "\nTest directory: " + tempDirPath;
+
+		ExecutedState executedState = null;
+		boolean shouldFail = false;
 		if (state instanceof ExecutedState) {
 			executedState = (ExecutedState)state;
 			if (executedState.exception != null) {
-				return state.getErrorMessage();
+				shouldFail = true;
 			}
 		}
 		else {
-			return state.getErrorMessage();
+			shouldFail = true;
 		}
 
-		String expectedOutput = descriptor.output;
-		String expectedParseErrors = descriptor.errors;
-
-		boolean doesOutputEqualToExpected = executedState.output.equals(expectedOutput);
-		if (!doesOutputEqualToExpected || !executedState.errors.equals(expectedParseErrors)) {
-			String message;
-			if (doesOutputEqualToExpected) {
-				message = "Parse output is as expected, but errors are not: ";
-			}
-			else {
-				message = "Parse output is incorrect: " +
-						"expectedOutput:<" + expectedOutput + ">; actualOutput:<" + executedState.output + ">; ";
-			}
-
-			return "[" + targetName + ":" + descriptor.name + "] " +
-					message +
-					"expectedParseErrors:<" + expectedParseErrors + ">;" +
-					"actualParseErrors:<" + executedState.errors + ">.";
+		if (shouldFail || !descriptor.errors.equals(executedState.errors) || !descriptor.output.equals(executedState.output)) {
+			runner.setSaveTestDir(true);
 		}
 
-		return null;
+		if (shouldFail) {
+			fail(testDescriptor + "\n" + state.getErrorMessage());
+		}
+
+		assertEquals(descriptor.errors, executedState.errors, testDescriptor + "\nUnexpected or missing parse errors");
+		assertEquals(descriptor.output, executedState.output, testDescriptor);
 	}
 }
