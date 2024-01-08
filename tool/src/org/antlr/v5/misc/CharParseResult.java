@@ -10,73 +10,75 @@ import org.antlr.v5.runtime.misc.IntervalSet;
 
 import java.util.Objects;
 
-public class CharParseResult {
-	public enum Type {
-		INVALID,
-		CODE_POINT,
-		PROPERTY
-	};
-
-	public final Type type;
-	public final int codePoint;
-	public final IntervalSet propertyIntervalSet;
+public abstract class CharParseResult {
 	public final int startIndex;
 	public final int length;
 
-	public static CharParseResult createInvalid(int start, int stop) {
-		return new CharParseResult(Type.INVALID, -1, IntervalSet.EMPTY_SET, start, stop - start);
-	}
-
-	public static CharParseResult createCodePoint(int codePoint, int start, int stop) {
-		return new CharParseResult(Type.CODE_POINT, codePoint, IntervalSet.EMPTY_SET, start, stop - start);
-	}
-
-	public static CharParseResult createProperty(IntervalSet set, int start, int stop) {
-		return new CharParseResult(Type.PROPERTY, -1, set, start, stop - start);
-	}
-
-	private CharParseResult(Type type, int codePoint, IntervalSet propertyIntervalSet, int startIndex, int length) {
-		this.type = type;
-		this.codePoint = codePoint;
-		this.propertyIntervalSet = propertyIntervalSet;
+	private CharParseResult(int startIndex, int stopIndex) {
 		this.startIndex = Math.max(startIndex, 0);
-		this.length = Math.max(length, 0);
-	}
-
-	public boolean isCodepoint() {
-		return type == Type.CODE_POINT;
+		this.length = Math.max(stopIndex - startIndex, 0);
 	}
 
 	public int getEndIndex() { return startIndex + length; }
 
 	@Override
-	public String toString() {
-		return String.format(
-				"%s type=%s codePoint=%d propertyIntervalSet=%s parseLength=%d",
-				super.toString(),
-				type,
-				codePoint,
-				propertyIntervalSet,
-				length);
-	}
-
-	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof CharParseResult)) {
+		if (other == null || !getClass().equals(other.getClass())) {
 			return false;
 		}
 		CharParseResult that = (CharParseResult) other;
 		if (this == that) {
 			return true;
 		}
-		return Objects.equals(this.type, that.type) &&
-				Objects.equals(this.codePoint, that.codePoint) &&
-				Objects.equals(this.propertyIntervalSet, that.propertyIntervalSet) &&
-				Objects.equals(this.length, that.length);
+		return Objects.equals(this.startIndex, that.startIndex) && Objects.equals(this.length, that.length);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(type, codePoint, propertyIntervalSet, length);
+		return Objects.hash(getClass(), startIndex, length);
+	}
+
+	public static class Invalid extends CharParseResult {
+		public Invalid(int startIndex, int stopIndex) {
+			super(startIndex, stopIndex);
+		}
+	}
+
+	public static class CodePoint extends CharParseResult {
+		public final int codePoint;
+
+		public CodePoint(int codePoint, int startIndex, int stopIndex) {
+			super(startIndex, stopIndex);
+			this.codePoint = codePoint;
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return super.equals(other) && Objects.equals(this.codePoint, ((CodePoint)other).codePoint);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(super.hashCode(), codePoint);
+		}
+	}
+
+	public static class Property extends CharParseResult {
+		public final IntervalSet propertyIntervalSet;
+
+		public Property(IntervalSet propertyIntervalSet, int startIndex, int stopIndex) {
+			super(startIndex, stopIndex);
+			this.propertyIntervalSet = propertyIntervalSet;
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return super.equals(other) && Objects.equals(this.propertyIntervalSet, ((Property)other).propertyIntervalSet);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(super.hashCode(), propertyIntervalSet);
+		}
 	}
 }

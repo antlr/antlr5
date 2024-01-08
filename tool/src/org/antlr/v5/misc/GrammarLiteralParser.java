@@ -28,10 +28,10 @@ public final class GrammarLiteralParser {
 		int endIndex = s.length() - 1;
 		while (index < endIndex) {
 			CharParseResult escapeParseResult = parseNextChar(s, index, endIndex, true);
-			if (!escapeParseResult.isCodepoint()) {
+			if (!(escapeParseResult instanceof CharParseResult.CodePoint)) {
 				return null;
 			}
-			buf.appendCodePoint(escapeParseResult.codePoint);
+			buf.appendCodePoint(((CharParseResult.CodePoint)escapeParseResult).codePoint);
 			index += escapeParseResult.length;
 		}
 		return buf.toString();
@@ -47,7 +47,7 @@ public final class GrammarLiteralParser {
 	 */
 	public static CharParseResult parseChar(String s, boolean isStringLiteral, boolean isQuoted) {
 		if (s == null) {
-			return CharParseResult.createInvalid(0, 0);
+			return new CharParseResult.Invalid(0, 0);
 		}
 
 		int startIndex, endIndex;
@@ -59,12 +59,12 @@ public final class GrammarLiteralParser {
 			endIndex = s.length();
 		}
 		CharParseResult result = parseNextChar(s, startIndex, endIndex, isStringLiteral);
-		if (result.type == CharParseResult.Type.INVALID) {
+		if (result instanceof CharParseResult.Invalid) {
 			return result;
 		}
 		// Disallow multiple chars
 		if (result.startIndex + result.length != endIndex) {
-			return CharParseResult.createInvalid(result.startIndex, result.startIndex + result.length);
+			return new CharParseResult.Invalid(result.startIndex, result.startIndex + result.length);
 		}
 		return result;
 	}
@@ -76,19 +76,19 @@ public final class GrammarLiteralParser {
 	public static CharParseResult parseNextChar(String s, int startIndex, int endIndex, boolean isStringLiteral) {
 		int offset = startIndex;
 		if (offset + 1 > endIndex) {
-			return CharParseResult.createInvalid(startIndex, endIndex);
+			return new CharParseResult.Invalid(startIndex, endIndex);
 		}
 
 		int firstCodePoint = s.codePointAt(offset);
 		if (firstCodePoint != '\\') {
 			offset += Character.charCount(firstCodePoint);
-			return CharParseResult.createCodePoint(firstCodePoint, startIndex, offset);
+			return new CharParseResult.CodePoint(firstCodePoint, startIndex, offset);
 		}
 
 		// Move past backslash
 		offset++;
 		if (offset + 1 > endIndex) {
-			return CharParseResult.createInvalid(startIndex, endIndex);
+			return new CharParseResult.Invalid(startIndex, endIndex);
 		}
 		int escaped = s.codePointAt(offset);
 		// Move past escaped code point
@@ -96,7 +96,7 @@ public final class GrammarLiteralParser {
 		if (escaped == 'u') {
 			// \\u{1} is the shortest we support
 			if (offset + 3 > endIndex) {
-				return CharParseResult.createInvalid(startIndex, endIndex);
+				return new CharParseResult.Invalid(startIndex, endIndex);
 			}
 			int hexStartOffset;
 			int hexEndOffset; // appears to be exclusive
@@ -104,13 +104,13 @@ public final class GrammarLiteralParser {
 				hexStartOffset = offset + 1;
 				hexEndOffset = s.indexOf('}', hexStartOffset);
 				if (hexEndOffset == -1 || hexEndOffset >= endIndex) {
-					return CharParseResult.createInvalid(startIndex, endIndex);
+					return new CharParseResult.Invalid(startIndex, endIndex);
 				}
 				offset = hexEndOffset + 1;
 			}
 			else {
 				if (offset + 4 > endIndex) {
-					return CharParseResult.createInvalid(startIndex, endIndex);
+					return new CharParseResult.Invalid(startIndex, endIndex);
 				}
 				hexStartOffset = offset;
 				hexEndOffset = offset + 4;
@@ -118,33 +118,33 @@ public final class GrammarLiteralParser {
 			}
 			int codePointValue = parseHexValue(s, hexStartOffset, hexEndOffset);
 			if (codePointValue == -1 || codePointValue > Character.MAX_CODE_POINT) {
-				return CharParseResult.createInvalid(startIndex, Math.min(startIndex + 6, endIndex));
+				return new CharParseResult.Invalid(startIndex, Math.min(startIndex + 6, endIndex));
 			}
-			return CharParseResult.createCodePoint(codePointValue, startIndex, offset);
+			return new CharParseResult.CodePoint(codePointValue, startIndex, offset);
 		}
-		else if (escaped == 'p' || escaped == 'P') {
+		else if (!isStringLiteral && (escaped == 'p' || escaped == 'P')) { // properties are only allowed in char sets
 			// \p{L} is the shortest we support
 			if (offset + 3 > endIndex) {
-				return CharParseResult.createInvalid(startIndex, endIndex);
+				return new CharParseResult.Invalid(startIndex, endIndex);
 			}
 			if (s.codePointAt(offset) != '{') {
-				return CharParseResult.createInvalid(startIndex, offset);
+				return new CharParseResult.Invalid(startIndex, offset);
 			}
 			int openBraceOffset = offset;
 			int closeBraceOffset = s.indexOf('}', openBraceOffset);
 			if (closeBraceOffset == -1 || closeBraceOffset >= endIndex) {
-				return CharParseResult.createInvalid(startIndex, endIndex);
+				return new CharParseResult.Invalid(startIndex, endIndex);
 			}
 			String propertyName = s.substring(openBraceOffset + 1, closeBraceOffset);
 			IntervalSet propertyIntervalSet = UnicodeData.getPropertyCodePoints(propertyName);
 			offset = closeBraceOffset + 1;
 			if (propertyIntervalSet == null || propertyIntervalSet.isNil()) {
-				return CharParseResult.createInvalid(startIndex, offset);
+				return new CharParseResult.Invalid(startIndex, offset);
 			}
 			if (escaped == 'P') {
 				propertyIntervalSet = propertyIntervalSet.complement(IntervalSet.COMPLETE_CHAR_SET);
 			}
-			return CharParseResult.createProperty(propertyIntervalSet, startIndex, offset);
+			return new CharParseResult.Property(propertyIntervalSet, startIndex, offset);
 		}
 		else {
 			Character codePoint = CharSupport.EscapedCharValue.get((char) escaped);
@@ -161,10 +161,10 @@ public final class GrammarLiteralParser {
 					codePoint = (char) escaped;
 				}
 				else {
-					return CharParseResult.createInvalid(startIndex, offset);
+					return new CharParseResult.Invalid(startIndex, offset);
 				}
 			}
-			return CharParseResult.createCodePoint(codePoint, startIndex, offset);
+			return new CharParseResult.CodePoint(codePoint, startIndex, offset);
 		}
 	}
 

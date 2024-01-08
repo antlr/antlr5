@@ -246,17 +246,6 @@ public class ParserATNFactory implements ATNFactory {
 		return tokenRef((TerminalAST)a);
 	}
 
-	protected int getTokenType(GrammarAST atom) {
-		int ttype;
-		if ( g.isLexer() ) {
-			ttype = GrammarLiteralParser.parseCharFromStringLiteral(atom.getText()).codePoint;
-		}
-		else {
-			ttype = g.getTokenType(atom.getText());
-		}
-		return ttype;
-	}
-
 	/** For a non-lexer, just build a simple token reference atom. */
 
 	@Override

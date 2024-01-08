@@ -11,16 +11,15 @@ import org.antlr.v5.misc.CharParseResult;
 import org.antlr.v5.runtime.misc.IntervalSet;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGrammarLiteralParser {
 	@Test
 	public void testParseCharValueFromGrammarStringLiteral() {
-		assertEquals(-1, GrammarLiteralParser.parseCharFromStringLiteral(null).codePoint);
-		assertEquals(-1, GrammarLiteralParser.parseCharFromStringLiteral("").codePoint);
-		assertEquals(-1, GrammarLiteralParser.parseCharFromStringLiteral("b").codePoint);
-		assertEquals(111, GrammarLiteralParser.parseCharFromStringLiteral("'o'").codePoint);
+		assertInstanceOf(CharParseResult.Invalid.class, GrammarLiteralParser.parseCharFromStringLiteral(null));
+		assertInstanceOf(CharParseResult.Invalid.class, GrammarLiteralParser.parseCharFromStringLiteral(""));
+		assertInstanceOf(CharParseResult.Invalid.class, GrammarLiteralParser.parseCharFromStringLiteral("b"));
+		assertEquals(111, ((CharParseResult.CodePoint)GrammarLiteralParser.parseCharFromStringLiteral("'o'")).codePoint);
 	}
 
 	@Test
@@ -69,95 +68,96 @@ public class TestGrammarLiteralParser {
 
 	@Test
 	public void testParseEmpty() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral(""));
 	}
 
 	@Test
 	public void testParseJustBackslash() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\"));
 	}
 
 	@Test
 	public void testParseInvalidEscape() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\z").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\z"));
 	}
 
 	@Test
 	public void testParseNewline() {
-		assertEquals(CharParseResult.createCodePoint( '\n', 0,2), parseCharInSetLiteral("\\n"));
+		assertEquals(new CharParseResult.CodePoint('\n', 0,2), parseCharInSetLiteral("\\n"));
 	}
 
 	@Test
 	public void testParseTab() {
-		assertEquals(CharParseResult.createCodePoint('\t', 0,2), parseCharInSetLiteral("\\t"));
+		assertEquals(new CharParseResult.CodePoint('\t', 0,2), parseCharInSetLiteral("\\t"));
 	}
 
 	@Test
 	public void testParseUnicodeTooShort() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\uABC").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\uABC"));
 	}
 
 	@Test
 	public void testParseUnicodeBMP() {
-		assertEquals(CharParseResult.createCodePoint(0xABCD, 0,6), parseCharInSetLiteral("\\uABCD"));
+		assertEquals(new CharParseResult.CodePoint(0xABCD, 0,6), parseCharInSetLiteral("\\uABCD"));
 	}
 
 	@Test
 	public void testParseUnicodeSMPTooShort() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\u{}").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\u{}"));
 	}
 
 	@Test
 	public void testParseUnicodeSMPMissingCloseBrace() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\u{12345").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\u{12345"));
 	}
 
 	@Test
 	public void testParseUnicodeTooBig() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\u{110000}").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\u{110000}"));
 	}
 
 	@Test
 	public void testParseUnicodeSMP() {
-		assertEquals(CharParseResult.createCodePoint(0x10ABCD, 0, 10), parseCharInSetLiteral("\\u{10ABCD}"));
+		assertEquals(new CharParseResult.CodePoint(0x10ABCD, 0, 10), parseCharInSetLiteral("\\u{10ABCD}"));
 	}
 
 	@Test
 	public void testParseUnicodePropertyTooShort() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\p{}").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\p{}"));
 	}
 
 	@Test
 	public void testParseUnicodePropertyMissingCloseBrace() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\p{1234").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\p{1234"));
 	}
 
 	@Test
 	public void testParseUnicodeProperty() {
 		assertEquals(
-				CharParseResult.createProperty(IntervalSet.of(66560, 66639), 0, 11),
+				new CharParseResult.Property(IntervalSet.of(66560, 66639), 0, 11),
 				parseCharInSetLiteral("\\p{Deseret}"));
 	}
 
 	@Test
 	public void testParseUnicodePropertyInvertedTooShort() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\P{}").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\P{}"));
 	}
 
 	@Test
 	public void testParseUnicodePropertyInvertedMissingCloseBrace() {
-		assertEquals(CharParseResult.Type.INVALID, parseCharInSetLiteral("\\P{Deseret").type);
+		assertInstanceOf(CharParseResult.Invalid.class, parseCharInSetLiteral("\\P{Deseret"));
 	}
 
 	@Test
 	public void testParseUnicodePropertyInverted() {
 		IntervalSet expected = IntervalSet.of(0, 66559);
 		expected.add(66640, Character.MAX_CODE_POINT);
-		assertEquals(CharParseResult.createProperty(expected, 0, 11), parseCharInSetLiteral("\\P{Deseret}"));
+		assertEquals(new CharParseResult.Property(expected, 0, 11), parseCharInSetLiteral("\\P{Deseret}"));
 	}
 
 	private int parseUnquotedChar(String s, boolean isStringLiteral) {
-		return GrammarLiteralParser.parseChar(s, isStringLiteral, false).codePoint;
+		CharParseResult result = GrammarLiteralParser.parseChar(s, isStringLiteral, false);
+		return result instanceof CharParseResult.CodePoint ? ((CharParseResult.CodePoint)result).codePoint : -1;
 	}
 
 	private CharParseResult parseCharInSetLiteral(String s) {
