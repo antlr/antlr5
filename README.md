@@ -10,6 +10,7 @@
 [![MacOSX, Windows, Linux](https://github.com/antlr/antlr5/actions/workflows/hosted.yml/badge.svg)](https://github.com/antlr/antlr5/actions/workflows/hosted.yml) (github actions)
 
 ## v5 vs v4
+
 ANTLR 4 supports 10 target languages, and each of them requires a dedicated full runtime.
 With the advent of [WebAssembly](https://webassembly.org), there is an opportunity to have just 1 runtime, that will run faster with language hosts such as JavaScript or Python.
 ANTLR 5 is primarily about that: switching to WebAssembly.
@@ -26,10 +27,10 @@ The default branch for this repo is [`main`](https://github.com/antlr/antlr5/tre
 
 ## Authors and major contributors
 We're only providing here the list of ANTLR 5 contributors. ANTLR 5 is largely based on ANTLR 4. See [ANTLR 4](https://github.com/antlr/antlr4) for the list of ANTLR 4 contributors, and they are recognized as silent ANTLR 5 authors.
+
 * [Terence Parr](http://www.cs.usfca.edu/~parrt/), parrt@cs.usfca.edu
 ANTLR project lead and supreme dictator for life
-* [Eric Vergnaud](https://github.com/ericvergnaud) 
-ANTLR 5 project lead
+* [Eric Vergnaud](https://github.com/ericvergnaud) ANTLR 5 project lead
 * [Ivan Kochurkin](https://github.com/KvanTTT) major contributor
 * [Ken Domino](https://github.com/kaby76) major contributor
 * [Jim Idle](https://github.com/jimidle) major contributor
@@ -60,6 +61,7 @@ You can buy the book [The Definitive ANTLR 4 Reference](http://amzn.com/19343569
 You will find the [Book source code](http://pragprog.com/titles/tpantlr2/source_code) useful.
 
 ## Additional grammars
+
 [This repository](https://github.com/antlr/grammars-v5) is a collection of grammars verified with ANTLR 5 where the
 root directory name is the all-lowercase name of the language parsed
 by the grammar. For example, java, cpp, csharp, c, etc...
