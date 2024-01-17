@@ -66,7 +66,7 @@ You can also label the tags with identifiers. If the label is the name of a pars
 
 You can use the parse tree pattern compiler to create parse trees for partial input fragments. Just use method `ParseTreePattern.getPatternTree()`.
 
-See [TestParseTreeMatch.java](https://github.com/antlr/antlr4/blob/master/tool-testsuite/test/org/antlr/v4/test/tool/TestParseTreeMatcher.java).
+See [TestParseTreeMatch.java](https://github.com/antlr/antlr5/blob/main/tool-testsuite/test/org/antlr/v4/test/tool/TestParseTreeMatcher.java).
 
 ## Using XPath to identify parse tree node sets
 
@@ -144,4 +144,4 @@ List<ParseTreeMatch> matches = p.findAll(tree, xpath);
 System.out.println(matches);
 ```
 
-See [TestXPath.java](https://github.com/antlr/antlr4/blob/master/tool-testsuite/test/org/antlr/v4/test/tool/TestXPath.java).
+See [TestXPath.java](https://github.com/antlr/antlr5/blob/main/tool-testsuite/test/org/antlr/v4/test/tool/TestXPath.java).

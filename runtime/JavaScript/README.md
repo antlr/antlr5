@@ -8,7 +8,7 @@ This runtime has been tested in Node.js, Safari, Firefox, Chrome and IE.
 
 See www.antlr.org for more information on ANTLR
 
-See [Javascript Target](https://github.com/antlr/antlr4/blob/master/doc/javascript-target.md)
+See [Javascript Target](https://github.com/antlr/antlr5/blob/main/doc/javascript-target.md)
 for more information on using ANTLR in JavaScript
 
 This runtime requires node version >= 14, the first version to officially support ES semantics.

@@ -155,7 +155,7 @@ Edit the pom.xml file. Now we need to extensively modify the pom.xml file. The f
         </configuration>
       </plugin>
       <!-- Plugin to compile the g4 files ahead of the java files
-           See https://github.com/antlr/antlr4/blob/master/antlr4-maven-plugin/src/site/apt/examples/simple.apt.vm
+           See https://github.com/antlr/antlr5/blob/main/antlr4-maven-plugin/src/site/apt/examples/simple.apt.vm
            Except that the grammar does not need to contain the package declaration as stated in the documentation (I do not know why)
            To use this plugin, type:
              mvn antlr4:antlr4

@@ -93,10 +93,10 @@ Copyright (c) 2012-2023 The ANTLR Project. All rights reserved.
 Use of this file is governed by the BSD 3-clause license, which can be found in the [LICENSE.txt] file in the project root.
 
 [target languages]: https://github.com/antlr/antlr4/tree/master/runtime
-[LICENSE.txt]: https://github.com/antlr/antlr4/blob/master/LICENSE.txt
-[ANTLR docs]: https://github.com/antlr/antlr4/blob/master/doc/index.md
+[LICENSE.txt]: https://github.com/antlr/antlr5/blob/main/LICENSE.txt
+[ANTLR docs]: https://github.com/antlr/antlr5/blob/main/doc/index.md
 [new repo]: https://github.com/antlr4-go/antlr
 [Jim Idle]: https://github.com/jimidle
-[Go runtime docs]: https://github.com/antlr/antlr4/blob/master/doc/go-target.md
+[Go runtime docs]: https://github.com/antlr/antlr5/blob/main/doc/go-target.md
 */
 package antlr

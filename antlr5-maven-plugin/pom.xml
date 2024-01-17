@@ -7,13 +7,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.antlr</groupId>
-    <artifactId>antlr4-master</artifactId>
-    <version>4.13.2-SNAPSHOT</version>
+    <artifactId>antlr5-master</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>antlr4-maven-plugin</artifactId>
+  <artifactId>antlr5-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>ANTLR 4 Maven plugin</name>
-  <description>Maven plugin for ANTLR 4 grammars</description>
+  <name>ANTLR 5 Maven plugin</name>
+  <description>Maven plugin for ANTLR 5 grammars</description>
 
   <!-- Ancillary information for completeness -->
   <inceptionYear>2009</inceptionYear>
@@ -52,7 +52,7 @@
       than -1 -2 -3 etc patch releases. -->
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr4</artifactId>
+      <artifactId>antlr5</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- Testing requirements... -->

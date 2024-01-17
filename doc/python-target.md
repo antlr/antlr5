@@ -58,7 +58,7 @@ and the Antlr Python3 runtime match.
 E.g., 4.13.0. Using build files will help
 eliminate common errors from happening._
 
-_For a list of antlr4 tool options, please visit [ANTLR Tool Command Line Options](https://github.com/antlr/antlr4/blob/master/doc/tool-options.md)._
+_For a list of antlr4 tool options, please visit [ANTLR Tool Command Line Options](https://github.com/antlr/antlr5/blob/main/doc/tool-options.md)._
 * Input, e.g., input.txt:
     ```
     -(1 + 2)/3;

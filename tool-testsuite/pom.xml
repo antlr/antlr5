@@ -9,12 +9,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.antlr</groupId>
-    <artifactId>antlr4-master</artifactId>
-    <version>4.13.2-SNAPSHOT</version>
+    <artifactId>antlr5-master</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>antlr4-tool-testsuite</artifactId>
-  <name>ANTLR 4 Tool Tests</name>
-  <description>A collection of tests for ANTLR 4 Runtime libraries.</description>
+  <artifactId>antlr5-tool-testsuite</artifactId>
+  <name>ANTLR 5 Tool Tests</name>
+  <description>A collection of tests for ANTLR 5 Tool.</description>
 
     <prerequisites>
         <maven>3.8</maven>
@@ -35,14 +35,14 @@
     </dependency>
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr4-runtime-testsuite</artifactId>
+      <artifactId>antlr5-runtime-testsuite</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr4</artifactId>
+      <artifactId>antlr5</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
