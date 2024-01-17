@@ -137,3 +137,5 @@ runtime/Cpp/runtime/libantlr4-runtime.dylib
 
 # Go test and performance trace files
 **/*.pprof
+runtime-testsuite/gen
+tool-testsuite/gen

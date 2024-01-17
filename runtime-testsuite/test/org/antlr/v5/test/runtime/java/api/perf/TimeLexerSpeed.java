@@ -166,8 +166,8 @@ Warming up Java compiler....
  *  @since 4.7
  */
 public class TimeLexerSpeed { // don't call it Test else it'll run during "mvn test"
-	public static final String Parser_java_file = "Java/src/org/antlr/v4/runtime/Parser.java";
-	public static final String RuleContext_java_file = "Java/src/org/antlr/v4/runtime/RuleContext.java";
+	public static final String Parser_java_file = "Java/src/org/antlr/v5/runtime/Parser.java";
+	public static final String RuleContext_java_file = "Java/src/org/antlr/v5/runtime/RuleContext.java";
 	public static final String PerfDir = "org/antlr/v5/test/runtime/java/api/perf";
 
 	public boolean output = true;
