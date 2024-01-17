@@ -27,6 +27,7 @@ The default branch for this repo is [`main`](https://github.com/antlr/antlr5/tre
 
 ## Authors and major contributors
 We're only providing here the list of ANTLR 5 contributors. ANTLR 5 is largely based on ANTLR 4. See [ANTLR 4](https://github.com/antlr/antlr4) for the list of ANTLR 4 contributors, and they are recognized as silent ANTLR 5 authors.
+
 * [Terence Parr](http://www.cs.usfca.edu/~parrt/), parrt@cs.usfca.edu
 ANTLR project lead and supreme dictator for life
 * [Eric Vergnaud](https://github.com/ericvergnaud) 
