@@ -1,4 +1,4 @@
-# Contributing to ANTLR 4
+# Contributing to ANTLR 5
 
 1. [Fork](https://help.github.com/articles/fork-a-repo) the [antlr/antlr5 repo](https://github.com/antlr/antlr5), which will give you both key branches, `main` and `dev`
 2. Make sure to `git checkout dev` in your fork so that you are working from the latest development branch

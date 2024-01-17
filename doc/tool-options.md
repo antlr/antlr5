@@ -178,7 +178,7 @@ All output goes into `-o` dir regardless of paths/package.
 
 Here is the existing 4.7 functionality.
 
-(For these examples, assume a4.7 and a4.7.1 are aliases to the right version of ANTLR's `org.antlr.v4.Tool`.)
+(For these examples, assume a4.7 and a4.7.1 are aliases to the right version of ANTLR's `org.antlr.v5.Tool`.)
 
 ```bash
 $ cd /tmp/parrt
