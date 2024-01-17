@@ -144,4 +144,4 @@ List<ParseTreeMatch> matches = p.findAll(tree, xpath);
 System.out.println(matches);
 ```
 
-See [TestXPath.java](https://github.com/antlr/antlr5/blob/main/tool-testsuite/test/org/antlr/v4/test/tool/TestXPath.java).
+See [TestXPath.java](../tool-testsuite/test/org/antlr/v4/test/tool/TestXPath.java).
