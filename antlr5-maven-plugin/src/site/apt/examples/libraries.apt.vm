@@ -26,14 +26,14 @@ Libraries
 +--
 <plugin>
     <groupId>org.antlr</groupId>
-    <artifactId>antlr4-maven-plugin</artifactId>
+    <artifactId>antlr5-maven-plugin</artifactId>
     <version>${project.version}</version>
 
     <executions>
         <execution>
             <configuration>
                 <goals>
-                    <goal>antlr4</goal>
+                    <goal>antlr5</goal>
                 </goals>
                 <libDirectory>src/main/antlr4_imports</libDirectory>
             </configuration>

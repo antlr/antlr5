@@ -16,7 +16,7 @@ public final class StarLoopEntryState: DecisionState {
     /// and stored for use in _org.antlr.v4.runtime.atn.ParserATNSimulator_ and
     /// _org.antlr.v4.runtime.ParserInterpreter_.
     /// 
-    /// - seealso: org.antlr.v4.runtime.dfa.DFA#isPrecedenceDfa()
+    /// - seealso: org.antlr.v5.runtime.dfa.DFA#isPrecedenceDfa()
     /// 
     public var precedenceRuleDecision: Bool = false
 

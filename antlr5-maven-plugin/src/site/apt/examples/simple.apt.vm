@@ -7,12 +7,12 @@ Simple configuration
 <plugins>
 <plugin>
     <groupId>org.antlr</groupId>
-    <artifactId>antlr4-maven-plugin</artifactId>
+    <artifactId>antlr5-maven-plugin</artifactId>
     <version>${project.version}</version>
     <executions>
         <execution>
             <goals>
-                <goal>antlr4</goal>
+                <goal>antlr5</goal>
             </goals>
         </execution>
     </executions>
@@ -21,11 +21,11 @@ Simple configuration
 </plugins>
 +--
 
- When the <<<mvn>>> command is executed all grammar files under <<<src/main/antlr4>>>, except any
- import grammars under <<<src/main/antlr4/imports>>> will be analyzed and converted to
- Java source code in the output directory <<<target/generated-sources/antlr4>>>.
+ When the <<<mvn>>> command is executed all grammar files under <<<src/main/antlr5>>>, except any
+ import grammars under <<<src/main/antlr5/imports>>> will be analyzed and converted to
+ Java source code in the output directory <<<target/generated-sources/antlr5>>>.
 
- Your input files under <<<antlr4>>> should be stored in sub directories that
+ Your input files under <<<antlr5>>> should be stored in sub directories that
  reflect the package structure of your java parsers. If your grammar file <<<parser.g4>>> contains:
 
 +---
@@ -34,7 +34,7 @@ package org.jimi.themuss;
 }
 +---
 
- Then the <<<.g4>>> file should be stored in: <<<src/main/antlr4/org/jimi/themuss/parser.g4>>>. This way
+ Then the <<<.g4>>> file should be stored in: <<<src/main/antlr5/org/jimi/themuss/parser.g4>>>. This way
  the generated <<<.java>>> files will correctly reflect the package structure in which they will
  finally rest as classes.
 

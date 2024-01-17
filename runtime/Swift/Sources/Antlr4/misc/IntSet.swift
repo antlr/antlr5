@@ -8,7 +8,7 @@
 /// 
 /// A generic set of integers.
 /// 
-/// - seealso: org.antlr.v4.runtime.misc.IntervalSet
+/// - seealso: org.antlr.v5.runtime.misc.IntervalSet
 /// 
 
 public protocol IntSet {
@@ -67,7 +67,7 @@ public protocol IntSet {
     /// present in the current set, the specified set `a`, or both.
     /// 
     /// 
-    /// This method is similar to _#addAll(org.antlr.v4.runtime.misc.IntSet)_, but returns a new
+    /// This method is similar to _#addAll(org.antlr.v5.runtime.misc.IntSet)_, but returns a new
     /// _org.antlr.v4.runtime.misc.IntSet_ instance instead of modifying the current set.
     /// 
     /// - parameter a: The set to union with the current set. A `null` argument

@@ -169,7 +169,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <basedir>${project.build.directory}/generated-sources/antlr3/org/antlr/v4</basedir>
+                    <basedir>${project.build.directory}/generated-sources/antlr3/org/antlr/v5</basedir>
                     <includes>
                         <include>parse/*.java</include>
                         <include>codegen/*.java</include>
@@ -202,13 +202,13 @@
 				<configuration>
 					<templates>
 						<template>
-							<directory>${basedir}/resources/org/antlr/v4/tool/templates</directory>
+							<directory>${basedir}/resources/org/antlr/v5/tool/templates</directory>
 							<name>unicodedata</name>
-							<target>${basedir}/target/generated-sources/tool/src/org/antlr/v4/unicode/UnicodeData.java</target>
+							<target>${basedir}/target/generated-sources/tool/src/org/antlr/v5/unicode/UnicodeData.java</target>
 							<controller>
-								<className>org.antlr.v4.unicode.UnicodeDataTemplateController</className>
-								<sourceVersion>11</sourceVersion>
-								<targetVersion>11</targetVersion>
+								<className>org.antlr.v5.unicode.UnicodeDataTemplateController</className>
+								<sourceVersion>21</sourceVersion>
+								<targetVersion>21</targetVersion>
 								<method>getProperties</method>
 							</controller>
 						</template>
