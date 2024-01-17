@@ -10,6 +10,7 @@
 [![MacOSX, Windows, Linux](https://github.com/antlr/antlr5/actions/workflows/hosted.yml/badge.svg)](https://github.com/antlr/antlr5/actions/workflows/hosted.yml) (github actions)
 
 ## v5 vs v4
+
 ANTLR 4 supports 10 target languages, and each of them requires a dedicated full runtime.
 With the advent of [WebAssembly](https://webassembly.org), there is an opportunity to have just 1 runtime, that will run faster with language hosts such as JavaScript or Python.
 ANTLR 5 is primarily about that: switching to WebAssembly.
