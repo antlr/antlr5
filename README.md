@@ -30,8 +30,7 @@ We're only providing here the list of ANTLR 5 contributors. ANTLR 5 is largely b
 
 * [Terence Parr](http://www.cs.usfca.edu/~parrt/), parrt@cs.usfca.edu
 ANTLR project lead and supreme dictator for life
-* [Eric Vergnaud](https://github.com/ericvergnaud) 
-ANTLR 5 project lead
+* [Eric Vergnaud](https://github.com/ericvergnaud) ANTLR 5 project lead
 * [Ivan Kochurkin](https://github.com/KvanTTT) major contributor
 * [Ken Domino](https://github.com/kaby76) major contributor
 * [Jim Idle](https://github.com/jimidle) major contributor
