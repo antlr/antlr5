@@ -10,7 +10,7 @@
 /// This class represents profiling event information for semantic predicate
 /// evaluations which occur during prediction.
 /// 
-/// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#evalSemanticContext
+/// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#evalSemanticContext
 /// 
 /// -  4.3
 /// 
@@ -51,8 +51,8 @@ public class PredicateEvalInfo: DecisionEventInfo {
     /// evaluated during LL prediction; otherwise, `false` if the semantic
     /// context was evaluated during SLL prediction
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#evalSemanticContext(org.antlr.v4.runtime.atn.SemanticContext, org.antlr.v4.runtime.ParserRuleContext, int, boolean)
-    /// - seealso: org.antlr.v4.runtime.atn.SemanticContext#eval(org.antlr.v4.runtime.Recognizer, org.antlr.v4.runtime.RuleContext)
+    /// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#evalSemanticContext(org.antlr.v5.runtime.atn.SemanticContext, org.antlr.v5.runtime.ParserRuleContext, int, boolean)
+    /// - seealso: org.antlr.v5.runtime.atn.SemanticContext#eval(org.antlr.v5.runtime.Recognizer, org.antlr.v5.runtime.RuleContext)
     /// 
     public init(_ decision: Int,
                 _ input: TokenStream,

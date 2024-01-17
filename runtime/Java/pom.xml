@@ -8,13 +8,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.antlr</groupId>
-		<artifactId>antlr4-master</artifactId>
-		<version>4.13.2-SNAPSHOT</version>
+		<artifactId>antlr5-master</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-	<artifactId>antlr4-runtime</artifactId>
-	<name>ANTLR 4 Runtime</name>
-	<description>The ANTLR 4 Runtime</description>
+	<artifactId>antlr5-runtime</artifactId>
+	<name>ANTLR 5 Runtime</name>
+	<description>The ANTLR 5 Runtime</description>
 
     <prerequisites>
         <maven>3.8</maven>
@@ -83,9 +83,9 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<instructions>
-								<Automatic-Module-Name>org.antlr.antlr4.runtime</Automatic-Module-Name>
-								<Bundle-SymbolicName>org.antlr.antlr4-runtime</Bundle-SymbolicName>
-								<Import-Package>org.antlr.v4.gui;resolution:=optional, *</Import-Package>
+								<Automatic-Module-Name>org.antlr.antlr5.runtime</Automatic-Module-Name>
+								<Bundle-SymbolicName>org.antlr.antlr5-runtime</Bundle-SymbolicName>
+								<Import-Package>org.antlr.v5.gui;resolution:=optional, *</Import-Package>
 							</instructions>
 						</configuration>
 						<goals>
@@ -111,9 +111,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<release>8</release>
-					<source>1.8</source>
-					<target>1.8</target>
+                    <release>21</release>
+					<source>21</source>
+					<target>21</target>
 				</configuration>
 			</plugin>
 		</plugins>

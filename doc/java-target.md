@@ -98,9 +98,10 @@ Edit the ArrayInit.java file. We need to add a package declaration and to rename
 
 ```java
 package org.abcd.examples.ArrayInit;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
- 
+
+import org.antlr.v5.runtime.*;
+import org.antlr.v5.runtime.tree.*;
+
 public class ArrayInit {
 ...
 ```
@@ -155,7 +156,7 @@ Edit the pom.xml file. Now we need to extensively modify the pom.xml file. The f
         </configuration>
       </plugin>
       <!-- Plugin to compile the g4 files ahead of the java files
-           See https://github.com/antlr/antlr4/blob/master/antlr4-maven-plugin/src/site/apt/examples/simple.apt.vm
+           See https://github.com/antlr/antlr5/blob/main/antlr4-maven-plugin/src/site/apt/examples/simple.apt.vm
            Except that the grammar does not need to contain the package declaration as stated in the documentation (I do not know why)
            To use this plugin, type:
              mvn antlr4:antlr4

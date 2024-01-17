@@ -77,7 +77,7 @@ public protocol ANTLRErrorStrategy {
     /// For an implementation based on Jim Idle's "magic sync" mechanism, see
     /// _org.antlr.v4.runtime.DefaultErrorStrategy#sync_.
     /// 
-    /// - seealso: org.antlr.v4.runtime.DefaultErrorStrategy#sync
+    /// - seealso: org.antlr.v5.runtime.DefaultErrorStrategy#sync
     /// 
     /// - parameter recognizer: the parser instance
     /// - throws: _RecognitionException_ if an error is detected by the error

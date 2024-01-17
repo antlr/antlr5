@@ -42,7 +42,7 @@ public protocol Token: AnyObject, CustomStringConvertible {
     /// assigned to the predefined channels _#DEFAULT_CHANNEL_ and
     /// _#HIDDEN_CHANNEL_.
     /// 
-    /// - SeeAlso: org.antlr.v4.runtime.Token#getChannel()
+    /// - SeeAlso: org.antlr.v5.runtime.Token#getChannel()
     /// 
     //let MIN_USER_CHANNEL_VALUE : Int = 2;
 

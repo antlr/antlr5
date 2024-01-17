@@ -12,12 +12,12 @@
 		<version>9</version>
 	</parent>
 	<groupId>org.antlr</groupId>
-	<artifactId>antlr4-master</artifactId>
-	<version>4.13.2-SNAPSHOT</version>
+	<artifactId>antlr5-master</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>ANTLR 4</name>
-	<description>ANTLR 4 Master Build POM</description>
+	<name>ANTLR 5</name>
+	<description>ANTLR 5 Master Build POM</description>
 	<url>https://www.antlr.org/</url>
 	<inceptionYear>1992</inceptionYear>
 	<organization>
@@ -46,22 +46,10 @@
 			</roles>
 		</developer>
 		<developer>
-			<name>Sam Harwell</name>
-			<url>http://tunnelvisionlabs.com</url>
-			<roles>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
 			<name>Eric Vergnaud</name>
+            <url>https://github.com/ericvergnaud</url>
 			<roles>
-				<role>Developer - JavaScript, C#, Python 2, Python 3</role>
-			</roles>
-		</developer>
-		<developer>
-			<name>Peter Boyer</name>
-			<roles>
-				<role>Developer - Go</role>
+				<role>Project lead - ANTLR 5</role>
 			</roles>
 		</developer>
 		<developer>
@@ -69,18 +57,19 @@
 			<email>jimi@idle.ws</email>
 			<url>https://www.linkedin.com/in/jimidle/</url>
 			<roles>
-				<role>Developer - Maven Plugin</role>
-				<role>Developer - Go runtime</role>
+				<role>Developer</role>
 			</roles>
 		</developer>
 		<developer>
-			<name>Mike Lischke</name>
+			<name>Ivan Kochurkin</name>
+            <url>https://github.com/kvanttt</url>
 			<roles>
-				<role>Developer - C++ Target</role>
+				<role>Developer</role>
 			</roles>
 		</developer>
 		<developer>
-			<name>Tom Everett</name>
+			<name>Ken Domino</name>
+            <url>https://github.com/kaby76</url>
 			<roles>
 				<role>Developer</role>
 			</roles>
@@ -90,7 +79,7 @@
 	<modules>
 		<module>runtime/Java</module>
 		<module>tool</module>
-		<module>antlr4-maven-plugin</module>
+		<module>antlr5-maven-plugin</module>
 		<module>tool-testsuite</module>
 		<module>runtime-testsuite</module>
 	</modules>
@@ -113,14 +102,14 @@
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/antlr/antlr4/issues</url>
+		<url>https://github.com/antlr/antlr5/issues</url>
 	</issueManagement>
 
 	<scm>
-        <url>https://github.com/antlr/antlr4/tree/master</url>
-		<connection>scm:git:git://github.com/antlr/antlr4.git</connection>
-		<developerConnection>scm:git:git@github.com:antlr/antlr4.git</developerConnection>
-		<tag>4.13.0</tag>
+        <url>https://github.com/antlr/antlr5/tree/main</url>
+		<connection>scm:git:git://github.com/antlr/antlr5.git</connection>
+		<developerConnection>scm:git:git@github.com:antlr/antlr5.git</developerConnection>
+		<tag>0.0.1</tag>
 	</scm>
 
 	<build>
