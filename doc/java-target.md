@@ -98,9 +98,10 @@ Edit the ArrayInit.java file. We need to add a package declaration and to rename
 
 ```java
 package org.abcd.examples.ArrayInit;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
- 
+
+import org.antlr.v5.runtime.*;
+import org.antlr.v5.runtime.tree.*;
+
 public class ArrayInit {
 ...
 ```

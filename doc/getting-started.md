@@ -156,8 +156,8 @@ It's also a good idea to put this in your `.bash_profile` or whatever your start
 
 3. Create aliases for the ANTLR Tool, and `TestRig`.
 ```
-$ alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
-$ alias grun='java -Xmx500M -cp "/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v4.gui.TestRig'
+$ alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v5.Tool'
+$ alias grun='java -Xmx500M -cp "/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v5.gui.TestRig'
 ```
 
 ### WINDOWS
@@ -176,27 +176,27 @@ SET CLASSPATH=.;C:\Javalib\antlr-4.13.1-complete.jar;%CLASSPATH%
 3. Create short convenient commands for the ANTLR Tool, and TestRig, using batch files or doskey commands:
   * Batch files (in directory in system PATH) antlr4.bat and grun.bat
 ```
-java org.antlr.v4.Tool %*
+java org.antlr.v5.Tool %*
 ```
 ```
 @ECHO OFF
 SET TEST_CURRENT_DIR=%CLASSPATH:.;=%
 if "%TEST_CURRENT_DIR%" == "%CLASSPATH%" ( SET CLASSPATH=.;%CLASSPATH% )
 @ECHO ON
-java org.antlr.v4.gui.TestRig %*
+java org.antlr.v5.gui.TestRig %*
 ```
   * Or, use doskey commands:
 ```
-doskey antlr4=java org.antlr.v4.Tool $*
-doskey grun =java org.antlr.v4.gui.TestRig $*
+doskey antlr4=java org.antlr.v5.Tool $*
+doskey grun =java org.antlr.v5.gui.TestRig $*
 ```
 
 ### Testing the installation
 
-Either launch org.antlr.v4.Tool directly:
+Either launch org.antlr.v5.Tool directly:
 
 ```
-$ java org.antlr.v4.Tool
+$ java org.antlr.v5.Tool
 ANTLR Parser Generator Version 4.13.1
 -o ___ specify output directory where all output is generated
 -lib ___ specify location of .tokens files
