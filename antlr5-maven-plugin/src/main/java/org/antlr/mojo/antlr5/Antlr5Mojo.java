@@ -240,7 +240,7 @@ public class Antlr5Mojo extends AbstractMojo {
         }
 
 		if (!sourceDirectory.isDirectory()) {
-			log.info("No ANTLR 4 grammars to compile in " + sourceDirectory.getAbsolutePath());
+			log.info("No ANTLR 5 grammars to compile in " + sourceDirectory.getAbsolutePath());
 			return;
 		}
 
@@ -278,7 +278,7 @@ public class Antlr5Mojo extends AbstractMojo {
 				// Create an instance of the ANTLR 4 build tool
 				tool = new CustomTool(args.toArray(new String[0]));
 			} catch (Exception e) {
-				log.error("The attempt to create the ANTLR 4 build tool failed, see exception report for details", e);
+				log.error("The attempt to create the ANTLR 5 build tool failed, see exception report for details", e);
 				throw new MojoFailureException("Error creating an instanceof the ANTLR tool.", e);
 			}
 
@@ -298,7 +298,7 @@ public class Antlr5Mojo extends AbstractMojo {
 			// If any of the grammar files caused errors but did nto throw exceptions
 			// then we should have accumulated errors in the counts
 			if (tool.getNumErrors() > 0) {
-				throw new MojoExecutionException("ANTLR 4 caught " + tool.getNumErrors() + " build errors.");
+				throw new MojoExecutionException("ANTLR 5 caught " + tool.getNumErrors() + " build errors.");
 			}
 		}
 
