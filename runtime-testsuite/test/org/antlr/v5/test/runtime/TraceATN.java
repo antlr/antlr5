@@ -61,7 +61,7 @@ public class TraceATN {
 
 	public TraceATN(String[] args) {
 		if ( args.length < 2 ) {
-			System.err.println("java org.antlr.v4.test.runtime.TraceATN [X.g4|XParser.g4 XLexer.g4] startRuleName\n" +
+			System.err.println("java org.antlr.v5.test.runtime.TraceATN [X.g4|XParser.g4 XLexer.g4] startRuleName\n" +
 					"    [-encoding encodingname] -target (Java|Cpp|...) input-filename");
 			System.err.println("Omitting input-filename makes program read from stdin.");
 			return;
@@ -220,9 +220,9 @@ public class TraceATN {
 	}
 
 	public static RuntimeRunner getRunner(String targetName) throws Exception {
-		Class<?> cl = Class.forName("org.antlr.v4.test.runtime."+
+		Class<?> cl = Class.forName("org.antlr.v5.test.runtime."+
 				targetName.toLowerCase() + "." + targetName + "Runner");
-		return (RuntimeRunner)cl.newInstance();
+		return (RuntimeRunner)cl.getConstructor().newInstance();
 	}
 
 	public static void main(String[] args) throws Exception {

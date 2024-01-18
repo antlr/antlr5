@@ -6,7 +6,6 @@
 
 package org.antlr.v5.test.runtime.java.api.perf;
 
-import org.antlr.v5.runtime.ANTLRFileStream;
 import org.antlr.v5.runtime.ANTLRInputStream;
 import org.antlr.v5.runtime.CharStream;
 import org.antlr.v5.runtime.CharStreams;
@@ -256,7 +255,7 @@ public class TimeLexerSpeed { // don't call it Test else it'll run during "mvn t
 		long start = System.nanoTime();
 		CharStream[] input = new CharStream[n]; // keep refs around so we can average memory
 		for (int i = 0; i<n; i++) {
-			input[i] = new ANTLRFileStream(sampleJavaFile.getFile());
+			input[i] = CharStreams.fromFileName(sampleJavaFile.getFile());
 		}
 		long stop = System.nanoTime();
 		long tus = (stop-start)/1000;
@@ -284,7 +283,7 @@ public class TimeLexerSpeed { // don't call it Test else it'll run during "mvn t
 		long start = System.nanoTime(); // track only time to suck data out of stream
 		for (int i = 0; i<n; i++) {
 			try (InputStream is = streams[i]) {
-				input[i] = new ANTLRInputStream(is);
+				input[i] = CharStreams.fromStream(is);
 			}
 		}
 		long stop = System.nanoTime();
@@ -314,7 +313,7 @@ public class TimeLexerSpeed { // don't call it Test else it'll run during "mvn t
 			try (InputStream is = streams[i];
 			     InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 			     BufferedReader br = new BufferedReader(isr)) {
-				input[i] = new ANTLRInputStream(br);
+				 input[i] = CharStreams.fromReader(br);
 			}
 		}
 		long stop = System.nanoTime();

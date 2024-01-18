@@ -42,11 +42,11 @@ public class JavaRunner extends RuntimeRunner {
 
 	public static final String classPath = System.getProperty("java.class.path");
 
-	public static final String runtimeTestLexerName = "org.antlr.v4.test.runtime.java.helpers.RuntimeTestLexer";
-	public static final String runtimeTestParserName = "org.antlr.v4.test.runtime.java.helpers.RuntimeTestParser";
+	public static final String runtimeTestLexerName = "org.antlr.v5.test.runtime.java.helpers.RuntimeTestLexer";
+	public static final String runtimeTestParserName = "org.antlr.v5.test.runtime.java.helpers.RuntimeTestParser";
 
 	public static final String runtimeHelpersPath = Paths.get(RuntimeTestUtils.runtimeTestsuitePath.toString(),
-		"test", "org", "antlr", "v4", "test", "runtime", "java", "helpers").toString();
+		"test", "org", "antlr", "v5", "test", "runtime", "java", "helpers").toString();
 
 	private static JavaCompiler compiler;
 

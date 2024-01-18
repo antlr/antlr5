@@ -23,9 +23,9 @@ import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestASTStructure {
-	String lexerClassName = "org.antlr.v4.parse.ANTLRLexer";
-	String parserClassName = "org.antlr.v4.parse.ANTLRParser";
-	String  adaptorClassName = "org.antlr.v4.parse.GrammarASTAdaptor";
+	String lexerClassName = "org.antlr.v5.parse.ANTLRLexer";
+	String parserClassName = "org.antlr.v5.parse.ANTLRParser";
+	String  adaptorClassName = "org.antlr.v5.parse.GrammarASTAdaptor";
 
 	public Object execParser(
 	String ruleName,

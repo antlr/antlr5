@@ -5,10 +5,7 @@
  */
 package org.antlr.v5.test.runtime.java.api;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.TokenStreamRewriter;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.misc.Interval;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
@@ -29,7 +26,7 @@ public class TestTokenStreamRewriter {
 											 "A : 'a';\n" +
 											 "B : 'b';\n" +
 											 "C : 'c';\n");
-		LexerInterpreter lexEngine = g.createLexerInterpreter(new ANTLRInputStream("abc"));
+		LexerInterpreter lexEngine = g.createLexerInterpreter(CharStreams.fromString("abc"));
 		CommonTokenStream stream = new CommonTokenStream(lexEngine);
 		stream.fill();
 		TokenStreamRewriter tokens = new TokenStreamRewriter(stream);
@@ -46,7 +43,7 @@ public class TestTokenStreamRewriter {
 											 "B : 'b';\n" +
 											 "C : 'c';\n");
 		String input = "abc";
-		LexerInterpreter lexEngine = g.createLexerInterpreter(new ANTLRInputStream(input));
+		LexerInterpreter lexEngine = g.createLexerInterpreter(CharStreams.fromString(input));
 		CommonTokenStream stream = new CommonTokenStream(lexEngine);
 		stream.fill();
 		TokenStreamRewriter tokens = new TokenStreamRewriter(stream);
