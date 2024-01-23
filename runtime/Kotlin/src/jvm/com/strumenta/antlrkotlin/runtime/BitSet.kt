@@ -5,4 +5,4 @@ package com.strumenta.antlrkotlin.runtime
 
 import java.util.BitSet as JavaBitSet
 
-public actual typealias BitSet = JavaBitSet
+public typealias BitSet = JavaBitSet

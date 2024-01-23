@@ -5,4 +5,4 @@ package com.strumenta.antlrkotlin.runtime
 
 import java.util.WeakHashMap as JavaWeakHashMap
 
-public actual typealias WeakHashMap<K, V> = JavaWeakHashMap<K, V>
+public typealias WeakHashMap<K, V> = JavaWeakHashMap<K, V>

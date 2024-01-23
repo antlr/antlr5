@@ -5,4 +5,4 @@ package com.strumenta.antlrkotlin.runtime
 
 import java.util.IdentityHashMap as JavaIdentityHashMap
 
-public actual typealias IdentityHashMap<K, V> = JavaIdentityHashMap<K, V>
+public typealias IdentityHashMap<K, V> = JavaIdentityHashMap<K, V>

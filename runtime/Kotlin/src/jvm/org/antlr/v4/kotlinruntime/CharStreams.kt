@@ -54,7 +54,7 @@ import java.nio.file.Paths
  *
  * @since 4.7
  */
-public actual object CharStreams : AbstractCharStreams() {
+public object CharStreams : AbstractCharStreams() {
   private const val DEFAULT_BUFFER_SIZE = 8 * 1024
 
   /**
