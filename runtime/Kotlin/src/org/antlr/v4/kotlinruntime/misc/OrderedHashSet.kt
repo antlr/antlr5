@@ -3,7 +3,8 @@
 
 package org.antlr.v4.kotlinruntime.misc
 
-import kotlin.js.JsName
+// TODO: Uncomment when splitting to separated modules is done and KMP is activated
+// import kotlin.js.JsName
 
 /**
  * A HashMap that remembers the order that the elements were added.
@@ -19,7 +20,8 @@ public open class OrderedHashSet<T> private constructor(
   /**
    * Track the elements as they are added to the set.
    */
-  @JsName("myElements")
+  // TODO: Uncomment when splitting to separated modules is done and KMP is activated
+  //@JsName("getLabel")
   protected var elements: ArrayList<T> = ArrayList()
 
   public fun get(i: Int): T =

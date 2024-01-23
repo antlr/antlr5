@@ -4,7 +4,8 @@
 package org.antlr.v4.kotlinruntime.atn
 
 import org.antlr.v4.kotlinruntime.misc.IntervalSet
-import kotlin.js.JsName
+// TODO: Uncomment when splitting to separated modules is done and KMP is activated
+// import kotlin.js.JsName
 import kotlin.reflect.KClass
 
 /**
@@ -79,7 +80,8 @@ public abstract class Transition protected constructor(public var target: ATNSta
   public open val isEpsilon: Boolean =
     false
 
-  @JsName("getLabel")
+  // TODO: Uncomment when splitting to separated modules is done and KMP is activated
+  //@JsName("getLabel")
   public open fun label(): IntervalSet? =
     null
 
