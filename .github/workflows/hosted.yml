@@ -1,4 +1,4 @@
-name: antlr4
+name: antlr5
 
 concurrency:
   group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
@@ -141,7 +141,7 @@ jobs:
       if: always()
       run: |
         cd ${{ github.workspace }}/..
-        tar czfp antlr_${{ matrix.os }}_${{ matrix.compiler }}.tgz --exclude='.git' antlr4
+        tar czfp antlr_${{ matrix.os }}_${{ matrix.compiler }}.tgz --exclude='.git' antlr5
         mv antlr_${{ matrix.os }}_${{ matrix.compiler }}.tgz ${{ github.workspace }}/.
 
     - name: Archive artifacts
@@ -330,7 +330,7 @@ jobs:
       if: always()
       run: |
         cd ${{ github.workspace }}/..
-        tar czfp antlr_${{ matrix.os }}_${{ matrix.target }}.tgz --exclude='.git' antlr4
+        tar czfp antlr_${{ matrix.os }}_${{ matrix.target }}.tgz --exclude='.git' antlr5
         mv antlr_${{ matrix.os }}_${{ matrix.target }}.tgz ${{ github.workspace }}/.
 
     - name: Archive artifacts
