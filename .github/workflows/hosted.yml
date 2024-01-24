@@ -176,6 +176,7 @@ jobs:
           php,
           python3,
           # swift,
+          kotlin,
         ]
         exclude:
           - os: windows-2022
@@ -276,6 +277,12 @@ jobs:
       uses: swift-actions/setup-swift@v1.19.0
       with:
         swift-version: '5.2'
+
+    - name: Setup Kotlin
+      if: matrix.target == 'kotlin'
+      uses: fwilhe2/setup-kotlin@main
+      with:
+        version: '1.9.22'
 
     - name: Use ccache
       if: (startswith(matrix.os, 'macos') || startswith(matrix.os, 'ubuntu')) && (matrix.target == 'cpp')
