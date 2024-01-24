@@ -413,11 +413,11 @@ LeftRecursiveRuleFunction(currentRule, args, code, locals, ruleCtx, altLabelCtxs
 <ruleCtx>
 <altLabelCtxs:{l | <altLabelCtxs.(l)>}; separator="\n">
 
-<if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>public<endif> fun <currentRule.name>(<args; separator=", ">): <currentRule.ctxType> {
-    return <currentRule.name>(0<currentRule.args:{a | , <a.name>}>)
+<if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>public<endif> fun <currentRule.escapedName>(<args; separator=", ">): <currentRule.ctxType> {
+    return <currentRule.escapedName>(0<currentRule.args:{a | , <a.name>}>)
 }
 
-private fun <currentRule.name>(_p: Int<args:{a | , <a>}>): <currentRule.ctxType> {
+private fun <currentRule.escapedName>(_p: Int<args:{a | , <a>}>): <currentRule.ctxType> {
     var _parentctx = context
     var _parentState = state
     var _localctx = <currentRule.ctxType>(context, _parentState<currentRule.args:{a | , <a.name>}>)
@@ -622,11 +622,11 @@ offsetShift(shiftAmount, offset) ::= <%
 
 // produces more efficient bytecode when bits.tokens contains at most two items
 bitsetInlineComparison(s, bits) ::= <%
-<bits.tokens:{t | <s.varName> == <t.name>}; separator=" || ">
+<bits.tokens:{t | <s.varName> == Tokens.<t.name>}; separator=" || ">
 %>
 
 cases(tokens) ::= <<
-<tokens:{t | <t.name>}; separator=", "> -> >>
+<tokens:{t | Tokens.<t.name>}; separator=", "> -> >>
 
 InvokeRule(r, argExprsChunks) ::= <<
 this.state = <r.stateNumber>
@@ -641,10 +641,10 @@ _ctx = <r.escapedName>(<if(r.ast.options.p)><r.ast.options.p><if(argExprsChunks)
 MatchToken(m) ::= <<
 this.state = <m.stateNumber>
 <if(m.labels)>
-_token = match(<m.name>)
+_token = match(Tokens.<m.name>)
 <m.labels:{l | <labelref(l)> = _token}; separator="\n">
 <else>
-match(<m.name>)
+match(Tokens.<m.name>)
 <endif>
 >>
 
@@ -723,13 +723,13 @@ ActionText(t) ::= "<t.text>"
 ActionTemplate(t) ::= "<t.st>"
 ArgRef(a) ::= "_localctx.<a.name>"
 LocalRef(a) ::= "_localctx.<a.name>"
-RetValueRef(a) ::= "_localctx.<a.name>"
+RetValueRef(a) ::= "_localctx.<a.escapedName>"
 QRetValueRef(a) ::= "<ctx(a)>.<a.dict>!!.<a.name>"
 
 /** How to translate $tokenLabel */
 TokenRef(t) ::= "<ctx(t)>.<t.name>"
 LabelRef(t) ::= "<ctx(t)>.<t.name>"
-ListLabelRef(t) ::= "<ctx(t)>.<ListLabelName(t.name)>"
+ListLabelRef(t) ::= "<ctx(t)>.<ListLabelName(t.escapedName)>"
 SetAttr(s, rhsChunks) ::= "<ctx(s)>.<s.name> = <rhsChunks>"
 
 TokenLabelType() ::= "<file.TokenLabelType; null={Token}>"
@@ -760,28 +760,28 @@ SetNonLocalAttr(s, rhsChunks) ::= "(getInvokingContext(<s.ruleIndex>) as <s.rule
 
 AddToLabelList(a) ::= "<ctx(a.label)>.<a.listName>.add(<labelref(a.label)>!!)"
 
-TokenDecl(t) ::= "<t.name>: <TypeMap.(TokenLabelType())>? = null"
+TokenDecl(t) ::= "<t.escapedName>: <TypeMap.(TokenLabelType())>? = null"
 TokenTypeDecl(t) ::= "var <t.name>: Int"
-TokenListDecl(t) ::= "<t.name>: MutableList\<Token> = ArrayList()"
+TokenListDecl(t) ::= "<t.escapedName>: MutableList\<Token> = ArrayList()"
 RuleContextDecl(r) ::= "<r.name>: <r.ctxName>? = null"
 RuleContextListDecl(rdecl) ::= "<rdecl.name>: MutableList\<<rdecl.ctxName>> = ArrayList()"
-ContextTokenGetterDecl(t) ::= "public fun <t.name>(): TerminalNode<if(t.optional)>?<endif> = getToken(Tokens.<t.name>, 0)<if(!t.optional)>!!<endif>"
-ContextTokenListGetterDecl(t) ::= "public fun <t.name>(): List\<TerminalNode> = getTokens(Tokens.<t.name>)"
+ContextTokenGetterDecl(t) ::= "public fun <t.escapedName>(): TerminalNode<if(t.optional)>?<endif> = getToken(Tokens.<t.name>, 0)<if(!t.optional)>!!<endif>"
+ContextTokenListGetterDecl(t) ::= "public fun <t.escapedName>(): List\<TerminalNode> = getTokens(Tokens.<t.name>)"
 
 ContextTokenListIndexedGetterDecl(t) ::= <<
-public fun <t.name>(i: Int): TerminalNode = getToken(Tokens.<t.name>, i)!!
+public fun <t.escapedName>(i: Int): TerminalNode = getToken(Tokens.<t.name>, i)!!
 >>
 
 ContextRuleGetterDecl(r) ::= <<
-public fun get<r.escapedName; format="cap">(): <r.ctxName><if(r.optional)>?<endif> = getRuleContext(<r.ctxName>::class, 0)<if(!r.optional)>!!<endif>
+public fun <r.escapedName>(): <r.ctxName><if(r.optional)>?<endif> = getRuleContext(<r.ctxName>::class, 0)<if(!r.optional)>!!<endif>
 >>
 
 ContextRuleListGetterDecl(r) ::= <<
-public fun get<r.escapedName; format="cap">(): List\<<r.ctxName>\> = getRuleContexts(<r.ctxName>::class)
+public fun <r.escapedName>(): List\<<r.ctxName>\> = getRuleContexts(<r.ctxName>::class)
 >>
 
 ContextRuleListIndexedGetterDecl(r) ::= <<
-public fun get<r.escapedName; format="cap">(i: Int): <r.ctxName>? = getRuleContext(<r.ctxName>::class, i)
+public fun <r.escapedName>(i: Int): <r.ctxName>? = getRuleContext(<r.ctxName>::class, i)
 >>
 
 LexerRuleContext() ::= "RuleContext"
@@ -805,7 +805,7 @@ public open class <struct.name> : <if(contextSuperClass)><contextSuperClass><els
     <getters:{g | <g>}; separator="\n">
 
     public constructor(parent: ParserRuleContext?, invokingState: Int<ctorAttrs:{a | , <a>}>) : super(parent, invokingState) {
-        <struct.ctorAttrs:{a | this.<a.name> = <a.name>}; separator="\n">
+        <struct.ctorAttrs:{a | this.<a.escapedName> = <a.escapedName>}; separator="\n">
     }
 
     <! Don't need copy unless we have subclasses !>
@@ -814,7 +814,7 @@ public open class <struct.name> : <if(contextSuperClass)><contextSuperClass><els
 
     public fun copyFrom(ctx: <struct.name>) {
         super.copyFrom(ctx)
-        <struct.attrs:{a | this.<a.name> = ctx.<a.name>}; separator="\n">
+        <struct.attrs:{a | this.<a.escapedName> = ctx.<a.escapedName>}; separator="\n">
     }
     <endif>
     <dispatchMethods; separator="\n\n">
@@ -959,7 +959,7 @@ public open class <lexer.name>(input: CharStream) : <superClass; null="Lexer">(i
     public object Modes {
         public const val DEFAULT_MODE: Int = 0
         <if(rest(lexer.modes))>
-        <rest(lexer.modes):{m | public const val <m>: Int = <i>}; separator="\n">
+        <rest(lexer.modes):{m | public const val MODE_<m; format="upper">: Int = <i>}; separator="\n">
         <endif>
     }
 

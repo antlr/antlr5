@@ -86,7 +86,7 @@ LL_EXACT_AMBIG_DETECTION() ::= <<interpreter.predictionMode = PredictionMode.LL_
 
 ParserToken(parser, token) ::= <%<parser>.Tokens.<token>%>
 
-Production(p) ::= <%get<p; format="cap">%>
+Production(p) ::= <%<p>%>
 
 Result(r) ::= <%<r>%>
 
@@ -216,10 +216,10 @@ RuleGetterListener(X) ::= <<
 inner class LeafListener : TBaseListener() {
     override fun exitA(ctx: AContext) {
         if (ctx.childCount == 2) {
-            val child0Text = ctx.getB(0)?.start?.text
-            outStream.printf("%s %s %s\n", child0Text, ctx.getB(1)?.start?.text, child0Text);
+            val child0Text = ctx.b(0)?.start?.text
+            outStream.printf("%s %s %s\n", child0Text, ctx.b(1)?.start?.text, child0Text);
         } else {
-            outStream.println(ctx.getB(0)?.start?.text);
+            outStream.println(ctx.b(0)?.start?.text);
         }
     }
 }
@@ -232,8 +232,8 @@ LRListener(X) ::= <<
 inner class LeafListener : TBaseListener() {
     override fun exitE(ctx: EContext) {
         if (ctx.childCount == 3) {
-            val child0Text = ctx.getE(0)?.start?.text
-            outStream.printf("%s %s %s\n", child0Text, ctx.getE(1)?.start?.text, child0Text)
+            val child0Text = ctx.e(0)?.start?.text
+            outStream.printf("%s %s %s\n", child0Text, ctx.e(1)?.start?.text, child0Text)
         } else {
             outStream.println(ctx.INT()?.symbol?.text);
         }
@@ -246,7 +246,7 @@ LRWithLabelsListener(X) ::= <<
 @parser::members {
 inner class LeafListener : TBaseListener() {
     override fun exitCall(ctx: CallContext) {
-        outStream.printf("%s %s\n", ctx.getE().start?.text, ctx.getEList())
+        outStream.printf("%s %s\n", ctx.e().start?.text, ctx.eList())
     }
     override fun exitInt(ctx: IntContext) {
         outStream.println(ctx.INT().symbol.text)
@@ -258,8 +258,8 @@ inner class LeafListener : TBaseListener() {
 DeclareContextListGettersFunction() ::= <<
 fun foo() {
     val s: SContext? = null
-    val a = s!!.getA()
-    val b = s.getB()
+    val a = s!!.a()
+    val b = s.b()
 }
 >>
 
@@ -279,7 +279,7 @@ Invoke_pred(v) ::= <<this.pred(<v>)>>
 
 ParserTokenType(t) ::= "Parser.Tokens.<t>"
 ContextRuleFunction(ctx, rule) ::= "<ctx>.<rule>"
-ContextListFunction(ctx, rule) ::= <%<ctx>.get<rule; format="cap">()%>
+ContextListFunction(ctx, rule) ::= <%<ctx>.<rule>()%>
 StringType() ::= "String"
 ContextMember(ctx, member) ::= "<ctx>.<member>"
 SubContextLocal(ctx, subctx, local) ::= "<ctx>.<subctx>!!.<local>"

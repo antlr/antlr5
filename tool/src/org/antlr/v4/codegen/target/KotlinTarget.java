@@ -84,7 +84,7 @@ public class KotlinTarget extends Target {
 	public String getTokenTypeAsTargetLabel(Grammar g, int ttype) {
 		// All tokens are namespaced inside a Tokens object.
 		// Here we simply force the qualification
-		return "Tokens." + super.getTokenTypeAsTargetLabel(g, ttype);
+		return super.getTokenTypeAsTargetLabel(g, ttype);
 	}
 
 	@Override
