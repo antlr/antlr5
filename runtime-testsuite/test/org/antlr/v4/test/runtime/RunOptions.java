@@ -6,8 +6,6 @@
 
 package org.antlr.v4.test.runtime;
 
-import org.antlr.v4.runtime.atn.PredictionMode;
-
 public class RunOptions {
 	public final String grammarFileName;
 	public final String grammarStr;

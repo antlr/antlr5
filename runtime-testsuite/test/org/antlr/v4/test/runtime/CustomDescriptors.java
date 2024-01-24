@@ -6,8 +6,6 @@
 
 package org.antlr.v4.test.runtime;
 
-import org.antlr.v4.runtime.atn.PredictionMode;
-
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.*;

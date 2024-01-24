@@ -7,6 +7,7 @@ package org.antlr.v4.test.runtime.java;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.atn.ProfilingATNSimulator;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -135,7 +136,7 @@ public class JavaRunner extends JvmRunner<Lexer, Parser> {
 					profiler = new ProfilingATNSimulator(parser);
 					parser.setInterpreter(profiler);
 				}
-				parser.getInterpreter().setPredictionMode(runOptions.predictionMode);
+				parser.getInterpreter().setPredictionMode(PredictionMode.valueOf(runOptions.predictionMode.toString()));
 				parser.setBuildParseTree(runOptions.buildParseTree);
 
 				Method startRule;

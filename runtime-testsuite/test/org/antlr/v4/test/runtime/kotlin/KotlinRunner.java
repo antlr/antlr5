@@ -99,7 +99,6 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 					profiler = new ProfilingATNSimulator(parser);
 					parser.setInterpreter(profiler);
 				}
-				// TODO: fix prediction mode
 				parser.getInterpreter().setPredictionMode(PredictionMode.valueOf(runOptions.predictionMode.toString()));
 				parser.setBuildParseTree(runOptions.buildParseTree);
 

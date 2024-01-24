@@ -6,7 +6,6 @@
 
 package org.antlr.v4.test.runtime;
 
-import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.misc.Pair;
 
 import java.net.URI;

@@ -16,6 +16,7 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.misc.IntegerList;
 import org.antlr.v4.semantics.SemanticPipeline;
 import org.antlr.v4.test.runtime.*;
+import org.antlr.v4.test.runtime.PredictionMode;
 import org.antlr.v4.test.runtime.java.JavaRunner;
 import org.antlr.v4.test.runtime.states.ExecutedState;
 import org.antlr.v4.test.runtime.states.State;
