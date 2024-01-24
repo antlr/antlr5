@@ -7,7 +7,6 @@
 package org.antlr.v4.test.runtime;
 
 import org.antlr.v4.runtime.misc.Pair;
-import org.antlr.v4.test.runtime.java.JavaRunner;
 import org.antlr.v4.test.runtime.java.JavaRuntimeTests;
 import org.antlr.v4.test.runtime.states.ExecutedState;
 import org.antlr.v4.test.runtime.states.State;
@@ -129,8 +128,8 @@ public abstract class RuntimeTests {
 			lexerName = grammarName + "Lexer";
 			parserName = grammarName + "Parser";
 			useListenerOrVisitor = true;
-			if (targetName.equals("Java")) {
-				superClass = JavaRunner.runtimeTestParserName;
+			if (runner instanceof JvmRunner) {
+				superClass = JvmRunner.parserHelperFQN.get(targetName);
 			}
 			else {
 				superClass = null;
@@ -140,8 +139,8 @@ public abstract class RuntimeTests {
 			lexerName = grammarName;
 			parserName = null;
 			useListenerOrVisitor = false;
-			if (targetName.equals("Java")) {
-				superClass = JavaRunner.runtimeTestLexerName;
+			if (runner instanceof JvmRunner) {
+				superClass = JvmRunner.lexerHelperFQN.get(targetName);
 			}
 			else {
 				superClass = null;

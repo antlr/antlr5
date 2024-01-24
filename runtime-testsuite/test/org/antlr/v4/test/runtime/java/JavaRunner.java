@@ -10,131 +10,79 @@ import org.antlr.v4.runtime.atn.ParserATNSimulator;
 import org.antlr.v4.runtime.atn.ProfilingATNSimulator;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.antlr.v4.test.runtime.*;
+import org.antlr.v4.test.runtime.JvmRunner;
+import org.antlr.v4.test.runtime.RunOptions;
 import org.antlr.v4.test.runtime.java.helpers.CustomStreamErrorListener;
 import org.antlr.v4.test.runtime.java.helpers.RuntimeTestLexer;
 import org.antlr.v4.test.runtime.java.helpers.RuntimeTestParser;
 import org.antlr.v4.test.runtime.java.helpers.TreeShapeListener;
 import org.antlr.v4.test.runtime.states.*;
+import org.antlr.v4.test.runtime.states.jvm.JavaCompiledState;
+import org.antlr.v4.test.runtime.states.jvm.JavaExecutedState;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
-import java.io.*;
+import java.io.File;
+import java.io.PrintStream;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.antlr.v4.test.runtime.FileUtils.replaceInFile;
-import static org.antlr.v4.test.runtime.RuntimeTestUtils.PathSeparator;
+import static org.antlr.v4.test.runtime.JvmRunner.InMemoryStreamHelper.initialize;
 
-public class JavaRunner extends RuntimeRunner {
-	@Override
-	public String getLanguage() {
-		return "Java";
-	}
-
-	public static final String classPath = System.getProperty("java.class.path");
-
-	public static final String runtimeTestLexerName = "org.antlr.v4.test.runtime.java.helpers.RuntimeTestLexer";
-	public static final String runtimeTestParserName = "org.antlr.v4.test.runtime.java.helpers.RuntimeTestParser";
-
-	public static final String runtimeHelpersPath = Paths.get(RuntimeTestUtils.runtimeTestsuitePath.toString(),
-		"test", "org", "antlr", "v4", "test", "runtime", "java", "helpers").toString();
-
+public class JavaRunner extends JvmRunner<Lexer, Parser> {
 	private static JavaCompiler compiler;
 
 	private final static DiagnosticErrorListener DiagnosticErrorListenerInstance = new DiagnosticErrorListener();
 
-	public JavaRunner(Path tempDir, boolean saveTestDir) {
-		super(tempDir, saveTestDir);
-	}
-
-	public JavaRunner() {
-		super();
-	}
+	@Override
+	public String getLanguage() { return "Java"; }
 
 	@Override
-	protected void initRuntime(RunOptions runOptions) {
-		compiler = ToolProvider.getSystemJavaCompiler();
-	}
+	protected String getCompilerName() { return "javac"; }
 
 	@Override
-	protected String getCompilerName() {
-		return "javac";
-	}
+	protected String getRecognizerSuperTypeStartMarker() { return "extends "; }
 
 	@Override
-	protected void writeInputFile(RunOptions runOptions) {}
+	protected String getRecognizerSuperTypeEndMarker() { return " {"; }
 
 	@Override
-	protected void writeRecognizerFile(RunOptions runOptions) {}
+	protected void initRuntime(RunOptions runOptions) { compiler = ToolProvider.getSystemJavaCompiler(); }
 
 	@Override
-	protected JavaCompiledState compile(RunOptions runOptions, GeneratedState generatedState) {
+	protected void compileClassFiles(RunOptions runOptions) {
 		String tempTestDir = getTempDirPath();
 
-		List<GeneratedFile> generatedFiles = generatedState.generatedFiles;
-		GeneratedFile firstFile = generatedFiles.get(0);
+		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
-		if (!firstFile.isParser) {
-			try {
-				// superClass for combined grammar generates the same extends base class for Lexer and Parser
-				// So, for lexer it should be replaced on correct base lexer class
-				replaceInFile(Paths.get(getTempDirPath(), firstFile.name),
-						"extends " + runtimeTestParserName + " {",
-						"extends " + runtimeTestLexerName + " {");
-			} catch (IOException e) {
-				return new JavaCompiledState(generatedState, null, null, null, e);
-			}
+		List<File> files = new ArrayList<>();
+		if (runOptions.lexerName != null) {
+			files.add(new File(tempTestDir, runOptions.lexerName + "." + getExtension()));
+		}
+		if (runOptions.parserName != null) {
+			files.add(new File(tempTestDir, runOptions.parserName + "." + getExtension()));
 		}
 
-		ClassLoader loader = null;
-		Class<? extends Lexer> lexer = null;
-		Class<? extends Parser> parser = null;
-		Exception exception = null;
+		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(files);
 
-		try {
-			StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+		Iterable<String> compileOptions =
+			Arrays.asList("-g", "-source", "1.8", "-target", "1.8", "-implicit:class", "-Xlint:-options", "-d",
+				tempTestDir, "-cp", getFullClassPath());
 
-			ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+		JavaCompiler.CompilationTask task =
+			compiler.getTask(null, fileManager, null, compileOptions, null, compilationUnits);
+		task.call();
+	}
 
-			List<File> files = new ArrayList<>();
-			if (runOptions.lexerName != null) {
-				files.add(new File(tempTestDir, runOptions.lexerName + ".java"));
-			}
-			if (runOptions.parserName != null) {
-				files.add(new File(tempTestDir, runOptions.parserName + ".java"));
-			}
-
-			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(files);
-
-			Iterable<String> compileOptions =
-					Arrays.asList("-g", "-source", "1.8", "-target", "1.8", "-implicit:class", "-Xlint:-options", "-d",
-							tempTestDir, "-cp", tempTestDir + PathSeparator + runtimeHelpersPath + PathSeparator + classPath);
-
-			JavaCompiler.CompilationTask task =
-					compiler.getTask(null, fileManager, null, compileOptions, null,
-							compilationUnits);
-			task.call();
-
-			loader = new URLClassLoader(new URL[]{new File(tempTestDir).toURI().toURL()}, systemClassLoader);
-			if (runOptions.lexerName != null) {
-				lexer = loader.loadClass(runOptions.lexerName).asSubclass(Lexer.class);
-			}
-			if (runOptions.parserName != null) {
-				parser = loader.loadClass(runOptions.parserName).asSubclass(Parser.class);
-			}
-		} catch (Exception ex) {
-			exception = ex;
-		}
-
+	@Override
+	protected CompiledState createCompiledState(GeneratedState generatedState, ClassLoader loader,
+												Class<? extends Lexer> lexer, Class<? extends Parser> parser,
+												Exception exception) {
 		return new JavaCompiledState(generatedState, loader, lexer, parser, exception);
 	}
 
@@ -147,8 +95,8 @@ public class JavaRunner extends RuntimeRunner {
 		Exception exception = null;
 
 		try {
-			InMemoryStreamHelper outputStreamHelper = InMemoryStreamHelper.initialize();
-			InMemoryStreamHelper errorsStreamHelper = InMemoryStreamHelper.initialize();
+			InMemoryStreamHelper outputStreamHelper = initialize();
+			InMemoryStreamHelper errorsStreamHelper = initialize();
 
 			PrintStream outStream = new PrintStream(outputStreamHelper.pipedOutputStream);
 			CustomStreamErrorListener errorListener = new CustomStreamErrorListener(new PrintStream(errorsStreamHelper.pipedOutputStream));
@@ -227,27 +175,11 @@ public class JavaRunner extends RuntimeRunner {
 		return new JavaExecutedState(javaCompiledState, output, errors, parseTree, exception);
 	}
 
-	static class InMemoryStreamHelper {
-		private final PipedOutputStream pipedOutputStream;
-		private final StreamReader streamReader;
+	public JavaRunner() {
+		super();
+	}
 
-		private InMemoryStreamHelper(PipedOutputStream pipedOutputStream, StreamReader streamReader) {
-			this.pipedOutputStream = pipedOutputStream;
-			this.streamReader = streamReader;
-		}
-
-		public static InMemoryStreamHelper initialize() throws IOException {
-			PipedInputStream pipedInputStream = new PipedInputStream();
-			PipedOutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream);
-			StreamReader stdoutReader = new StreamReader(pipedInputStream);
-			stdoutReader.start();
-			return new InMemoryStreamHelper(pipedOutputStream, stdoutReader);
-		}
-
-		public String close() throws InterruptedException, IOException {
-			pipedOutputStream.close();
-			streamReader.join();
-			return streamReader.toString();
-		}
+	public JavaRunner(Path tempDir, boolean saveTestDir) {
+		super(tempDir, saveTestDir);
 	}
 }

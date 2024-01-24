@@ -474,8 +474,12 @@ public open class BufferedTokenStream(tokenSource: TokenSource) : TokenStream {
   override fun getText(ctx: RuleContext): String =
     getText(ctx.sourceInterval)
 
-  override fun getText(start: Token, stop: Token): String? =
-    getText(Interval.of(start.tokenIndex, stop.tokenIndex))
+  override fun getText(start: Token?, stop: Token?): String =
+    if (start != null && stop != null) {
+        getText(Interval.of(start.tokenIndex, stop.tokenIndex))
+    } else {
+        ""
+    }
 
   /**
    * Get all tokens from lexer until `EOF`.

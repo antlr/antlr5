@@ -10,7 +10,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.v4.test.runtime.*;
 import org.antlr.v4.test.runtime.java.JavaRunner;
 import org.antlr.v4.test.runtime.states.ExecutedState;
-import org.antlr.v4.test.runtime.states.JavaCompiledState;
+import org.antlr.v4.test.runtime.states.jvm.JavaCompiledState;
 import org.antlr.v4.tool.ANTLRMessage;
 import org.antlr.v4.tool.ErrorType;
 import org.antlr.v4.tool.Grammar;

@@ -134,5 +134,5 @@ public interface TokenStream : IntStream {
    * @throws UnsupportedOperationException If this stream does not support
    *   this method for the specified tokens
    */
-  public fun getText(start: Token, stop: Token): String?
+  public fun getText(start: Token?, stop: Token?): String?
 }

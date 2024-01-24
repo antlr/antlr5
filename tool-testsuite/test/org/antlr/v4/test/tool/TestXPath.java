@@ -15,8 +15,8 @@ import org.antlr.v4.runtime.tree.xpath.XPath;
 import org.antlr.v4.test.runtime.RunOptions;
 import org.antlr.v4.test.runtime.Stage;
 import org.antlr.v4.test.runtime.java.JavaRunner;
-import org.antlr.v4.test.runtime.states.JavaCompiledState;
-import org.antlr.v4.test.runtime.states.JavaExecutedState;
+import org.antlr.v4.test.runtime.states.jvm.JavaCompiledState;
+import org.antlr.v4.test.runtime.states.jvm.JavaExecutedState;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

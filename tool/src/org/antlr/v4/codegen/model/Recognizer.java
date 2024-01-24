@@ -7,9 +7,11 @@ package org.antlr.v4.codegen.model;
 
 import org.antlr.v4.codegen.CodeGenerator;
 import org.antlr.v4.codegen.OutputModelFactory;
+import org.antlr.v4.codegen.Target;
 import org.antlr.v4.codegen.model.chunk.ActionChunk;
 import org.antlr.v4.codegen.model.chunk.ActionText;
 import org.antlr.v4.codegen.target.JavaTarget;
+import org.antlr.v4.codegen.target.KotlinTarget;
 import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.Rule;
 
@@ -65,7 +67,8 @@ public abstract class Recognizer extends OutputModelObject {
 
 		ruleNames = g.rules.keySet();
 		rules = g.rules.values();
-		if ( gen.getTarget() instanceof JavaTarget ) {
+		Target target = gen.getTarget();
+		if (target instanceof JavaTarget || target instanceof KotlinTarget) {
 			atn = new SerializedJavaATN(factory, g.atn);
 		}
 		else {

@@ -112,8 +112,12 @@ public open class UnbufferedTokenStream(override val tokenSource: TokenSource, b
   override fun getText(ctx: RuleContext): String =
     getText(ctx.sourceInterval)
 
-  override fun getText(start: Token, stop: Token): String =
-    getText(Interval.of(start.tokenIndex, stop.tokenIndex))
+  override fun getText(start: Token?, stop: Token?): String =
+    if (start != null && stop != null) {
+      getText(Interval.of(start.tokenIndex, stop.tokenIndex))
+    } else {
+      ""
+    }
 
   override fun consume() {
     if (LA(1) == Token.EOF) {

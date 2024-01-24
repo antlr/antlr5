@@ -2,17 +2,13 @@ package org.antlr.v4.test.runtime;
 
 import org.antlr.runtime.RecognitionException;
 import org.antlr.v4.runtime.atn.PredictionMode;
-import org.antlr.v4.test.runtime.java.JavaRunner;
 import org.antlr.v4.test.runtime.states.ExecutedState;
 import org.antlr.v4.test.runtime.states.State;
-import org.antlr.v4.test.runtime.swift.SwiftRunner;
 import org.antlr.v4.tool.*;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.antlr.v4.test.runtime.RuntimeTestUtils.joinLines;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /** Run a lexer/parser and dump ATN debug/trace information
@@ -124,8 +120,8 @@ public class TraceATN {
 			lexerName = grammarName + "Lexer";
 			parserName = grammarName + "Parser";
 			useListenerOrVisitor = true;
-			if ( targetName!=null && targetName.equals("Java") ) {
-				superClass = JavaRunner.runtimeTestParserName;
+			if (runner instanceof JvmRunner) {
+				superClass = JvmRunner.parserHelperFQN.get(targetName);
 			}
 			else {
 				superClass = null;
@@ -135,8 +131,8 @@ public class TraceATN {
 			lexerName = grammarName;
 			parserName = null;
 			useListenerOrVisitor = false;
-			if (targetName.equals("Java")) {
-				superClass = JavaRunner.runtimeTestLexerName;
+			if (runner instanceof JvmRunner) {
+				superClass = JvmRunner.lexerHelperFQN.get(targetName);
 			}
 			else {
 				superClass = null;
