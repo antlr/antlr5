@@ -959,7 +959,7 @@ public open class <lexer.name>(input: CharStream) : <superClass; null="Lexer">(i
     public object Modes {
         public const val DEFAULT_MODE: Int = 0
         <if(rest(lexer.modes))>
-        <rest(lexer.modes):{m | public const val MODE_<m; format="upper">: Int = <i>}; separator="\n">
+        <rest(lexer.modes):{m | public const val <m; format="upper">: Int = <i>}; separator="\n">
         <endif>
     }
 
