@@ -69,8 +69,5 @@ You will find the [Book source code](http://pragprog.com/titles/tpantlr2/source_
 As of now, there is no collection of grammars for ANTLR 5, but we plan
 to grow such collection in [grammars-v5](https://github.com/antlr/grammars-v5), which is currently empty.
 
-Until we get grammars for ANTLR 5, you can take a look at [this repository](https://github.com/antlr/grammars-v4); it is a collection of grammars for ANTLR 4 without actions where the
-root directory name is the all-lowercase name of the language parsed
+Until we get grammars for ANTLR 5, you can take a look at [this repository](https://github.com/antlr/grammars-v4); it is a collection of grammars for ANTLR 4 where the root directory name is the all-lowercase name of the language parsed
 by the grammar. For example, java, cpp, csharp, c, etc...
-
-Note that these grammars are written for ANTLR 4. As of now, the equivalent [list of grammars for ANTLR 5](https://github.com/antlr/grammars-v5) is empty.
