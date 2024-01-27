@@ -51,13 +51,10 @@ public class StringCharStream(
     getText(Interval.of(0, size - 1))
 
   override fun getText(interval: Interval): String {
-    if (interval.a >= size) return ""
-    var endIndex = interval.b
-    if (endIndex < 0) return ""
-    if (endIndex >= size) {
-        endIndex = size - 1
-    }
-    return source.substring(codePointIndices[interval.a], codePointIndices[endIndex] + 1)
+    if (interval.a >= size || interval.b < 0) return ""
+    val start = codePointIndices[interval.a]
+    val stop = (interval.b + 1).let { if (it < codePointIndices.size) codePointIndices[it] else source.length }
+    return source.substring(start, stop)
   }
 
   override fun LA(i: Int): Int =
