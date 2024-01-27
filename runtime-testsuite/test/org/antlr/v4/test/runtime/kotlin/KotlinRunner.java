@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import static org.antlr.v4.test.runtime.JvmRunner.InMemoryStreamHelper.initialize;
+import static org.antlr.v4.test.runtime.RuntimeTestUtils.isWindows;
 
 public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	private final static DiagnosticErrorListener DiagnosticErrorListenerInstance = new DiagnosticErrorListener();
@@ -29,7 +30,7 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	protected String getExtension() { return "kt"; }
 
 	@Override
-	protected String getCompilerName() { return "kotlinc"; }
+	protected String getCompilerName() { return "kotlinc" + (isWindows() ? ".bat" : ""); }
 
 	@Override
 	protected String getRecognizerSuperTypeStartMarker() { return ") : "; }
@@ -39,8 +40,19 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 
 	@Override
 	protected void compileClassFiles(RunOptions runOptions) throws Exception {
-		runCommand(new String[]{getCompilerPath(), getTempDirPath(), "-cp", getFullClassPath()}, getTempDirPath(),
+		runCommand(
+			new String[]{
+				getCompilerPath(),
+				escapeCliArgumentIfNeeded(getTempDirPath()),
+				"-cp",
+				escapeCliArgumentIfNeeded(getFullClassPath())
+			},
+			getTempDirPath(),
 			"build class files from Kotlin");
+	}
+
+	private String escapeCliArgumentIfNeeded(String path) {
+		return isWindows() ? '"' + path + '"' : path;
 	}
 
 	@Override
