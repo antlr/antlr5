@@ -2,7 +2,6 @@ package org.antlr.v4.codegen.target;
 
 import org.antlr.v4.codegen.CodeGenerator;
 import org.antlr.v4.codegen.Target;
-import org.antlr.v4.tool.Grammar;
 
 import java.util.*;
 
@@ -78,13 +77,6 @@ public class KotlinTarget extends Target {
 	@Override
 	public Map<Character, String> getTargetCharValueEscape() {
 		return targetCharValueEscape;
-	}
-
-	@Override
-	public String getTokenTypeAsTargetLabel(Grammar g, int ttype) {
-		// All tokens are namespaced inside a Tokens object.
-		// Here we simply force the qualification
-		return super.getTokenTypeAsTargetLabel(g, ttype);
 	}
 
 	@Override
