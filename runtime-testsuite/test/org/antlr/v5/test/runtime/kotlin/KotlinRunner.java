@@ -45,7 +45,8 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 				getCompilerPath(),
 				escapeCliArgumentIfNeeded(getTempDirPath()),
 				"-cp",
-				escapeCliArgumentIfNeeded(getFullClassPath())
+				escapeCliArgumentIfNeeded(getFullClassPath()),
+				"-Xskip-prerelease-check"
 			},
 			getTempDirPath(),
 			"build class files from Kotlin");

@@ -64,7 +64,7 @@ public object RuntimeMetaData {
    *   omitted.
    */
   @Suppress("ConstPropertyName")
-  public const val runtimeVersion: String = "4.13.1"
+  public const val runtimeVersion: String = "0.0.1"
 
   /**
    * This method provides the ability to detect mismatches between the version

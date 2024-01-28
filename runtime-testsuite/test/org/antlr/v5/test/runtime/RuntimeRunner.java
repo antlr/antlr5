@@ -168,7 +168,7 @@ public abstract class RuntimeRunner implements AutoCloseable {
 		if (runOptions.useVisitor) {
 			options.add("-visitor");
 		}
-		if (runOptions.superClass != null && runOptions.superClass.length() > 0) {
+		if (runOptions.superClass != null && !runOptions.superClass.isEmpty()) {
 			options.add("-DsuperClass=" + runOptions.superClass);
 		}
 
