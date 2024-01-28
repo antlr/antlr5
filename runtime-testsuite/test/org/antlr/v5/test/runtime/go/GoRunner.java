@@ -80,7 +80,7 @@ public class GoRunner extends RuntimeRunner {
 	protected void initRuntime(RunOptions runOptions) throws Exception {
 		String cachePath = getCachePath();
 		mkdir(cachePath);
-		Path runtimeFilesPath = Paths.get(getRuntimePath("Go"), "antlr", "v4");
+		Path runtimeFilesPath = Paths.get(getRuntimePath("Go"), "antlr", "v5");
 		String runtimeToolPath = getRuntimeToolPath();
 		File goModFile = new File(cachePath, "go.mod");
 		if (goModFile.exists())
@@ -96,7 +96,7 @@ public class GoRunner extends RuntimeRunner {
 
 	@Override
 	protected String grammarParseRuleToRecognizerName(String startRuleName) {
-		if (startRuleName == null || startRuleName.length() == 0) {
+		if (startRuleName == null || startRuleName.isEmpty()) {
 			return null;
 		}
 

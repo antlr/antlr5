@@ -16,7 +16,7 @@ public class CustomDescriptors {
 
 	static {
 		uri = Paths.get(RuntimeTestUtils.runtimeTestsuitePath.toString(),
-						"test", "org", "antlr", "v4", "test", "runtime", "CustomDescriptors.java").toUri();
+						"test", "org", "antlr", "v5", "test", "runtime", "CustomDescriptors.java").toUri();
 
 		descriptors = new HashMap<>();
 		descriptors.put("LexerExec",

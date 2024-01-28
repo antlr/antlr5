@@ -34,7 +34,7 @@ public abstract class JvmRunner<TLexer, TParser> extends RuntimeRunner {
 
 	private static String getRuntimeHelpersPath(String language, String originalClassPath) {
 		return PathSeparator + Paths.get(RuntimeTestUtils.runtimeTestsuitePath.toString(),
-			"test", "org", "antlr", "v4", "test", "runtime", language.toLowerCase(), "helpers")
+			"test", "org", "antlr", "v5", "test", "runtime", language.toLowerCase(), "helpers")
 			+ PathSeparator + originalClassPath;
 	}
 
