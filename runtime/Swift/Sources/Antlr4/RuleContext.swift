@@ -52,7 +52,7 @@
 /// For the special case of parsers, we use the subclass
 /// ParserRuleContext.
 ///
-/// - SeeAlso: org.antlr.v4.runtime.ParserRuleContext
+/// - SeeAlso: org.antlr.v5.runtime.ParserRuleContext
 ///
 
 open class RuleContext: RuleNode {

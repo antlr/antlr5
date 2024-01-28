@@ -8,13 +8,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.antlr</groupId>
-		<artifactId>antlr4-master</artifactId>
-		<version>4.13.2-SNAPSHOT</version>
+		<artifactId>antlr5-master</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-	<artifactId>antlr4-kotlin-runtime</artifactId>
-	<name>ANTLR 4 Kotlin Runtime</name>
-	<description>ANTLR 4 Kotlin Runtime</description>
+	<artifactId>antlr5-kotlin-runtime</artifactId>
+	<name>ANTLR 5 Kotlin Runtime</name>
+	<description>ANTLR 5 Kotlin Runtime</description>
 
     <prerequisites>
         <maven>3.8</maven>

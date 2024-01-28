@@ -59,7 +59,7 @@ public class ATNConfig: Hashable, CustomStringConvertible {
     /// compares this value to 0 would be affected by the new purpose of the
     /// flag. It also ensures the performance of the existing _org.antlr.v4.runtime.atn.ATNConfig_
     /// constructors as well as certain operations like
-    /// _org.antlr.v4.runtime.atn.ATNConfigSet#add(org.antlr.v4.runtime.atn.ATNConfig, DoubleKeyMap)_ method are
+    /// _org.antlr.v4.runtime.atn.ATNConfigSet#add(org.antlr.v5.runtime.atn.ATNConfig, DoubleKeyMap)_ method are
     /// __completely__ unaffected by the change.
     ///
     public internal(set) final var reachesIntoOuterContext: Int = 0

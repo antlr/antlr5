@@ -77,7 +77,7 @@ $ grep MyToken T2Parser.java
 ### `contextSuperClass`
 
 Specify the super class of parse tree internal nodes. Default is `ParserRuleContext`. Should derive from ultimately `RuleContext` at minimum.
-Java target can use `contextSuperClass=org.antlr.v4.runtime.RuleContextWithAltNum` for convenience. It adds a backing field for `altNumber`, the alt matched for the associated rule node.
+Java target can use `contextSuperClass=org.antlr.v5.runtime.RuleContextWithAltNum` for convenience. It adds a backing field for `altNumber`, the alt matched for the associated rule node.
 
 ### `caseInsensitive`
 

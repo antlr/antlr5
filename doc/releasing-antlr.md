@@ -98,15 +98,15 @@ This section addresses a [circular dependency regarding XPath](https://github.co
 
 ```bash
 cd ~/antlr/code/antlr4/runtime/Cpp/runtime/src/tree/xpath
-java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=Cpp XPathLexer.g4
+java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v5.Tool -Dlanguage=Cpp XPathLexer.g4
 
 cd ~/antlr/code/antlr4/runtime/CSharp/src/Tree/Xpath
-java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=CSharp XPathLexer.g4
+java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v5.Tool -Dlanguage=CSharp XPathLexer.g4
 
 cd ~/antlr/code/antlr4/runtime/Python3/tests/expr
-java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=Python3 Expr.g4
+java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v5.Tool -Dlanguage=Python3 Expr.g4
 cd ~/antlr/code/antlr4/runtime/Python3/src/antlr4/xpath
-java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=Python3 XPathLexer.g4
+java -cp ":/Users/parrt/.m2/repository/org/antlr/antlr4/4.13.1-SNAPSHOT/antlr4-4.13.1-SNAPSHOT-complete.jar:$CLASSPATH" org.antlr.v5.Tool -Dlanguage=Python3 XPathLexer.g4
 ```
 
 ## Maven Repository Settings

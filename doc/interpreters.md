@@ -82,7 +82,7 @@ ParseTree t = parse(fileName, XMLLexerGrammar, XMLParserGrammar, "document");
 
 This is also how we will integrate instantaneous parsing into ANTLRWorks2 and development environment plug-ins.
 
-See [TestParserInterpreter.java](../tool-testsuite/test/org/antlr/v4/test/tool/TestParserInterpreter.java).
+See [TestParserInterpreter.java](../tool-testsuite/test/org/antlr/v5/test/tool/TestParserInterpreter.java).
 
 ## Non-Java Target Interpreter Setup
 The ANTLR4 runtimes do not contain any grammar parsing classes (they are in the ANTLR4 tool  jar). Hence we cannot use `LexerGrammar` and `Grammar` to parse grammars for the interpreter. Instead we directly instantiate `LexerInterpreter` and `ParserInterpreter` objects. They require some data (namely symbol information and the ATNs) which only the ANTLR4 tool can give us. However, on each generation run ANTLR not only produces your parser + lexer files but also interpreter data files (*.interp) which contain all you need to feed the interpreters.

@@ -6,7 +6,7 @@ From version 4.9 onwards antlr's dart generated code is null sound safety compat
 
 #### 1. Install ANTLR4
 
-[The getting started guide](https://github.com/antlr/antlr4/blob/master/doc/getting-started.md) 
+[The getting started guide](https://github.com/antlr/antlr5/blob/main/doc/getting-started.md) 
 should get you started.
 
 #### 2. Install the Dart ANTLR runtime
@@ -30,7 +30,7 @@ You use the ANTLR4 "tool" to generate a parser. These will reference the ANTLR
 runtime, installed above.
 
 Suppose you're using a UNIX system and have set up an alias for the ANTLR4 tool 
-as described in [the getting started guide](https://github.com/antlr/antlr4/blob/master/doc/getting-started.md). 
+as described in [the getting started guide](https://github.com/antlr/antlr5/blob/main/doc/getting-started.md). 
 To generate your Dart parser, run the following command:
 
 ```shell script
@@ -38,7 +38,7 @@ antlr4 -Dlanguage=Dart MyGrammar.g4
 ```
 
 For a full list of antlr4 tool options, please visit the 
-[tool documentation page](https://github.com/antlr/antlr4/blob/master/doc/tool-options.md).
+[tool documentation page](https://github.com/antlr/antlr5/blob/main/doc/tool-options.md).
 
 ### Complete example
 

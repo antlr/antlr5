@@ -110,7 +110,7 @@ public class DecisionInfo: CustomStringConvertible {
     /// A collection of _org.antlr.v4.runtime.atn.ContextSensitivityInfo_ instances describing the
     /// context sensitivities encountered during LL prediction for this decision.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.ContextSensitivityInfo
+    /// - seealso: org.antlr.v5.runtime.atn.ContextSensitivityInfo
     /// 
     public final var contextSensitivities: Array<ContextSensitivityInfo> = Array<ContextSensitivityInfo>()
 
@@ -119,7 +119,7 @@ public class DecisionInfo: CustomStringConvertible {
     /// identified during calls to _org.antlr.v4.runtime.atn.ParserATNSimulator#adaptivePredict_ for
     /// this decision.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.ErrorInfo
+    /// - seealso: org.antlr.v5.runtime.atn.ErrorInfo
     /// 
     public final var errors: Array<ErrorInfo> = Array<ErrorInfo>()
 
@@ -127,7 +127,7 @@ public class DecisionInfo: CustomStringConvertible {
     /// A collection of _org.antlr.v4.runtime.atn.AmbiguityInfo_ instances describing the
     /// ambiguities encountered during LL prediction for this decision.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.AmbiguityInfo
+    /// - seealso: org.antlr.v5.runtime.atn.AmbiguityInfo
     /// 
     public final var ambiguities: Array<AmbiguityInfo> = Array<AmbiguityInfo>()
 
@@ -136,7 +136,7 @@ public class DecisionInfo: CustomStringConvertible {
     /// results of evaluating individual predicates during prediction for this
     /// decision.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.PredicateEvalInfo
+    /// - seealso: org.antlr.v5.runtime.atn.PredicateEvalInfo
     /// 
     public final var predicateEvals: Array<PredicateEvalInfo> = Array<PredicateEvalInfo>()
 
@@ -153,8 +153,8 @@ public class DecisionInfo: CustomStringConvertible {
     /// will use ATN transitions exclusively.
     /// 
     /// - seealso: #SLL_ATNTransitions
-    /// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#computeTargetState
-    /// - seealso: org.antlr.v4.runtime.atn.LexerATNSimulator#computeTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#computeTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.LexerATNSimulator#computeTargetState
     /// 
     public var SLL_ATNTransitions: Int64 = 0
 
@@ -165,8 +165,8 @@ public class DecisionInfo: CustomStringConvertible {
     /// If the ATN simulator implementation does not use DFA caching for SLL
     /// transitions, this value will be 0.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#getExistingTargetState
-    /// - seealso: org.antlr.v4.runtime.atn.LexerATNSimulator#getExistingTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#getExistingTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.LexerATNSimulator#getExistingTargetState
     /// 
     public var SLL_DFATransitions: Int64 = 0
 
@@ -196,8 +196,8 @@ public class DecisionInfo: CustomStringConvertible {
     /// use ATN transitions exclusively.
     /// 
     /// - seealso: #LL_DFATransitions
-    /// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#computeTargetState
-    /// - seealso: org.antlr.v4.runtime.atn.LexerATNSimulator#computeTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#computeTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.LexerATNSimulator#computeTargetState
     /// 
     public var LL_ATNTransitions: Int64 = 0
 
@@ -208,8 +208,8 @@ public class DecisionInfo: CustomStringConvertible {
     /// If the ATN simulator implementation does not use DFA caching for LL
     /// transitions, this value will be 0.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#getExistingTargetState
-    /// - seealso: org.antlr.v4.runtime.atn.LexerATNSimulator#getExistingTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#getExistingTargetState
+    /// - seealso: org.antlr.v5.runtime.atn.LexerATNSimulator#getExistingTargetState
     /// 
     public var LL_DFATransitions: Int64 = 0
 

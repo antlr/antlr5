@@ -30,8 +30,8 @@
 /// they cannot use the two-stage parsing strategy to improve parsing performance
 /// for that input.
 /// 
-/// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#reportAmbiguity
-/// - seealso: org.antlr.v4.runtime.ANTLRErrorListener#reportAmbiguity
+/// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#reportAmbiguity
+/// - seealso: org.antlr.v5.runtime.ANTLRErrorListener#reportAmbiguity
 /// 
 /// -  4.3
 /// 

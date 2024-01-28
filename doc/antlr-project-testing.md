@@ -11,11 +11,11 @@ Furthermore, the various targets from Java must be tested.
 
 This usually means Java launching processes to compile, say, C++ and run parsers.
 
-As of 4.10, a Java descriptor file held as an [RuntimeTestDescriptor.java](../runtime-testsuite/test/org/antlr/v4/test/runtime/RuntimeTestDescriptor.java)
+As of 4.10, a Java descriptor file held as an [RuntimeTestDescriptor.java](../runtime-testsuite/test/org/antlr/v5/test/runtime/RuntimeTestDescriptor.java)
 is used to represent each runtime test.
 
 Each test is described with a text file with various sections and resides in a group directory;
-see [directories under descriptors' dir](../runtime-testsuite/resources/org/antlr/v4/test/runtime/descriptors).
+see [directories under descriptors' dir](../runtime-testsuite/resources/org/antlr/v5/test/runtime/descriptors).
 Here is a sample test descriptor:
 
 ```
@@ -47,7 +47,7 @@ a b c
 The grammars are strings representing StringTemplates (`ST` objects) so `<writeln("$text")>` will get replace when the unit test file is generated (`Test.java`, `Test.cs`, ...).
 The `writeln` template must be defined per target.
 Here are all the 
-[Target templates for runtime tests](../runtime-testsuite/resources/org/antlr/v4/test/runtime/templates).
+[Target templates for runtime tests](../runtime-testsuite/resources/org/antlr/v5/test/runtime/templates).
 Use triple-quotes `"""` when whitespace matters (usually input/output sections).
 
 ## Requirements
@@ -75,7 +75,7 @@ $ mvn install -DskipTests     # make sure all artifacts are visible on this mach
 A single test rig is sufficient to test all targets against all descriptors using the [junit dynamic tests](https://junit.org/junit5/docs/current/user-guide/#writing-tests-dynamic-tests) mechanism.
 But it's often convenient to test just a single target or perhaps even just a single test within a single group of a single target.
 IntelliJ automatically generates a bunch of
-[Target runtime test rigs](../runtime-testsuite/test/org/antlr/v4/test/runtime) that allows developers such flexibility.
+[Target runtime test rigs](../runtime-testsuite/test/org/antlr/v5/test/runtime) that allows developers such flexibility.
 For example, here are the Python3 test rigs in IntelliJ:
 
 ![testrigs](images/testrigs.png)
@@ -101,17 +101,17 @@ $ mvn -Dtest='java.**' test
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-[INFO] Running org.antlr.v4.test.runtime.java.TestIntegerList
-[INFO] Running org.antlr.v4.test.runtime.java.JavaRuntimeTests
+[INFO] Running org.antlr.v5.test.runtime.java.TestIntegerList
+[INFO] Running org.antlr.v5.test.runtime.java.JavaRuntimeTests
 ...
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.antlr.v4.test.runtime.java.TestIntegerList
-[INFO] Tests run: 348, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.269 s - in org.antlr.v4.test.runtime.java.JavaRuntimeTests
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.antlr.v5.test.runtime.java.TestIntegerList
+[INFO] Tests run: 348, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.269 s - in org.antlr.v5.test.runtime.java.JavaRuntimeTests
 ...
 ```
 
 ## Adding a runtime test
 
-To add a new runtime test, first determine which [group (dir) of tests](../runtime-testsuite/resources/org/antlr/v4/test/runtime/descriptors) it belongs to.
+To add a new runtime test, first determine which [group (dir) of tests](../runtime-testsuite/resources/org/antlr/v5/test/runtime/descriptors) it belongs to.
 Then, add a new descriptor file implementation by filling in one of these (omitting unused sections):
 
 ```
@@ -155,7 +155,7 @@ Dart
 Some parts of the runtime API need to be tested with code written specifically in the target language.
 For example, all the Java runtime API tests are placed here:
 
-[runtime-testsuite/test/org/antlr/v4/test/runtime/java/api](../runtime-testsuite/test/org/antlr/v4/test/runtime/java/api)
+[runtime-testsuite/test/org/antlr/v4/test/runtime/java/api](../runtime-testsuite/test/org/antlr/v5/test/runtime/java/api)
 
 Notice that it is under an `api` dir. The directory above is where all of the `*Test*` files go.
 
@@ -173,7 +173,7 @@ Use instead the language-neutral:
 <writeln("$set.stop")>
 ```
 
-Template file [Java.test.stg](../runtime-testsuite/resources/org/antlr/v4/test/runtime/templates/Java.test.stg) has templates like:
+Template file [Java.test.stg](../runtime-testsuite/resources/org/antlr/v5/test/runtime/templates/Java.test.stg) has templates like:
 
 ```
 writeln(s) ::= <<System.out.println(<s>);>>
@@ -183,6 +183,6 @@ that translate generic operations to target-specific language statements or expr
 
 ## Adding an ANTLR tool unit test
 
-Just go into the appropriate Java test class in dir [antlr4/tool-testsuite/test/org/antlr/v4/test/tool](../tool-testsuite/test/org/antlr/v4/test/tool) and add your unit test.
+Just go into the appropriate Java test class in dir [antlr4/tool-testsuite/test/org/antlr/v4/test/tool](../tool-testsuite/test/org/antlr/v5/test/tool) and add your unit test.
 
 

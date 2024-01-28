@@ -62,7 +62,7 @@ extension Token {
     /// assigned to the predefined channels _#DEFAULT_CHANNEL_ and
     /// _#HIDDEN_CHANNEL_.
     /// 
-    /// - seealso: org.antlr.v4.runtime.Token#getChannel()
+    /// - seealso: org.antlr.v5.runtime.Token#getChannel()
     /// 
     static public var MIN_USER_CHANNEL_VALUE: Int {
         return 2

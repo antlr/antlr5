@@ -23,8 +23,8 @@ public final class EpsilonTransition: Transition, CustomStringConvertible {
     /// - returns: the rule index of a precedence rule for which this transition is
     /// returning from, where the precedence value is 0; otherwise, -1.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.ATNConfig#isPrecedenceFilterSuppressed()
-    /// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#applyPrecedenceFilter(org.antlr.v4.runtime.atn.ATNConfigSet)
+    /// - seealso: org.antlr.v5.runtime.atn.ATNConfig#isPrecedenceFilterSuppressed()
+    /// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#applyPrecedenceFilter(org.antlr.v5.runtime.atn.ATNConfigSet)
     /// -  4.4.1
     /// 
     public func outermostPrecedenceReturn() -> Int {

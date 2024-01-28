@@ -18,8 +18,8 @@
 /// the two-stage parsing strategy to improve parsing performance for that
 /// input.
 /// 
-/// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#reportContextSensitivity
-/// - seealso: org.antlr.v4.runtime.ANTLRErrorListener#reportContextSensitivity
+/// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#reportContextSensitivity
+/// - seealso: org.antlr.v5.runtime.ANTLRErrorListener#reportContextSensitivity
 /// 
 /// -  4.3
 /// 

@@ -9,12 +9,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.antlr</groupId>
-		<artifactId>antlr4-master</artifactId>
-		<version>4.13.2-SNAPSHOT</version>
+		<artifactId>antlr5-master</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>antlr4-runtime-testsuite</artifactId>
-	<name>ANTLR 4 Runtime Tests (4th generation)</name>
-	<description>A collection of tests for ANTLR 4 Runtime libraries.</description>
+	<artifactId>antlr5-runtime-testsuite</artifactId>
+	<name>ANTLR 5 Runtime Tests (4th generation)</name>
+	<description>A collection of tests for ANTLR 5 Runtime library.</description>
 
 	<prerequisites>
 		<maven>3.8</maven>
@@ -36,19 +36,19 @@
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
-			<artifactId>antlr4</artifactId>
+			<artifactId>antlr5</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
-			<artifactId>antlr4-runtime</artifactId>
+			<artifactId>antlr5-runtime</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
-			<artifactId>antlr4-kotlin-runtime</artifactId>
+			<artifactId>antlr5-kotlin-runtime</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -114,16 +114,16 @@
 			</plugin>
 			<plugin>
 				<groupId>org.antlr</groupId>
-				<artifactId>antlr4-maven-plugin</artifactId>
+				<artifactId>antlr5-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<goals>
-							<goal>antlr4</goal>
+							<goal>antlr5</goal>
 						</goals>
 						<configuration>
 							<sourceDirectory>${basedir}/test</sourceDirectory>
-							<outputDirectory>${project.build.directory}/generated-test-sources/antlr4</outputDirectory>
+							<outputDirectory>${project.build.directory}/generated-test-sources/antlr5</outputDirectory>
 							<visitor>true</visitor>
 							<generateTestSources>true</generateTestSources>
 						</configuration>
@@ -188,9 +188,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <release>8</release>
-                    <source>9</source>
-                    <target>9</target>
+                    <release>17</release>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
         </plugins>

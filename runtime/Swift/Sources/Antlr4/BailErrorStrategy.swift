@@ -29,7 +29,7 @@
 /// 
 /// `myparser.setErrorHandler(new BailErrorStrategy());`
 /// 
-/// - seealso: org.antlr.v4.runtime.Parser#setErrorHandler(org.antlr.v4.runtime.ANTLRErrorStrategy)
+/// - seealso: org.antlr.v5.runtime.Parser#setErrorHandler(org.antlr.v5.runtime.ANTLRErrorStrategy)
 /// 
 /// 
 open class BailErrorStrategy: DefaultErrorStrategy {

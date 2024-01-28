@@ -4,7 +4,7 @@
 # Maven build folders
 target/
 # ... but not code generation targets
-!tool/src/org/antlr/v4/codegen/target/
+!tool/src/org/antlr/v5/codegen/target/
 
 # Node.js (npm and typings) cached dependencies
 node_modules/
