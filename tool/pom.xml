@@ -207,7 +207,7 @@
 							<target>${basedir}/target/generated-sources/tool/src/org/antlr/v5/unicode/UnicodeData.java</target>
 							<controller>
 								<className>org.antlr.v5.unicode.UnicodeDataTemplateController</className>
-                                <sourceVersion>17</sourceVersion>
+								<sourceVersion>17</sourceVersion>
 								<targetVersion>17</targetVersion>
 								<method>getProperties</method>
 							</controller>
