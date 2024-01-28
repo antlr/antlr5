@@ -69,7 +69,7 @@ public class JavaRunner extends JvmRunner<Lexer, Parser> {
 		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(files);
 
 		Iterable<String> compileOptions =
-			Arrays.asList("-g", "-source", "1.8", "-target", "1.8", "-implicit:class", "-Xlint:-options", "-d",
+			Arrays.asList("-g", "-source", "17", "-target", "17", "-implicit:class", "-Xlint:-options", "-d",
 				tempTestDir, "-cp", getFullClassPath());
 
 		JavaCompiler.CompilationTask task =
