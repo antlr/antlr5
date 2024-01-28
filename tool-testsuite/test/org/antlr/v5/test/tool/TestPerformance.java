@@ -41,7 +41,7 @@ import org.antlr.v5.runtime.tree.ParseTreeWalker;
 import org.antlr.v5.runtime.tree.TerminalNode;
 import org.antlr.v5.test.runtime.*;
 import org.antlr.v5.test.runtime.java.JavaRunner;
-import org.antlr.v5.test.runtime.states.JavaCompiledState;
+import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;

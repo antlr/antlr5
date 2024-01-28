@@ -17,6 +17,8 @@ import org.antlr.v5.test.runtime.java.helpers.RuntimeTestLexer;
 import org.antlr.v5.test.runtime.java.helpers.RuntimeTestParser;
 import org.antlr.v5.test.runtime.java.helpers.TreeShapeListener;
 import org.antlr.v5.test.runtime.states.*;
+import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
+import org.antlr.v5.test.runtime.states.jvm.JavaExecutedState;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
