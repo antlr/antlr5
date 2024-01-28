@@ -29,7 +29,7 @@ public abstract class JvmRunner<TLexer, TParser> extends RuntimeRunner {
 	}
 
 	public static String getRuntimeTestRecognizerFQN(String language, boolean isLexer) {
-		return "org.antlr.v4.test.runtime." + language.toLowerCase() + ".helpers.RuntimeTest" + (isLexer ? "Lexer" : "Parser");
+		return "org.antlr.v5.test.runtime." + language.toLowerCase() + ".helpers.RuntimeTest" + (isLexer ? "Lexer" : "Parser");
 	}
 
 	private static String getRuntimeHelpersPath(String language, String originalClassPath) {

@@ -4,7 +4,7 @@
 package com.strumenta.antlrkotlin.runtime
 
 import js.core.delete
-import org.antlr.v4.kotlinruntime.misc.MurmurHash
+import org.antlr.v5.kotlinruntime.misc.MurmurHash
 
 public actual class BitSet {
   private val wrapped = js("[]").unsafeCast<Array<Boolean>>()
