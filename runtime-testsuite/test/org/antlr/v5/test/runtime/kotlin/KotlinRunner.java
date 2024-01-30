@@ -1,5 +1,6 @@
-package org.antlr.v4.test.runtime.kotlin;
+package org.antlr.v5.test.runtime.kotlin;
 
+import org.antlr.v5.kotlinruntime.*;
 import org.antlr.v5.kotlinruntime.atn.PredictionMode;
 import org.antlr.v5.kotlinruntime.atn.ProfilingATNSimulator;
 import org.antlr.v5.kotlinruntime.tree.ParseTree;
@@ -7,7 +8,7 @@ import org.antlr.v5.kotlinruntime.tree.ParseTreeWalker;
 import org.antlr.v5.kotlinruntime.atn.ParserATNSimulator;
 import org.antlr.v4.test.runtime.JvmRunner;
 import org.antlr.v4.test.runtime.RunOptions;
-import org.antlr.v4.test.runtime.kotlin.helpers.*;
+import org.antlr.v5.test.runtime.kotlin.helpers.*;
 import org.antlr.v4.test.runtime.states.*;
 import org.antlr.v4.test.runtime.states.jvm.KotlinCompiledState;
 import org.antlr.v4.test.runtime.states.jvm.KotlinExecutedState;
