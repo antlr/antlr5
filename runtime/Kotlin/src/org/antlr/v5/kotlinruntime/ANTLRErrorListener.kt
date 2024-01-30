@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.BitSet
+import org.antlr.v5.kotlinruntime.BitSet
 import org.antlr.v5.kotlinruntime.atn.ATNConfigSet
 import org.antlr.v5.kotlinruntime.atn.DecisionInfo
 import org.antlr.v5.kotlinruntime.atn.ParserATNSimulator
@@ -44,12 +44,12 @@ public interface ANTLRErrorListener {
    *   surrounding rule
    */
   public fun syntaxError(
-          recognizer: org.antlr.v5.kotlinruntime.Recognizer<*, *>,
-          offendingSymbol: Any?,
-          line: Int,
-          charPositionInLine: Int,
-          msg: String,
-          e: org.antlr.v5.kotlinruntime.RecognitionException?,
+      recognizer: org.antlr.v5.kotlinruntime.Recognizer<*, *>,
+      offendingSymbol: Any?,
+      line: Int,
+      charPositionInLine: Int,
+      msg: String,
+      e: org.antlr.v5.kotlinruntime.RecognitionException?,
   )
 
   /**
@@ -90,13 +90,13 @@ public interface ANTLRErrorListener {
    * @param configs The ATN configuration set where the ambiguity was identified
    */
   public fun reportAmbiguity(
-          recognizer: org.antlr.v5.kotlinruntime.Parser,
-          dfa: DFA,
-          startIndex: Int,
-          stopIndex: Int,
-          exact: Boolean,
-          ambigAlts: BitSet,
-          configs: ATNConfigSet,
+      recognizer: org.antlr.v5.kotlinruntime.Parser,
+      dfa: DFA,
+      startIndex: Int,
+      stopIndex: Int,
+      exact: Boolean,
+      ambigAlts: BitSet,
+      configs: ATNConfigSet,
   )
 
   /**
@@ -122,12 +122,12 @@ public interface ANTLRErrorListener {
    * @param configs The ATN configuration set where the SLL conflict was detected
    */
   public fun reportAttemptingFullContext(
-          recognizer: org.antlr.v5.kotlinruntime.Parser,
-          dfa: DFA,
-          startIndex: Int,
-          stopIndex: Int,
-          conflictingAlts: BitSet,
-          configs: ATNConfigSet,
+      recognizer: org.antlr.v5.kotlinruntime.Parser,
+      dfa: DFA,
+      startIndex: Int,
+      stopIndex: Int,
+      conflictingAlts: BitSet,
+      configs: ATNConfigSet,
   )
 
   /**
@@ -167,11 +167,11 @@ public interface ANTLRErrorListener {
    * @param configs The ATN configuration set where the unambiguous prediction was determined
    */
   public fun reportContextSensitivity(
-          recognizer: org.antlr.v5.kotlinruntime.Parser,
-          dfa: DFA,
-          startIndex: Int,
-          stopIndex: Int,
-          prediction: Int,
-          configs: ATNConfigSet,
+      recognizer: org.antlr.v5.kotlinruntime.Parser,
+      dfa: DFA,
+      startIndex: Int,
+      stopIndex: Int,
+      prediction: Int,
+      configs: ATNConfigSet,
   )
 }

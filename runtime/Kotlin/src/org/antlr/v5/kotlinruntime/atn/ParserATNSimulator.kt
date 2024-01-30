@@ -6,10 +6,10 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.BitSet
-import com.strumenta.antlrkotlin.runtime.System
-import com.strumenta.antlrkotlin.runtime.assert
-import com.strumenta.antlrkotlin.runtime.synchronized
+import org.antlr.v5.kotlinruntime.BitSet
+import org.antlr.v5.kotlinruntime.System
+import org.antlr.v5.kotlinruntime.assert
+import org.antlr.v5.kotlinruntime.synchronized
 import org.antlr.v5.kotlinruntime.*
 import org.antlr.v5.kotlinruntime.dfa.DFA
 import org.antlr.v5.kotlinruntime.dfa.DFAState

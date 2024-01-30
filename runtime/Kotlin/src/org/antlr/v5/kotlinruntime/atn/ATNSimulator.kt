@@ -6,8 +6,8 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.IdentityHashMap
-import com.strumenta.antlrkotlin.runtime.synchronized
+import org.antlr.v5.kotlinruntime.IdentityHashMap
+import org.antlr.v5.kotlinruntime.synchronized
 import org.antlr.v5.kotlinruntime.dfa.DFA
 import org.antlr.v5.kotlinruntime.dfa.DFAState
 

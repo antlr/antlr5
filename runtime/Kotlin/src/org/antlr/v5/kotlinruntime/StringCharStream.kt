@@ -5,8 +5,8 @@
  */
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.assert
-import com.strumenta.antlrkotlin.runtime.ext.codePointIndices
+import org.antlr.v5.kotlinruntime.assert
+import org.antlr.v5.kotlinruntime.ext.codePointIndices
 import org.antlr.v5.kotlinruntime.misc.Interval
 import kotlin.math.min
 

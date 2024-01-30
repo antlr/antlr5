@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.System
+import org.antlr.v5.kotlinruntime.System
 import org.antlr.v5.kotlinruntime.misc.IntervalSet
 
 /**

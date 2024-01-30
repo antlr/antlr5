@@ -3,9 +3,9 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package org.antlr.v5.test.runtime.kotlin.commonTest.com.strumenta.antlrkotlin.runtime
+package org.antlr.v4.test.runtime.kotlin.commonTest.org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.BitSet
+import org.antlr.v5.kotlinruntime.BitSet
 import org.junit.jupiter.api.Test
 import kotlin.test.*
 

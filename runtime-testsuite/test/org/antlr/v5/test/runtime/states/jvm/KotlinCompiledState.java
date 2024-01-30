@@ -1,8 +1,7 @@
-package org.antlr.v5.test.runtime.states.jvm;
+package org.antlr.v4.test.runtime.states.jvm;
 
-import org.antlr.v5.kotlinruntime.*;
-import org.antlr.v5.test.runtime.RuntimeRunner;
-import org.antlr.v5.test.runtime.states.GeneratedState;
+import org.antlr.v4.test.runtime.RuntimeRunner;
+import org.antlr.v4.test.runtime.states.GeneratedState;
 
 import java.lang.reflect.InvocationTargetException;
 

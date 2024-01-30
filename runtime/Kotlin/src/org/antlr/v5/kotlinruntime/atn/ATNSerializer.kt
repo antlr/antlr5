@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.assert
+import org.antlr.v5.kotlinruntime.assert
 import org.antlr.v5.kotlinruntime.Token
 import org.antlr.v5.kotlinruntime.misc.IntegerList
 import org.antlr.v5.kotlinruntime.misc.IntervalSet

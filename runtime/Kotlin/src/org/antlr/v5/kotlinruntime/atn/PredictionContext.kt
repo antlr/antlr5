@@ -6,9 +6,9 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.IdentityHashMap
-import com.strumenta.antlrkotlin.runtime.System
-import com.strumenta.antlrkotlin.runtime.assert
+import org.antlr.v5.kotlinruntime.IdentityHashMap
+import org.antlr.v5.kotlinruntime.System
+import org.antlr.v5.kotlinruntime.assert
 import org.antlr.v5.kotlinruntime.ParserRuleContext
 import org.antlr.v5.kotlinruntime.Recognizer
 import org.antlr.v5.kotlinruntime.RuleContext

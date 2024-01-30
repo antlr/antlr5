@@ -5,11 +5,11 @@
  */
 package org.antlr.v5.kotlinruntime.misc
 
-import com.strumenta.antlrkotlin.runtime.System
-import com.strumenta.antlrkotlin.runtime.ext.binarySearch
-import com.strumenta.antlrkotlin.runtime.ext.charCount
-import com.strumenta.antlrkotlin.runtime.ext.isSupplementaryCodePoint
-import com.strumenta.antlrkotlin.runtime.ext.toChars
+import org.antlr.v5.kotlinruntime.System
+import org.antlr.v5.kotlinruntime.ext.binarySearch
+import org.antlr.v5.kotlinruntime.ext.charCount
+import org.antlr.v5.kotlinruntime.ext.isSupplementaryCodePoint
+import org.antlr.v5.kotlinruntime.ext.toChars
 
 /**
  * @author Sam Harwell

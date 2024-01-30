@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.ext.appendCodePoint
+import org.antlr.v5.kotlinruntime.ext.appendCodePoint
 import org.antlr.v5.kotlinruntime.misc.IntervalSet
 
 public class RangeTransition(target: ATNState, public val from: Int, public val to: Int) : Transition(target) {

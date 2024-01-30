@@ -3,7 +3,7 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package org.antlr.v5.test.runtime.kotlin.commonTest.org.antlr.v5.kotlinruntime.misc
+package org.antlr.v4.test.runtime.kotlin.commonTest.org.antlr.v5.kotlinruntime.misc
 
 import org.antlr.v5.kotlinruntime.misc.IntegerList
 import org.junit.jupiter.api.Test

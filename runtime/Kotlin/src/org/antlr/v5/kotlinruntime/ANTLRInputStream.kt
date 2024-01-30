@@ -5,7 +5,7 @@
  */
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.assert
+import org.antlr.v5.kotlinruntime.assert
 import org.antlr.v5.kotlinruntime.misc.Interval
 import kotlin.math.min
 
@@ -42,9 +42,9 @@ public open class ANTLRInputStream : org.antlr.v5.kotlinruntime.CharStream {
   final override val sourceName: String
 
   public constructor(
-          data: CharArray,
-          numberOfActualCharsInArray: Int,
-          sourceName: String = org.antlr.v5.kotlinruntime.IntStream.Companion.UNKNOWN_SOURCE_NAME,
+      data: CharArray,
+      numberOfActualCharsInArray: Int,
+      sourceName: String = org.antlr.v5.kotlinruntime.IntStream.Companion.UNKNOWN_SOURCE_NAME,
   ) {
     this.data = data
     n = numberOfActualCharsInArray
@@ -57,8 +57,8 @@ public open class ANTLRInputStream : org.antlr.v5.kotlinruntime.CharStream {
   }
 
   public constructor(
-          input: String,
-          sourceName: String = org.antlr.v5.kotlinruntime.IntStream.Companion.UNKNOWN_SOURCE_NAME,
+      input: String,
+      sourceName: String = org.antlr.v5.kotlinruntime.IntStream.Companion.UNKNOWN_SOURCE_NAME,
   ) {
     val data = input.toCharArray()
     this.data = data
@@ -81,7 +81,7 @@ public open class ANTLRInputStream : org.antlr.v5.kotlinruntime.CharStream {
 
   override fun consume() {
     if (p >= n) {
-      assert(LA(1) == org.antlr.v5.kotlinruntime.IntStream.Companion.EOF)
+      assert(LA(1) == IntStream.EOF)
       throw IllegalStateException("cannot consume EOF")
     }
 

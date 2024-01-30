@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.Collections
+import org.antlr.v5.kotlinruntime.Collections
 import org.antlr.v5.kotlinruntime.Recognizer
 import org.antlr.v5.kotlinruntime.RuleContext
 import org.antlr.v5.kotlinruntime.atn.SemanticContext.*

@@ -6,9 +6,9 @@
 
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.CopyOnWriteArrayList
-import com.strumenta.antlrkotlin.runtime.WeakHashMap
-import com.strumenta.antlrkotlin.runtime.synchronized
+import org.antlr.v5.kotlinruntime.CopyOnWriteArrayList
+import org.antlr.v5.kotlinruntime.WeakHashMap
+import org.antlr.v5.kotlinruntime.synchronized
 import org.antlr.v5.kotlinruntime.atn.ATN
 import org.antlr.v5.kotlinruntime.atn.ATNSimulator
 import org.antlr.v5.kotlinruntime.atn.DecisionInfo
