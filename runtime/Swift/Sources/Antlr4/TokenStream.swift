@@ -17,7 +17,7 @@ public protocol TokenStream: IntStream {
     /// are met, the return value is non-null and the value of
     /// `LT(k).getType()==LA(k)`.
     /// 
-    /// - SeeAlso: org.antlr.v4.runtime.IntStream#LA
+    /// - SeeAlso: org.antlr.v5.runtime.IntStream#LA
     /// 
     func LT(_ k: Int) throws -> Token?
 
@@ -72,7 +72,7 @@ public protocol TokenStream: IntStream {
     /// 
     /// Return the text of all tokens in the stream. This method behaves like the
     /// following code, including potential exceptions from the calls to
-    /// _org.antlr.v4.runtime.IntStream#size_ and _#getText(org.antlr.v4.runtime.misc.Interval)_, but may be
+    /// _org.antlr.v4.runtime.IntStream#size_ and _#getText(org.antlr.v5.runtime.misc.Interval)_, but may be
     /// optimized by the specific implementation.
     /// 
     /// 
@@ -87,7 +87,7 @@ public protocol TokenStream: IntStream {
     /// 
     /// Return the text of all tokens in the source interval of the specified
     /// context. This method behaves like the following code, including potential
-    /// exceptions from the call to _#getText(org.antlr.v4.runtime.misc.Interval)_, but may be
+    /// exceptions from the call to _#getText(org.antlr.v5.runtime.misc.Interval)_, but may be
     /// optimized by the specific implementation.
     /// 
     /// If `ctx.getSourceInterval()` does not return a valid interval of

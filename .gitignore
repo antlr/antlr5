@@ -4,7 +4,7 @@
 # Maven build folders
 target/
 # ... but not code generation targets
-!tool/src/org/antlr/v4/codegen/target/
+!tool/src/org/antlr/v5/codegen/target/
 
 # Node.js (npm and typings) cached dependencies
 node_modules/
@@ -137,3 +137,5 @@ runtime/Cpp/runtime/libantlr4-runtime.dylib
 
 # Go test and performance trace files
 **/*.pprof
+runtime-testsuite/gen
+tool-testsuite/gen

@@ -170,7 +170,7 @@ open class Parser: Recognizer<ParserATNSimulator> {
     /// _ParserRuleContext#addErrorNode(ErrorNode)_.
     /// 
     /// - Parameter ttype: the token type to match
-    /// - Throws: org.antlr.v4.runtime.RecognitionException if the current input symbol did not match
+    /// - Throws: org.antlr.v5.runtime.RecognitionException if the current input symbol did not match
     /// `ttype` and the error strategy could not recover from the
     /// mismatched symbol
     /// - Returns: the matched symbol
@@ -205,7 +205,7 @@ open class Parser: Recognizer<ParserATNSimulator> {
     /// the parse tree by calling _#createErrorNode(ParserRuleContext, Token)_ then
     /// _ParserRuleContext#addErrorNode(ErrorNode)_.
     /// 
-    /// - Throws: org.antlr.v4.runtime.RecognitionException if the current input symbol did not match
+    /// - Throws: org.antlr.v5.runtime.RecognitionException if the current input symbol did not match
     /// a wildcard and the error strategy could not recover from the mismatched
     /// symbol
     /// - Returns: the matched symbol
@@ -650,7 +650,7 @@ open class Parser: Recognizer<ParserATNSimulator> {
 
     /// 
     /// Use
-    /// _#enterRecursionRule(org.antlr.v4.runtime.ParserRuleContext, int, int, int)_ instead.
+    /// _#enterRecursionRule(org.antlr.v5.runtime.ParserRuleContext, int, int, int)_ instead.
     /// 
     /// 
     /// /@Deprecated
@@ -788,7 +788,7 @@ open class Parser: Recognizer<ParserATNSimulator> {
     /// the ambiguous decision. We re-parse the entire input
     /// and so we need the original start rule.
     /// 
-    /// - Throws: org.antlr.v4.runtime.RecognitionException Throws upon syntax error while matching
+    /// - Throws: org.antlr.v5.runtime.RecognitionException Throws upon syntax error while matching
     /// ambig input.
     /// - Returns:               The list of all possible interpretations of
     /// the input for the decision in ambiguityInfo.
@@ -901,7 +901,7 @@ open class Parser: Recognizer<ParserATNSimulator> {
     /// state and context, as given by _#getState_ and _#getContext_,
     /// respectively.
     /// 
-    /// - SeeAlso: org.antlr.v4.runtime.atn.ATN#getExpectedTokens(int, org.antlr.v4.runtime.RuleContext)
+    /// - SeeAlso: org.antlr.v5.runtime.atn.ATN#getExpectedTokens(int, org.antlr.v5.runtime.RuleContext)
     /// 
     public func getExpectedTokens() throws -> IntervalSet {
         return try getATN().getExpectedTokens(getState(), getContext()!)

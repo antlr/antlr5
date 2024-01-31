@@ -12,8 +12,8 @@
 /// algorithm is unable to identify an alternative which would lead to a
 /// successful parse.
 /// 
-/// - seealso: org.antlr.v4.runtime.Parser#notifyErrorListeners(org.antlr.v4.runtime.Token, String, org.antlr.v4.runtime.RecognitionException)
-/// - seealso: org.antlr.v4.runtime.ANTLRErrorListener#syntaxError
+/// - seealso: org.antlr.v5.runtime.Parser#notifyErrorListeners(org.antlr.v5.runtime.Token, String, org.antlr.v5.runtime.RecognitionException)
+/// - seealso: org.antlr.v5.runtime.ANTLRErrorListener#syntaxError
 /// 
 /// -  4.3
 /// 

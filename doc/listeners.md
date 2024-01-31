@@ -155,12 +155,12 @@ then the exception will properly cause the parser to bailout and the exception w
 ```
 java.lang.NullPointerException: bail out
 
-	at org.antlr.v4.test.runtime.java.api.TestParseListener$2ErrorListener.exitAtom(TestParseListener.java:102)
-	at org.antlr.v4.test.runtime.java.api.CalcNoLRParser$AtomContext.exitRule(CalcNoLRParser.java:311)
-	at org.antlr.v4.runtime.Parser.triggerExitRuleEvent(Parser.java:412)
-	at org.antlr.v4.runtime.Parser.exitRule(Parser.java:654)
-	at org.antlr.v4.test.runtime.java.api.CalcNoLRParser.atom(CalcNoLRParser.java:336)
-	at org.antlr.v4.test.runtime.java.api.CalcNoLRParser.add(CalcNoLRParser.java:261)
-	at org.antlr.v4.test.runtime.java.api.CalcNoLRParser.expr(CalcNoLRParser.java:181)
-	at org.antlr.v4.test.runtime.java.api.CalcNoLRParser.s(CalcNoLRParser.java:123)
+	at org.antlr.v5.test.runtime.java.api.TestParseListener$2ErrorListener.exitAtom(TestParseListener.java:102)
+	at org.antlr.v5.test.runtime.java.api.CalcNoLRParser$AtomContext.exitRule(CalcNoLRParser.java:311)
+	at org.antlr.v5.runtime.Parser.triggerExitRuleEvent(Parser.java:412)
+	at org.antlr.v5.runtime.Parser.exitRule(Parser.java:654)
+	at org.antlr.v5.test.runtime.java.api.CalcNoLRParser.atom(CalcNoLRParser.java:336)
+	at org.antlr.v5.test.runtime.java.api.CalcNoLRParser.add(CalcNoLRParser.java:261)
+	at org.antlr.v5.test.runtime.java.api.CalcNoLRParser.expr(CalcNoLRParser.java:181)
+	at org.antlr.v5.test.runtime.java.api.CalcNoLRParser.s(CalcNoLRParser.java:123)
 ```

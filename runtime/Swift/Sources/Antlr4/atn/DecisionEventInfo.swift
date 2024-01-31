@@ -26,7 +26,7 @@ public class DecisionEventInfo {
     /// 
     /// The invoked decision number which this event is related to.
     /// 
-    /// - seealso: org.antlr.v4.runtime.atn.ATN#decisionToState
+    /// - seealso: org.antlr.v5.runtime.atn.ATN#decisionToState
     /// 
     public let decision: Int
 

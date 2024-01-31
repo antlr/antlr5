@@ -63,7 +63,7 @@ public class DFA: CustomStringConvertible {
     /// 
     /// - returns: `true` if this is a precedence DFA; otherwise,
     /// `false`.
-    /// - seealso: org.antlr.v4.runtime.Parser#getPrecedence()
+    /// - seealso: org.antlr.v5.runtime.Parser#getPrecedence()
     /// 
     public final func isPrecedenceDfa() -> Bool {
         return precedenceDfa

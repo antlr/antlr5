@@ -380,7 +380,7 @@ public class SemanticContext: Hashable, CustomStringConvertible {
 
     ///
     ///
-    /// - seealso: org.antlr.v4.runtime.atn.ParserATNSimulator#getPredsForAmbigAlts
+    /// - seealso: org.antlr.v5.runtime.atn.ParserATNSimulator#getPredsForAmbigAlts
     ///
     public static func or(_ a: SemanticContext?, _ b: SemanticContext?) -> SemanticContext {
         if a == nil {

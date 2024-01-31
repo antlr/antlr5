@@ -8,13 +8,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.antlr</groupId>
-		<artifactId>antlr4-master</artifactId>
-		<version>4.13.2-SNAPSHOT</version>
+		<artifactId>antlr5-master</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>antlr4</artifactId>
-	<name>ANTLR 4 Tool</name>
+	<artifactId>antlr5</artifactId>
+	<name>ANTLR 5 Tool</name>
 	<url>http://www.antlr.org</url>
-	<description>The ANTLR 4 grammar compiler.</description>
+	<description>The ANTLR 5 grammar compiler.</description>
 
     <prerequisites>
         <maven>3.8</maven>
@@ -23,7 +23,7 @@
     <dependencies>
 		<dependency>
 			<groupId>org.antlr</groupId>
-			<artifactId>antlr4-runtime</artifactId>
+			<artifactId>antlr5-runtime</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -96,7 +96,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>${project.build.directory}/generated-sources/antlr4-tool-codegen</source>
+								<source>${project.build.directory}/generated-sources/antlr5-tool-codegen</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -126,7 +126,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- can't get this to add bundle items <plugin> <groupId>org.apache.felix</groupId> <artifactId>maven-bundle-plugin</artifactId> <version>2.5.4</version> <executions> <execution> <id>bundle-manifest</id> <phase>process-classes</phase> <configuration> <instructions> <Bundle-SymbolicName>org.antlr.antlr4-tool</Bundle-SymbolicName> </instructions> </configuration> <goals> <goal>manifest</goal> </goals> </execution> </executions> </plugin> -->
+			<!-- can't get this to add bundle items <plugin> <groupId>org.apache.felix</groupId> <artifactId>maven-bundle-plugin</artifactId> <version>2.5.4</version> <executions> <execution> <id>bundle-manifest</id> <phase>process-classes</phase> <configuration> <instructions> <Bundle-SymbolicName>org.antlr.antlr5-tool</Bundle-SymbolicName> </instructions> </configuration> <goals> <goal>manifest</goal> </goals> </execution> </executions> </plugin> -->
 			<plugin> <!-- this just jars up tool stuff and sets main class -->
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.2.0</version>
@@ -134,7 +134,7 @@
 					<archive>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<mainClass>org.antlr.v4.Tool</mainClass>
+							<mainClass>org.antlr.v5.Tool</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -169,7 +169,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <basedir>${project.build.directory}/generated-sources/antlr3/org/antlr/v4</basedir>
+                    <basedir>${project.build.directory}/generated-sources/antlr3/org/antlr/v5</basedir>
                     <includes>
                         <include>parse/*.java</include>
                         <include>codegen/*.java</include>
@@ -202,13 +202,13 @@
 				<configuration>
 					<templates>
 						<template>
-							<directory>${basedir}/resources/org/antlr/v4/tool/templates</directory>
+							<directory>${basedir}/resources/org/antlr/v5/tool/templates</directory>
 							<name>unicodedata</name>
-							<target>${basedir}/target/generated-sources/tool/src/org/antlr/v4/unicode/UnicodeData.java</target>
+							<target>${basedir}/target/generated-sources/tool/src/org/antlr/v5/unicode/UnicodeData.java</target>
 							<controller>
-								<className>org.antlr.v4.unicode.UnicodeDataTemplateController</className>
-								<sourceVersion>11</sourceVersion>
-								<targetVersion>11</targetVersion>
+								<className>org.antlr.v5.unicode.UnicodeDataTemplateController</className>
+								<sourceVersion>17</sourceVersion>
+								<targetVersion>17</targetVersion>
 								<method>getProperties</method>
 							</controller>
 						</template>
