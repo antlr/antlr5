@@ -5,6 +5,8 @@
 
 **ANTLR** (ANother Tool for Language Recognition) is a powerful parser generator for reading, processing, executing, or translating structured text or binary files. It's widely used to build languages, tools, and frameworks. From a grammar, ANTLR generates a parser that can build parse trees and also generates a listener interface (or visitor) that makes it easy to respond to the recognition of phrases of interest.
 
+_This is a new version of ANTLR, in an early development stage_. _If you are looking for a production ready version look into [ANTLR v4](https://github.com/antlr/antlr4)_.
+
 **Dev branch build status**
 
 [![MacOSX, Windows, Linux](https://github.com/antlr/antlr5/actions/workflows/hosted.yml/badge.svg)](https://github.com/antlr/antlr5/actions/workflows/hosted.yml) (github actions)
@@ -21,7 +23,7 @@ As other platforms provide support for recent WebAssembly features, such as garb
 
 ## Repo branch structure
 
-The default branch for this repo is [`main`](https://github.com/antlr/antlr5/tree/main), which is the latest stable release and has tags for the various releases.  Branch [`dev`](https://github.com/antlr/antlr5/tree/dev) is where development occurs between releases and all pull requests should be derived from that branch. The `dev` branch is merged back into `main` to cut a release and the release state is tagged (e.g., with `1.0-rc1` or `1.0`.) Visually our process looks roughly like this:
+The default branch for this repo is [`main`](https://github.com/antlr/antlr5/tree/main), which is the latest stable release and has tags for the various releases.  Branch [`dev`](https://github.com/antlr/antlr5/tree/dev) is where development occurs between releases and all pull requests should be derived from that branch. The `dev` branch is merged back into `main` to cut a release and the release state is tagged (e.g., with `5.1-rc1` or `5.1`.) Visually our process looks roughly like this:
 
 <img src="doc/images/new-antlr-branches.png" width="500">
 
@@ -54,14 +56,17 @@ You might also find the following pages useful, particularly if you want to mess
 
 ## The Definitive ANTLR 4 Reference
 
+_Given the fact that work on ANTLR 5 is at a very early stage, there is currently no material about ANTLR 5. However ANTLR 5 is based on the amazing work done in ANTLR 4, and it follows many of the ideas introduced by ANTLR 4. For this reason it makes sense to study the existing material on ANTLR 4._
+
 Programmers run into parsing problems all the time. Whether it’s a data format like JSON, a network protocol like SMTP, a server configuration file for Apache, a PostScript/PDF file, or a simple spreadsheet macro language—ANTLR v4 and this book will demystify the process. ANTLR v4 has been rewritten from scratch to make it easier than ever to build parsers and the language applications built on top. This completely rewritten new edition of the bestselling Definitive ANTLR Reference shows you how to take advantage of these new features.
 
 You can buy the book [The Definitive ANTLR 4 Reference](http://amzn.com/1934356999) at amazon or an [electronic version at the publisher's site](https://pragprog.com/book/tpantlr2/the-definitive-antlr-4-reference).
 
 You will find the [Book source code](http://pragprog.com/titles/tpantlr2/source_code) useful.
 
-## Additional grammars
-
-[This repository](https://github.com/antlr/grammars-v5) is a collection of grammars verified with ANTLR 5 where the
+## Additional grammars (for ANTLR 4)
+[This repository](https://github.com/antlr/grammars-v4) is a collection of grammars without actions where the
 root directory name is the all-lowercase name of the language parsed
 by the grammar. For example, java, cpp, csharp, c, etc...
+
+Note that these grammars are written for ANTLR 4. As of now, the equivalent [list of grammars for ANTLR 5](https://github.com/antlr/grammars-v5) is empty.
