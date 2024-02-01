@@ -1,5 +1,5 @@
 /*
- * Copyright 20162022 The ANTLR Project. All rights reserved.
+ * Copyright 2016-present The ANTLR Project. All rights reserved.
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 package org.antlr.v5.codegen.target;
