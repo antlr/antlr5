@@ -6,19 +6,19 @@ import org.antlr.v5.kotlinruntime.atn.ProfilingATNSimulator;
 import org.antlr.v5.kotlinruntime.tree.ParseTree;
 import org.antlr.v5.kotlinruntime.tree.ParseTreeWalker;
 import org.antlr.v5.kotlinruntime.atn.ParserATNSimulator;
-import org.antlr.v4.test.runtime.JvmRunner;
-import org.antlr.v4.test.runtime.RunOptions;
+import org.antlr.v5.test.runtime.JvmRunner;
+import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.kotlin.helpers.*;
-import org.antlr.v4.test.runtime.states.*;
-import org.antlr.v4.test.runtime.states.jvm.KotlinCompiledState;
-import org.antlr.v4.test.runtime.states.jvm.KotlinExecutedState;
+import org.antlr.v5.test.runtime.states.*;
+import org.antlr.v5.test.runtime.states.jvm.KotlinCompiledState;
+import org.antlr.v5.test.runtime.states.jvm.KotlinExecutedState;
 
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static org.antlr.v4.test.runtime.JvmRunner.InMemoryStreamHelper.initialize;
-import static org.antlr.v4.test.runtime.RuntimeTestUtils.isWindows;
+import static org.antlr.v5.test.runtime.JvmRunner.InMemoryStreamHelper.initialize;
+import static org.antlr.v5.test.runtime.RuntimeTestUtils.isWindows;
 
 public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	private final static DiagnosticErrorListener DiagnosticErrorListenerInstance = new DiagnosticErrorListener();
