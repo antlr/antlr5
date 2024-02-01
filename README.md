@@ -5,7 +5,7 @@
 
 **ANTLR** (ANother Tool for Language Recognition) is a powerful parser generator for reading, processing, executing, or translating structured text or binary files. It's widely used to build languages, tools, and frameworks. From a grammar, ANTLR generates a parser that can build parse trees and also generates a listener interface (or visitor) that makes it easy to respond to the recognition of phrases of interest.
 
-_This is a new version of ANTLR, in an early development stage_. _If you are looking for a production ready version look into [ANTLR v4](https://github.com/antlr/antlr4)_.
+_This is a new version of ANTLR, in an early development stage_. _If you are looking for a production ready version look into [ANTLR v4](http://antlr4.org/)_.
 
 **Dev branch build status**
 
@@ -66,8 +66,6 @@ You will find the [Book source code](http://pragprog.com/titles/tpantlr2/source_
 
 ## Additional grammars
 
-As of now, there is no collection of grammars for ANTLR 5, but we plan
-to grow such collection in [grammars-v5](https://github.com/antlr/grammars-v5), which is currently empty.
+As of now, there is no collection of grammars for ANTLR 5, but we plan to grow such collection in [grammars-v5](https://github.com/antlr/grammars-v5), which is currently empty.
 
-Until we get grammars for ANTLR 5, you can take a look at [this repository](https://github.com/antlr/grammars-v4); it is a collection of grammars for ANTLR 4 where the root directory name is the all-lowercase name of the language parsed
-by the grammar. For example, java, cpp, csharp, c, etc...
+Until we get grammars for ANTLR 5, you can take a look at [this repository](https://github.com/antlr/grammars-v4); it is a collection of grammars verified for ANTLR 4 where the root directory name is the all-lowercase name of the language parsed by the grammar. For example, java, cpp, csharp, c, etc...
