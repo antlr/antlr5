@@ -6,9 +6,6 @@
 
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.CopyOnWriteArrayList
-import com.strumenta.antlrkotlin.runtime.WeakHashMap
-import com.strumenta.antlrkotlin.runtime.synchronized
 import org.antlr.v5.kotlinruntime.atn.ATN
 import org.antlr.v5.kotlinruntime.atn.ATNSimulator
 import org.antlr.v5.kotlinruntime.atn.DecisionInfo
@@ -24,7 +21,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
     private val ruleIndexMapCache = WeakHashMap<Array<String>, Map<String, Int>>()
   }
 
-  private val _listeners = CopyOnWriteArrayList<org.antlr.v5.kotlinruntime.ANTLRErrorListener>(listOf(ConsoleErrorListener.INSTANCE))
+  private val _listeners = CopyOnWriteArrayList<ANTLRErrorListener>(listOf(ConsoleErrorListener.INSTANCE))
 
   /**
    * Indicate that the recognizer has changed internal state that is

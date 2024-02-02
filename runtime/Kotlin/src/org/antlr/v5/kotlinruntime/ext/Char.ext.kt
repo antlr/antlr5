@@ -3,9 +3,14 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package com.strumenta.antlrkotlin.runtime.ext
+package org.antlr.v5.kotlinruntime.ext
 
-import com.strumenta.antlrkotlin.runtime.*
+import org.antlr.v5.kotlinruntime.MAX_CODE_POINT_
+import org.antlr.v5.kotlinruntime.MIN_SUPPLEMENTARY_CODE_POINT_
+import org.antlr.v5.kotlinruntime.highSurrogate
+import org.antlr.v5.kotlinruntime.isBmpCodePoint
+import org.antlr.v5.kotlinruntime.isValidCodePoint
+import org.antlr.v5.kotlinruntime.lowSurrogate
 
 public fun Char.Companion.isSupplementaryCodePoint(codePoint: Int): Boolean =
   codePoint in MIN_SUPPLEMENTARY_CODE_POINT_..MAX_CODE_POINT_

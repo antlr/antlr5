@@ -5,7 +5,7 @@
  */
 package org.antlr.v5.test.runtime.kotlin.commonTest.com.strumenta.antlrkotlin.runtime
 
-import com.strumenta.antlrkotlin.runtime.BitSet
+import org.antlr.v5.kotlinruntime.BitSet
 import org.junit.jupiter.api.Test
 import kotlin.test.*
 

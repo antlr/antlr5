@@ -3,7 +3,7 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package com.strumenta.antlrkotlin.runtime
+package org.antlr.v5.kotlinruntime
 
 public object Collections {
   public fun <T : Comparable<T>> min(collection: Collection<T>): T =

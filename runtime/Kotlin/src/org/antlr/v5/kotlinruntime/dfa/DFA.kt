@@ -5,7 +5,7 @@
  */
 package org.antlr.v5.kotlinruntime.dfa
 
-import com.strumenta.antlrkotlin.runtime.synchronized
+import org.antlr.v5.kotlinruntime.synchronized
 import org.antlr.v5.kotlinruntime.Parser
 import org.antlr.v5.kotlinruntime.Vocabulary
 import org.antlr.v5.kotlinruntime.VocabularyImpl

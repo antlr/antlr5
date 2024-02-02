@@ -5,13 +5,22 @@
  */
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.System
-import com.strumenta.antlrkotlin.runtime.System.PrintStream
-import com.strumenta.antlrkotlin.runtime.synchronized
-import org.antlr.v5.kotlinruntime.atn.*
+import org.antlr.v5.kotlinruntime.System.PrintStream
+import org.antlr.v5.kotlinruntime.atn.ATN
+import org.antlr.v5.kotlinruntime.atn.ATNDeserializationOptions
+import org.antlr.v5.kotlinruntime.atn.ATNDeserializer
+import org.antlr.v5.kotlinruntime.atn.ParseInfo
+import org.antlr.v5.kotlinruntime.atn.ParserATNSimulator
+import org.antlr.v5.kotlinruntime.atn.ProfilingATNSimulator
+import org.antlr.v5.kotlinruntime.atn.RuleTransition
 import org.antlr.v5.kotlinruntime.misc.IntegerStack
 import org.antlr.v5.kotlinruntime.misc.IntervalSet
-import org.antlr.v5.kotlinruntime.tree.*
+import org.antlr.v5.kotlinruntime.tree.ErrorNode
+import org.antlr.v5.kotlinruntime.tree.ErrorNodeImpl
+import org.antlr.v5.kotlinruntime.tree.ParseTreeListener
+import org.antlr.v5.kotlinruntime.tree.ParseTreeWalker
+import org.antlr.v5.kotlinruntime.tree.TerminalNode
+import org.antlr.v5.kotlinruntime.tree.TerminalNodeImpl
 import org.antlr.v5.kotlinruntime.tree.pattern.ParseTreePattern
 import org.antlr.v5.kotlinruntime.tree.pattern.ParseTreePatternMatcher
 

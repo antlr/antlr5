@@ -3,9 +3,6 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
+package org.antlr.v5.kotlinruntime
 
-package com.strumenta.antlrkotlin.runtime
-
-import java.util.WeakHashMap as JavaWeakHashMap
-
-public typealias WeakHashMap<K, V> = JavaWeakHashMap<K, V>
+public typealias CopyOnWriteArrayList<E> = java.util.concurrent.CopyOnWriteArrayList<E>

@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.BitSet
+import org.antlr.v5.kotlinruntime.BitSet
 import org.antlr.v5.kotlinruntime.ANTLRErrorListener
 import org.antlr.v5.kotlinruntime.TokenStream
 
@@ -51,11 +51,11 @@ import org.antlr.v5.kotlinruntime.TokenStream
  */
 @Suppress("MemberVisibilityCanBePrivate")
 public class AmbiguityInfo(
-  decision: Int,
-  configs: ATNConfigSet?,
-  public var ambigAlts: BitSet,
-  input: TokenStream,
-  startIndex: Int,
-  stopIndex: Int,
-  fullCtx: Boolean,
+    decision: Int,
+    configs: ATNConfigSet?,
+    public var ambigAlts: BitSet,
+    input: TokenStream,
+    startIndex: Int,
+    stopIndex: Int,
+    fullCtx: Boolean,
 ) : DecisionEventInfo(decision, configs, input, startIndex, stopIndex, fullCtx)

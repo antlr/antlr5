@@ -5,7 +5,6 @@
  */
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.BitSet
 import org.antlr.v5.kotlinruntime.atn.ATNConfigSet
 import org.antlr.v5.kotlinruntime.dfa.DFA
 
@@ -30,24 +29,24 @@ public open class BaseErrorListener : org.antlr.v5.kotlinruntime.ANTLRErrorListe
   }
 
   override fun reportAmbiguity(
-    recognizer: Parser,
-    dfa: DFA,
-    startIndex: Int,
-    stopIndex: Int,
-    exact: Boolean,
-    ambigAlts: BitSet,
-    configs: ATNConfigSet,
+      recognizer: Parser,
+      dfa: DFA,
+      startIndex: Int,
+      stopIndex: Int,
+      exact: Boolean,
+      ambigAlts: BitSet,
+      configs: ATNConfigSet,
   ) {
     // Noop
   }
 
   override fun reportAttemptingFullContext(
-    recognizer: Parser,
-    dfa: DFA,
-    startIndex: Int,
-    stopIndex: Int,
-    conflictingAlts: BitSet,
-    configs: ATNConfigSet,
+      recognizer: Parser,
+      dfa: DFA,
+      startIndex: Int,
+      stopIndex: Int,
+      conflictingAlts: BitSet,
+      configs: ATNConfigSet,
   ) {
     // Noop
   }

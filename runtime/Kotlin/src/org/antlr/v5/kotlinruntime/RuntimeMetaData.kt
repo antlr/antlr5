@@ -6,7 +6,6 @@
 
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.System
 import org.antlr.v5.kotlinruntime.RuntimeMetaData.checkVersion
 import org.antlr.v5.kotlinruntime.RuntimeMetaData.runtimeVersion
 import kotlin.math.min

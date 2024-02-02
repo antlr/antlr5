@@ -5,7 +5,6 @@
  */
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.assert
 import org.antlr.v5.kotlinruntime.misc.Interval
 import kotlin.math.min
 
@@ -81,7 +80,7 @@ public open class ANTLRInputStream : org.antlr.v5.kotlinruntime.CharStream {
 
   override fun consume() {
     if (p >= n) {
-      assert(LA(1) == org.antlr.v5.kotlinruntime.IntStream.Companion.EOF)
+      assert(LA(1) == IntStream.EOF)
       throw IllegalStateException("cannot consume EOF")
     }
 

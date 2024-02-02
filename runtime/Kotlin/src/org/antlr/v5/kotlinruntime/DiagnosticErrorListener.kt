@@ -6,7 +6,6 @@
 
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.BitSet
 import org.antlr.v5.kotlinruntime.atn.ATNConfigSet
 import org.antlr.v5.kotlinruntime.dfa.DFA
 import org.antlr.v5.kotlinruntime.misc.Interval
@@ -37,13 +36,13 @@ import org.antlr.v5.kotlinruntime.misc.Interval
 @Suppress("MemberVisibilityCanBePrivate")
 public open class DiagnosticErrorListener(protected val exactOnly: Boolean = true) : BaseErrorListener() {
   override fun reportAmbiguity(
-    recognizer: Parser,
-    dfa: DFA,
-    startIndex: Int,
-    stopIndex: Int,
-    exact: Boolean,
-    ambigAlts: BitSet,
-    configs: ATNConfigSet,
+      recognizer: Parser,
+      dfa: DFA,
+      startIndex: Int,
+      stopIndex: Int,
+      exact: Boolean,
+      ambigAlts: BitSet,
+      configs: ATNConfigSet,
   ) {
     if (exactOnly && !exact) {
       return
@@ -57,12 +56,12 @@ public open class DiagnosticErrorListener(protected val exactOnly: Boolean = tru
   }
 
   override fun reportAttemptingFullContext(
-    recognizer: Parser,
-    dfa: DFA,
-    startIndex: Int,
-    stopIndex: Int,
-    conflictingAlts: BitSet,
-    configs: ATNConfigSet,
+      recognizer: Parser,
+      dfa: DFA,
+      startIndex: Int,
+      stopIndex: Int,
+      conflictingAlts: BitSet,
+      configs: ATNConfigSet,
   ) {
     val decision = getDecisionDescription(recognizer, dfa)
     val text = recognizer.tokenStream.getText(Interval.of(startIndex, stopIndex))

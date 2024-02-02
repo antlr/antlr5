@@ -6,7 +6,6 @@
 
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.System
 import org.antlr.v5.kotlinruntime.atn.ATNState
 import org.antlr.v5.kotlinruntime.atn.RuleTransition
 import org.antlr.v5.kotlinruntime.misc.IntervalSet

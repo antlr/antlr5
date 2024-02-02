@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.BitSet
+import org.antlr.v5.kotlinruntime.BitSet
 import org.antlr.v5.kotlinruntime.Parser
 import org.antlr.v5.kotlinruntime.ParserRuleContext
 import org.antlr.v5.kotlinruntime.TokenStream
@@ -195,11 +195,11 @@ public open class ProfilingATNSimulator(parser: Parser) : ParserATNSimulator(
   }
 
   protected override fun reportAttemptingFullContext(
-    dfa: DFA,
-    conflictingAlts: BitSet,
-    configs: ATNConfigSet,
-    startIndex: Int,
-    stopIndex: Int,
+      dfa: DFA,
+      conflictingAlts: BitSet,
+      configs: ATNConfigSet,
+      startIndex: Int,
+      stopIndex: Int,
   ) {
     conflictingAltResolvedBySLL = conflictingAlts.nextSetBit(0)
     decisionInfo[currentDecision].LL_Fallback++
@@ -223,13 +223,13 @@ public open class ProfilingATNSimulator(parser: Parser) : ParserATNSimulator(
 
   @Suppress("LocalVariableName")
   protected override fun reportAmbiguity(
-    dfa: DFA,
-    D: DFAState,
-    startIndex: Int,
-    stopIndex: Int,
-    exact: Boolean,
-    ambigAlts: BitSet,
-    configs: ATNConfigSet,
+      dfa: DFA,
+      D: DFAState,
+      startIndex: Int,
+      stopIndex: Int,
+      exact: Boolean,
+      ambigAlts: BitSet,
+      configs: ATNConfigSet,
   ) {
     val prediction: Int = ambigAlts.nextSetBit(0)
 

@@ -3,7 +3,7 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package com.strumenta.antlrkotlin.runtime.ext
+package org.antlr.v5.kotlinruntime.ext
 
 @OptIn(ExperimentalStdlibApi::class)
 private val hexFormat: HexFormat = HexFormat {

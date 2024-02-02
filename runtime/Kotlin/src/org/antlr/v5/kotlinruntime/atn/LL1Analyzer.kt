@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.BitSet
+import org.antlr.v5.kotlinruntime.BitSet
 import org.antlr.v5.kotlinruntime.RuleContext
 import org.antlr.v5.kotlinruntime.Token
 import org.antlr.v5.kotlinruntime.misc.IntervalSet
@@ -161,14 +161,14 @@ public open class LL1Analyzer(public val atn: ATN) {
    */
   @Suppress("FunctionName")
   protected open fun _LOOK(
-    s: ATNState,
-    stopState: ATNState?,
-    ctx: PredictionContext?,
-    look: IntervalSet,
-    lookBusy: MutableSet<ATNConfig>,
-    calledRuleStack: BitSet,
-    seeThruPreds: Boolean,
-    addEOF: Boolean,
+      s: ATNState,
+      stopState: ATNState?,
+      ctx: PredictionContext?,
+      look: IntervalSet,
+      lookBusy: MutableSet<ATNConfig>,
+      calledRuleStack: BitSet,
+      seeThruPreds: Boolean,
+      addEOF: Boolean,
   ) {
     val c = ATNConfig(s, 0, ctx)
 

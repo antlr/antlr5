@@ -3,12 +3,12 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package com.strumenta.antlrkotlin.runtime.ext
+package org.antlr.v5.kotlinruntime.ext
 
-import com.strumenta.antlrkotlin.runtime.highSurrogate
-import com.strumenta.antlrkotlin.runtime.isBmpCodePoint
-import com.strumenta.antlrkotlin.runtime.isValidCodePoint
-import com.strumenta.antlrkotlin.runtime.lowSurrogate
+import org.antlr.v5.kotlinruntime.highSurrogate
+import org.antlr.v5.kotlinruntime.isBmpCodePoint
+import org.antlr.v5.kotlinruntime.isValidCodePoint
+import org.antlr.v5.kotlinruntime.lowSurrogate
 
 /**
  * Appends the string representation of the [codePoint] argument to this sequence.

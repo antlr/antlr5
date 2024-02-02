@@ -5,8 +5,6 @@
  */
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.System
-
 /**
  * @author Sam Harwell
  */

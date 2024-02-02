@@ -6,7 +6,6 @@
 
 package org.antlr.v5.kotlinruntime
 
-import com.strumenta.antlrkotlin.runtime.assert
 import org.antlr.v5.kotlinruntime.misc.Interval
 
 /**

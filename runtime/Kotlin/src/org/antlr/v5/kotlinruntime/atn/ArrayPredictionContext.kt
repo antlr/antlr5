@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.assert
+import org.antlr.v5.kotlinruntime.assert
 
 @Suppress("EqualsOrHashCode")
 public class ArrayPredictionContext(

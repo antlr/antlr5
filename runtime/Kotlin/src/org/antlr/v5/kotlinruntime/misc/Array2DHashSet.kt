@@ -6,7 +6,7 @@
 
 package org.antlr.v5.kotlinruntime.misc
 
-import com.strumenta.antlrkotlin.runtime.assert
+import org.antlr.v5.kotlinruntime.assert
 import kotlin.math.floor
 
 /**

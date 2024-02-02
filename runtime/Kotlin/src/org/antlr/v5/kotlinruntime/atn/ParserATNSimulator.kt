@@ -6,10 +6,10 @@
 
 package org.antlr.v5.kotlinruntime.atn
 
-import com.strumenta.antlrkotlin.runtime.BitSet
-import com.strumenta.antlrkotlin.runtime.System
-import com.strumenta.antlrkotlin.runtime.assert
-import com.strumenta.antlrkotlin.runtime.synchronized
+import org.antlr.v5.kotlinruntime.BitSet
+import org.antlr.v5.kotlinruntime.System
+import org.antlr.v5.kotlinruntime.assert
+import org.antlr.v5.kotlinruntime.synchronized
 import org.antlr.v5.kotlinruntime.*
 import org.antlr.v5.kotlinruntime.dfa.DFA
 import org.antlr.v5.kotlinruntime.dfa.DFAState
@@ -1194,9 +1194,9 @@ public open class ParserATNSimulator(
     }
 
   public open fun getPredsForAmbigAlts(
-    ambigAlts: BitSet,
-    configs: ATNConfigSet,
-    nAlts: Int,
+      ambigAlts: BitSet,
+      configs: ATNConfigSet,
+      nAlts: Int,
   ): Array<SemanticContext?>? {
     // REACH=[1|1|[]|0:0, 1|2|[]|0:1]
     //
@@ -1245,8 +1245,8 @@ public open class ParserATNSimulator(
   }
 
   protected open fun getPredicatePredictions(
-    ambigAlts: BitSet?,
-    altToPred: Array<SemanticContext?>,
+      ambigAlts: BitSet?,
+      altToPred: Array<SemanticContext?>,
   ): Array<DFAState.PredPrediction>? {
     val pairs = ArrayList<DFAState.PredPrediction>()
     var containsPredicate = false
@@ -2273,11 +2273,11 @@ public open class ParserATNSimulator(
   }
 
   protected open fun reportAttemptingFullContext(
-    dfa: DFA,
-    conflictingAlts: BitSet,
-    configs: ATNConfigSet,
-    startIndex: Int,
-    stopIndex: Int,
+      dfa: DFA,
+      conflictingAlts: BitSet,
+      configs: ATNConfigSet,
+      startIndex: Int,
+      stopIndex: Int,
   ) {
     if (debug || retry_debug) {
       val interval = Interval.of(startIndex, stopIndex)
@@ -2329,12 +2329,12 @@ public open class ParserATNSimulator(
    */
   @Suppress("LocalVariableName")
   protected open fun reportAmbiguity(
-    dfa: DFA,
-    D: DFAState, // The DFA state from execATN() that had SLL conflicts
-    startIndex: Int, stopIndex: Int,
-    exact: Boolean,
-    ambigAlts: BitSet,
-    configs: ATNConfigSet, // Configs that LL not SLL considered conflicting
+      dfa: DFA,
+      D: DFAState, // The DFA state from execATN() that had SLL conflicts
+      startIndex: Int, stopIndex: Int,
+      exact: Boolean,
+      ambigAlts: BitSet,
+      configs: ATNConfigSet, // Configs that LL not SLL considered conflicting
   ) {
     if (debug || retry_debug) {
       val interval = Interval.of(startIndex, stopIndex)
