@@ -1,0 +1,1 @@
+These files are inherited from the Kotlin target for ANTLR 4, which is multi-platform. They are currently unused but kept around to make it possible to implement other Kotlin targets later).
