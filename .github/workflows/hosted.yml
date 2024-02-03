@@ -63,12 +63,6 @@ jobs:
       with:
         maven-version: 3.9.4
 
-    - name: Setup Kotlin
-      if: matrix.target == 'kotlin'
-      uses: fwilhe2/setup-kotlin@main
-      with:
-        version: '2.0.0-Beta3'
-
     - name: Build ANTLR with Maven
       run: mvn install -DskipTests=true -Darguments="-Dmaven.javadoc.skip=true" -B -V
 
