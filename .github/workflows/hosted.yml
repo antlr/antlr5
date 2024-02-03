@@ -95,10 +95,7 @@ jobs:
         env
 
         cd runtime-testsuite
-        case ${{ matrix.target }} in
-          python3) mvn -X '-Dantlr-python3-exec=${{ env.pythonLocation }}/bin/python' '-Dtest=python3.**' test ;;
-          *) mvn -X '-Dtest=${{ matrix.target }}.**' test ;;
-        esac
+        mvn -X '-Dtest=${{ matrix.target }}.**' test
 
     - name: Prepare artifacts
       if: always()
