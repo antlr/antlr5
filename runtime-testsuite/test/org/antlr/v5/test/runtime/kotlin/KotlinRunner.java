@@ -12,16 +12,24 @@ import org.antlr.v5.test.runtime.kotlin.helpers.*;
 import org.antlr.v5.test.runtime.states.*;
 import org.antlr.v5.test.runtime.states.jvm.KotlinCompiledState;
 import org.antlr.v5.test.runtime.states.jvm.KotlinExecutedState;
+import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments;
+import org.jetbrains.kotlin.cli.common.messages.MessageRenderer;
+import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector;
+import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler;
+import org.jetbrains.kotlin.config.Services;
 
 import java.io.PrintStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.antlr.v5.test.runtime.JvmRunner.InMemoryStreamHelper.initialize;
-import static org.antlr.v5.test.runtime.RuntimeTestUtils.isWindows;
 
 public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	private final static DiagnosticErrorListener DiagnosticErrorListenerInstance = new DiagnosticErrorListener();
+	private final static K2JVMCompiler compiler = new K2JVMCompiler();
+	private final static PrintingMessageCollector messageCollector = new PrintingMessageCollector(System.out, MessageRenderer.WITHOUT_PATHS, false);
 
 	@Override
 	public String getLanguage() { return "Kotlin"; }
@@ -30,7 +38,7 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	protected String getExtension() { return "kt"; }
 
 	@Override
-	protected String getCompilerName() { return "kotlinc" + (isWindows() ? ".bat" : ""); }
+	protected String getCompilerName() { return "kotlinc"; }
 
 	@Override
 	protected String getRecognizerSuperTypeStartMarker() { return ") : "; }
@@ -39,22 +47,18 @@ public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	protected String getRecognizerSuperTypeEndMarker() { return "(input) {"; }
 
 	@Override
-	protected void compileClassFiles(RunOptions runOptions) throws Exception {
-		runCommand(
-			new String[]{
-				getCompilerPath(),
-				escapeCliArgumentIfNeeded(getTempDirPath()),
-				"-cp",
-				escapeCliArgumentIfNeeded(getFullClassPath()),
-				"-Xskip-prerelease-check",
-				"-J-Xmx512m"
-			},
-			getTempDirPath(),
-			"build class files from Kotlin");
-	}
+	protected void compileClassFiles(RunOptions runOptions) {
+		K2JVMCompilerArguments arguments = new K2JVMCompilerArguments();
+		arguments.setFreeArgs(new ArrayList<>(List.of(getTempDirPath())));
+		arguments.setDestination(getTempDirPath());
+		arguments.setClasspath(getFullClassPath());
+		arguments.setNoReflect(true);
+		arguments.setNoStdlib(true);
+		// TODO: remove the next line once K2 supports scripts in LightTree mode. Currently the compiler warns
+		// `scripts are not yet supported with K2 in LightTree mode, consider using K1 or disable LightTree mode with -Xuse-fir-lt=false`
+		arguments.setUseFirLT(false);
 
-	private String escapeCliArgumentIfNeeded(String path) {
-		return isWindows() ? '"' + path + '"' : path;
+		compiler.execImpl(messageCollector, Services.EMPTY, arguments);
 	}
 
 	@Override
