@@ -5,7 +5,7 @@
  */
 package org.antlr.v5.test.runtime.kotlin.commonTest.org.antlr.v5.kotlinruntime.misc
 
-import org.antlr.v5.kotlinruntime.misc.IntegerList
+import org.antlr.v5.runtime.kotlin.misc.IntegerList
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
