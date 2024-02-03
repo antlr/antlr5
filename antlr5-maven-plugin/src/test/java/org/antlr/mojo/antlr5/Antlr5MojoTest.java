@@ -27,7 +27,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class Antlr4MojoTest {
+public class Antlr5MojoTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
