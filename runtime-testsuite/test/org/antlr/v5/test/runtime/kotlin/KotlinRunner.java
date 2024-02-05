@@ -29,7 +29,7 @@ import static org.antlr.v5.test.runtime.JvmRunner.InMemoryStreamHelper.initializ
 public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	private final static DiagnosticErrorListener DiagnosticErrorListenerInstance = new DiagnosticErrorListener();
 	private final static K2JVMCompiler compiler = new K2JVMCompiler();
-	private final static PrintingMessageCollector messageCollector = new PrintingMessageCollector(System.out, MessageRenderer.WITHOUT_PATHS, false);
+	private final static PrintingMessageCollector messageCollector = new PrintingMessageCollector(java.lang.System.out, MessageRenderer.WITHOUT_PATHS, false);
 
 	@Override
 	public String getLanguage() { return "Kotlin"; }
