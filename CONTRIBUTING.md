@@ -6,7 +6,7 @@
 4. Install and configure [EditorConfig](http://editorconfig.org/) so your text editor or IDE uses the ANTLR 5 coding style
 5. [Build ANTLR 5](doc/building-antlr.md)
 6. [Run the ANTLR project unit tests](doc/antlr-project-testing.md)
-7. Create a [pull request](https://help.github.com/articles/using-pull-requests/) with your changes and make sure you're comparing your `dev`-derived branch in your fork to the `dev` branch from the `antlr/antlr4` repo:
+7. Create a [pull request](https://help.github.com/articles/using-pull-requests/) with your changes and make sure you're comparing your `dev`-derived branch in your fork to the `dev` branch from the `antlr/antlr5` repo:
 
 <img src="doc/images/PR-on-dev.png" width="600">
 
