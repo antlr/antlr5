@@ -4,8 +4,8 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v5.runtime.kotlin
+package org.antlr.v5.runtime.kotlin.jvm
 
-import java.util.BitSet as JavaBitSet
+import java.util.IdentityHashMap as JavaIdentityHashMap
 
-public typealias BitSet = JavaBitSet
+public typealias IdentityHashMap<K, V> = JavaIdentityHashMap<K, V>

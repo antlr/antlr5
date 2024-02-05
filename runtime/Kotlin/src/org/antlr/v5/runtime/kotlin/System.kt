@@ -5,6 +5,10 @@
  */
 package org.antlr.v5.runtime.kotlin
 
+import org.antlr.v5.runtime.kotlin.jvm.platformGetEnv
+import org.antlr.v5.runtime.kotlin.jvm.platformPrintErr
+import org.antlr.v5.runtime.kotlin.jvm.platformPrintErrLn
+
 public object System {
   public interface PrintStream {
     /**

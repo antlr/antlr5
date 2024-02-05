@@ -7,6 +7,7 @@ package org.antlr.v5.runtime.kotlin
 
 import org.antlr.v5.runtime.kotlin.atn.ATNConfigSet
 import org.antlr.v5.runtime.kotlin.dfa.DFA
+import org.antlr.v5.runtime.kotlin.jvm.BitSet
 
 /**
  * This implementation of [ANTLRErrorListener] dispatches all calls to a

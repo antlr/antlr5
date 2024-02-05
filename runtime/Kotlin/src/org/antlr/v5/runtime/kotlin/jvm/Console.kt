@@ -5,7 +5,7 @@
  */
 @file:Suppress("NOTHING_TO_INLINE")
 
-package org.antlr.v5.runtime.kotlin
+package org.antlr.v5.runtime.kotlin.jvm
 
 import java.lang.System as JavaSystem
 

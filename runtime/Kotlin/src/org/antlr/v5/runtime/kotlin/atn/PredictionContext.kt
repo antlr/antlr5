@@ -6,7 +6,7 @@
 
 package org.antlr.v5.runtime.kotlin.atn
 
-import org.antlr.v5.runtime.kotlin.IdentityHashMap
+import org.antlr.v5.runtime.kotlin.jvm.IdentityHashMap
 import org.antlr.v5.runtime.kotlin.System
 import org.antlr.v5.runtime.kotlin.assert
 import org.antlr.v5.runtime.kotlin.ParserRuleContext

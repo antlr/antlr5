@@ -8,7 +8,7 @@ package org.antlr.v5.runtime.kotlin.atn
 
 import org.antlr.v5.runtime.kotlin.System
 import org.antlr.v5.runtime.kotlin.assert
-import org.antlr.v5.runtime.kotlin.synchronized
+import org.antlr.v5.runtime.kotlin.jvm.synchronized
 import org.antlr.v5.runtime.kotlin.*
 import org.antlr.v5.runtime.kotlin.dfa.DFA
 import org.antlr.v5.runtime.kotlin.dfa.DFAState

@@ -10,6 +10,8 @@ import org.antlr.v5.runtime.kotlin.atn.ATN
 import org.antlr.v5.runtime.kotlin.atn.ATNSimulator
 import org.antlr.v5.runtime.kotlin.atn.DecisionInfo
 import org.antlr.v5.runtime.kotlin.atn.ParseInfo
+import org.antlr.v5.runtime.kotlin.jvm.CopyOnWriteArrayList
+import org.antlr.v5.runtime.kotlin.jvm.WeakHashMap
 import org.antlr.v5.runtime.kotlin.misc.Utils
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -65,33 +67,33 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
     get() {
       val tempVocabulary = vocabulary
 
-      synchronized(tokenTypeMapCache) {
-        var result = tokenTypeMapCache[tempVocabulary]
+        org.antlr.v5.runtime.kotlin.jvm.synchronized(tokenTypeMapCache) {
+            var result = tokenTypeMapCache[tempVocabulary]
 
-        if (result == null) {
-          val tmp = HashMap<String, Int>()
+            if (result == null) {
+                val tmp = HashMap<String, Int>()
 
-          for (i in 0..atn.maxTokenType) {
-            val literalName = tempVocabulary.getLiteralName(i)
+                for (i in 0..atn.maxTokenType) {
+                    val literalName = tempVocabulary.getLiteralName(i)
 
-            if (literalName != null) {
-              tmp[literalName] = i
+                    if (literalName != null) {
+                        tmp[literalName] = i
+                    }
+
+                    val symbolicName = tempVocabulary.getSymbolicName(i)
+
+                    if (symbolicName != null) {
+                        tmp[symbolicName] = i
+                    }
+                }
+
+                tmp["EOF"] = Token.EOF
+                result = tmp
+                tokenTypeMapCache[tempVocabulary] = result
             }
 
-            val symbolicName = tempVocabulary.getSymbolicName(i)
-
-            if (symbolicName != null) {
-              tmp[symbolicName] = i
-            }
-          }
-
-          tmp["EOF"] = Token.EOF
-          result = tmp
-          tokenTypeMapCache[tempVocabulary] = result
+            return result
         }
-
-        return result
-      }
     }
 
   /**
@@ -103,16 +105,16 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
     get() {
       val ruleNames = ruleNames
 
-      synchronized(ruleIndexMapCache) {
-        var result = ruleIndexMapCache[ruleNames]
+        org.antlr.v5.runtime.kotlin.jvm.synchronized(ruleIndexMapCache) {
+            var result = ruleIndexMapCache[ruleNames]
 
-        if (result == null) {
-          result = Utils.toMap(ruleNames)
-          ruleIndexMapCache[ruleNames] = result
+            if (result == null) {
+                result = Utils.toMap(ruleNames)
+                ruleIndexMapCache[ruleNames] = result
+            }
+
+            return result
         }
-
-        return result
-      }
     }
 
   /**

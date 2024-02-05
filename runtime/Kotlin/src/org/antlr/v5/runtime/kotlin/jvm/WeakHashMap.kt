@@ -3,10 +3,9 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package org.antlr.v5.runtime.kotlin
 
-import java.lang.System as JavaSystem
+package org.antlr.v5.runtime.kotlin.jvm
 
-@Suppress("NOTHING_TO_INLINE")
-internal inline fun platformGetEnv(name: String): String? =
-  JavaSystem.getenv(name)
+import java.util.WeakHashMap as JavaWeakHashMap
+
+public typealias WeakHashMap<K, V> = JavaWeakHashMap<K, V>

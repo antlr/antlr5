@@ -6,6 +6,7 @@
 package org.antlr.v5.runtime.kotlin.tree.xpath
 
 import org.antlr.v5.runtime.kotlin.*
+import org.antlr.v5.runtime.kotlin.jvm.CharStreams
 import org.antlr.v5.runtime.kotlin.tree.ParseTree
 import org.antlr.v5.runtime.kotlin.tree.xpath.XPathLexer.Tokens
 

@@ -6,7 +6,7 @@
 
 package org.antlr.v5.runtime.kotlin
 
-import org.antlr.v5.runtime.kotlin.BitSet
+import org.antlr.v5.runtime.kotlin.jvm.BitSet
 import org.antlr.v5.runtime.kotlin.atn.ATNConfigSet
 import org.antlr.v5.runtime.kotlin.atn.DecisionInfo
 import org.antlr.v5.runtime.kotlin.atn.ParserATNSimulator

@@ -6,7 +6,7 @@
 
 package org.antlr.v5.runtime.kotlin.misc
 
-import org.antlr.v5.runtime.kotlin.BitSet
+import org.antlr.v5.runtime.kotlin.jvm.BitSet
 
 @Suppress("MemberVisibilityCanBePrivate")
 public object Utils {

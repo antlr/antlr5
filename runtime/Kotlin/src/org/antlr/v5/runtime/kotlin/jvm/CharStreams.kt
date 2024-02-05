@@ -4,8 +4,12 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v5.runtime.kotlin
+package org.antlr.v5.runtime.kotlin.jvm
 
+import org.antlr.v5.runtime.kotlin.AbstractCharStreams
+import org.antlr.v5.runtime.kotlin.CharStream
+import org.antlr.v5.runtime.kotlin.IntStream
+import org.antlr.v5.runtime.kotlin.StringCharStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -89,9 +93,9 @@ public object CharStreams : AbstractCharStreams() {
   @JvmOverloads
   @Suppress("unused")
   public fun fromStream(
-    inputStream: InputStream,
-    charset: Charset = StandardCharsets.UTF_8,
-    sourceName: String = IntStream.UNKNOWN_SOURCE_NAME,
+      inputStream: InputStream,
+      charset: Charset = StandardCharsets.UTF_8,
+      sourceName: String = IntStream.UNKNOWN_SOURCE_NAME,
   ): CharStream {
     val channel = Channels.newChannel(inputStream)
     return fromChannel(channel, charset, sourceName)
@@ -107,9 +111,9 @@ public object CharStreams : AbstractCharStreams() {
   @JvmOverloads
   @Suppress("MemberVisibilityCanBePrivate")
   public fun fromChannel(
-    channel: ReadableByteChannel,
-    charset: Charset = Charsets.UTF_8,
-    sourceName: String = IntStream.UNKNOWN_SOURCE_NAME,
+      channel: ReadableByteChannel,
+      charset: Charset = Charsets.UTF_8,
+      sourceName: String = IntStream.UNKNOWN_SOURCE_NAME,
   ): CharStream {
     channel.use {
       val buffer = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE)

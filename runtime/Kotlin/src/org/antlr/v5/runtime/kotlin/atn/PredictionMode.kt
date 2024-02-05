@@ -6,7 +6,7 @@
 
 package org.antlr.v5.runtime.kotlin.atn
 
-import org.antlr.v5.runtime.kotlin.BitSet
+import org.antlr.v5.runtime.kotlin.jvm.BitSet
 import org.antlr.v5.runtime.kotlin.misc.AbstractEqualityComparator
 import org.antlr.v5.runtime.kotlin.misc.FlexibleHashMap
 import org.antlr.v5.runtime.kotlin.misc.MurmurHash

@@ -187,16 +187,16 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
     get() {
       // Accessing 'serializedATN' is what might throw the UnsupportedOperationException
       val serializedAtn = serializedATN
-      return synchronized(this) {
-        bypassAltsAtnCache ?: let {
-          val deserializationOptions = ATNDeserializationOptions()
-          deserializationOptions.isGenerateRuleBypassTransitions = true
+      return org.antlr.v5.runtime.kotlin.jvm.synchronized(this) {
+          bypassAltsAtnCache ?: let {
+              val deserializationOptions = ATNDeserializationOptions()
+              deserializationOptions.isGenerateRuleBypassTransitions = true
 
-          val atnDeserializer = ATNDeserializer(deserializationOptions)
-          val tempBypassAltsAtnCache = atnDeserializer.deserialize(serializedAtn.toCharArray())
-          bypassAltsAtnCache = tempBypassAltsAtnCache
-          tempBypassAltsAtnCache
-        }
+              val atnDeserializer = ATNDeserializer(deserializationOptions)
+              val tempBypassAltsAtnCache = atnDeserializer.deserialize(serializedAtn.toCharArray())
+              bypassAltsAtnCache = tempBypassAltsAtnCache
+              tempBypassAltsAtnCache
+          }
       }
     }
 
@@ -250,15 +250,15 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
    * For debugging and other purposes.
    */
   public val dfaStrings: List<String>
-    get() = synchronized(interpreter.decisionToDFA) {
-      val s = ArrayList<String>()
+    get() = org.antlr.v5.runtime.kotlin.jvm.synchronized(interpreter.decisionToDFA) {
+        val s = ArrayList<String>()
 
-      for (d in 0..<interpreter.decisionToDFA.size) {
-        val dfa = interpreter.decisionToDFA[d]
-        s.add(dfa.toString(vocabulary))
-      }
+        for (d in 0..<interpreter.decisionToDFA.size) {
+            val dfa = interpreter.decisionToDFA[d]
+            s.add(dfa.toString(vocabulary))
+        }
 
-      return s
+        return s
     }
 
   public val sourceName: String
@@ -821,23 +821,23 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
    * For debugging and other purposes.
    */
   public fun dumpDFA(dumpStream: PrintStream = System.out) {
-    synchronized(interpreter.decisionToDFA) {
-      var seenOne = false
+      org.antlr.v5.runtime.kotlin.jvm.synchronized(interpreter.decisionToDFA) {
+          var seenOne = false
 
-      for (d in 0..<interpreter.decisionToDFA.size) {
-        val dfa = interpreter.decisionToDFA[d]
+          for (d in 0..<interpreter.decisionToDFA.size) {
+              val dfa = interpreter.decisionToDFA[d]
 
-        if (dfa.states.isNotEmpty()) {
-          if (seenOne) {
-            dumpStream.println()
+              if (dfa.states.isNotEmpty()) {
+                  if (seenOne) {
+                      dumpStream.println()
+                  }
+
+                  dumpStream.println("Decision ${dfa.decision}:")
+                  dumpStream.print(dfa.toString(vocabulary))
+                  seenOne = true
+              }
           }
-
-          dumpStream.println("Decision ${dfa.decision}:")
-          dumpStream.print(dfa.toString(vocabulary))
-          seenOne = true
-        }
       }
-    }
   }
 
   /**

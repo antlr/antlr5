@@ -6,7 +6,7 @@
 
 package org.antlr.v5.runtime.kotlin.atn
 
-import org.antlr.v5.runtime.kotlin.BitSet
+import org.antlr.v5.runtime.kotlin.jvm.BitSet
 import org.antlr.v5.runtime.kotlin.Parser
 import org.antlr.v5.runtime.kotlin.ParserRuleContext
 import org.antlr.v5.runtime.kotlin.TokenStream
