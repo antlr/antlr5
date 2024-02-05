@@ -1,10 +1,10 @@
 package org.antlr.v5.test.runtime.kotlin.helpers
 
-import org.antlr.v5.kotlinruntime.ParserRuleContext
-import org.antlr.v5.kotlinruntime.tree.ErrorNode
-import org.antlr.v5.kotlinruntime.tree.ParseTreeListener
-import org.antlr.v5.kotlinruntime.tree.RuleNode
-import org.antlr.v5.kotlinruntime.tree.TerminalNode
+import org.antlr.v5.runtime.kotlin.ParserRuleContext
+import org.antlr.v5.runtime.kotlin.tree.ErrorNode
+import org.antlr.v5.runtime.kotlin.tree.ParseTreeListener
+import org.antlr.v5.runtime.kotlin.tree.RuleNode
+import org.antlr.v5.runtime.kotlin.tree.TerminalNode
 
 class TreeShapeListener : ParseTreeListener {
     override fun visitTerminal(node: TerminalNode) {}

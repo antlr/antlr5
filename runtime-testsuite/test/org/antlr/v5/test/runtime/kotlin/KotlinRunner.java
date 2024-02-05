@@ -1,11 +1,11 @@
 package org.antlr.v5.test.runtime.kotlin;
 
-import org.antlr.v5.kotlinruntime.*;
-import org.antlr.v5.kotlinruntime.atn.PredictionMode;
-import org.antlr.v5.kotlinruntime.atn.ProfilingATNSimulator;
-import org.antlr.v5.kotlinruntime.tree.ParseTree;
-import org.antlr.v5.kotlinruntime.tree.ParseTreeWalker;
-import org.antlr.v5.kotlinruntime.atn.ParserATNSimulator;
+import org.antlr.v5.runtime.kotlin.*;
+import org.antlr.v5.runtime.kotlin.atn.PredictionMode;
+import org.antlr.v5.runtime.kotlin.atn.ProfilingATNSimulator;
+import org.antlr.v5.runtime.kotlin.tree.ParseTree;
+import org.antlr.v5.runtime.kotlin.tree.ParseTreeWalker;
+import org.antlr.v5.runtime.kotlin.atn.ParserATNSimulator;
 import org.antlr.v5.test.runtime.JvmRunner;
 import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.kotlin.helpers.*;
@@ -29,7 +29,7 @@ import static org.antlr.v5.test.runtime.JvmRunner.InMemoryStreamHelper.initializ
 public class KotlinRunner extends JvmRunner<Lexer, Parser> {
 	private final static DiagnosticErrorListener DiagnosticErrorListenerInstance = new DiagnosticErrorListener();
 	private final static K2JVMCompiler compiler = new K2JVMCompiler();
-	private final static PrintingMessageCollector messageCollector = new PrintingMessageCollector(System.out, MessageRenderer.WITHOUT_PATHS, false);
+	private final static PrintingMessageCollector messageCollector = new PrintingMessageCollector(java.lang.System.out, MessageRenderer.WITHOUT_PATHS, false);
 
 	@Override
 	public String getLanguage() { return "Kotlin"; }

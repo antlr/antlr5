@@ -54,12 +54,12 @@ package <file.genPackage>
 <endif>
 <namedActions.header>
 
-import org.antlr.v5.kotlinruntime.*
-import org.antlr.v5.kotlinruntime.atn.*
-import org.antlr.v5.kotlinruntime.atn.ATN.Companion.INVALID_ALT_NUMBER
-import org.antlr.v5.kotlinruntime.dfa.*
-import org.antlr.v5.kotlinruntime.misc.*
-import org.antlr.v5.kotlinruntime.tree.*
+import org.antlr.v5.runtime.kotlin.*
+import org.antlr.v5.runtime.kotlin.atn.*
+import org.antlr.v5.runtime.kotlin.atn.ATN.Companion.INVALID_ALT_NUMBER
+import org.antlr.v5.runtime.kotlin.dfa.*
+import org.antlr.v5.runtime.kotlin.misc.*
+import org.antlr.v5.runtime.kotlin.tree.*
 
 <parser>
 >>
@@ -71,7 +71,7 @@ package <file.genPackage>
 <endif>
 <header>
 
-import org.antlr.v5.kotlinruntime.tree.ParseTreeListener
+import org.antlr.v5.runtime.kotlin.tree.ParseTreeListener
 
 /**
  * This interface defines a complete listener for a parse tree produced by [<file.parserName>].
@@ -110,9 +110,9 @@ package <file.genPackage>
 <endif>
 <header>
 
-import org.antlr.v5.kotlinruntime.ParserRuleContext
-import org.antlr.v5.kotlinruntime.tree.ErrorNode
-import org.antlr.v5.kotlinruntime.tree.TerminalNode
+import org.antlr.v5.runtime.kotlin.ParserRuleContext
+import org.antlr.v5.runtime.kotlin.tree.ErrorNode
+import org.antlr.v5.runtime.kotlin.tree.TerminalNode
 
 /**
  * This class provides an empty implementation of [<file.grammarName>Listener],
@@ -161,7 +161,7 @@ package <file.genPackage>
 <endif>
 <header>
 
-import org.antlr.v5.kotlinruntime.tree.ParseTreeVisitor
+import org.antlr.v5.runtime.kotlin.tree.ParseTreeVisitor
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced by [<file.parserName>].
@@ -193,7 +193,7 @@ package <file.genPackage>
 <endif>
 <header>
 
-import org.antlr.v5.kotlinruntime.tree.AbstractParseTreeVisitor
+import org.antlr.v5.runtime.kotlin.tree.AbstractParseTreeVisitor
 
 /**
  * This class provides an empty implementation of [<file.grammarName>Visitor],
@@ -918,10 +918,10 @@ package <lexerFile.genPackage>
 <endif>
 <namedActions.header>
 
-import org.antlr.v5.kotlinruntime.*
-import org.antlr.v5.kotlinruntime.atn.*
-import org.antlr.v5.kotlinruntime.dfa.*
-import org.antlr.v5.kotlinruntime.misc.*
+import org.antlr.v5.runtime.kotlin.*
+import org.antlr.v5.runtime.kotlin.atn.*
+import org.antlr.v5.runtime.kotlin.dfa.*
+import org.antlr.v5.runtime.kotlin.misc.*
 
 <lexer>
 >>
