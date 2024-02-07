@@ -1,12 +1,12 @@
          -------------
-         ANTLR v4 Maven Plugin
+         ANTLR v5 Maven Plugin
          -------------
          Jim Idle
          -------------
          March 2009
          -------------
 
-ANTLR v4 Maven plugin
+ANTLR v5 Maven plugin
 
  The ANTLR v4 Maven plugin is completely re-written as of version 4.0; if you are familiar
  with prior versions, you should note that there are some behavioral differences that make

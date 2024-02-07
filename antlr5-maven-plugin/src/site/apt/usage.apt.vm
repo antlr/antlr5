@@ -1,6 +1,6 @@
 Usage
 
- The ANTLR 4 plugin for Maven can generate parsers for any number of grammars in
+ The ANTLR 5 plugin for Maven can generate parsers for any number of grammars in
  your project.
 
 * Compiling Grammars into Parsers
