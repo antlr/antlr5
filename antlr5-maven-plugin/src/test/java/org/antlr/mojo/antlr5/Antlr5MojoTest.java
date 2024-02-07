@@ -330,7 +330,7 @@ public class Antlr5MojoTest {
             Files.delete(baseGrammar);
 
             thrown.expect(MojoExecutionException.class);
-            thrown.expectMessage("ANTLR 4 caught 1 build errors.");
+            thrown.expectMessage("ANTLR 5 caught 1 build errors.");
 
             maven.executeMojo(session, project, exec);
         }

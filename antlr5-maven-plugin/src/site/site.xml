@@ -6,7 +6,7 @@
   ~ can be found in the LICENSE.txt file in the project root.
   -->
 
-<project name="ANTLR v4 Maven plugin">
+<project name="ANTLR v5 Maven plugin">
 
   <publishDate position="left"/>
   <version position="left"/>

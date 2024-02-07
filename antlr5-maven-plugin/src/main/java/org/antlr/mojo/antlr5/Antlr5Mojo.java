@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Parses ANTLR 4 grammar files {@code *.g4} and transforms them into Java
+ * Parses ANTLR 5 grammar files {@code *.g4} and transforms them into Java
  * source files.
  *
  * @author Sam Harwell
