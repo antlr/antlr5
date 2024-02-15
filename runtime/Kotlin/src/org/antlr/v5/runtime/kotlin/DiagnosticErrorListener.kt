@@ -6,10 +6,11 @@
 
 package org.antlr.v5.runtime.kotlin
 
-import org.antlr.v5.runtime.kotlin.atn.ATNConfigSet
-import org.antlr.v5.runtime.kotlin.dfa.DFA
-import org.antlr.v5.runtime.kotlin.jvm.BitSet
-import org.antlr.v5.runtime.kotlin.misc.Interval
+import org.antlr.v5.runtime.core.Parser
+import org.antlr.v5.runtime.core.atn.ATNConfigSet
+import org.antlr.v5.runtime.core.dfa.DFA
+import org.antlr.v5.runtime.core.jvm.BitSet
+import org.antlr.v5.runtime.core.misc.Interval
 
 /**
  * This implementation of [ANTLRErrorListener] can be used to identify

@@ -5,9 +5,13 @@
  */
 package org.antlr.v5.runtime.kotlin
 
-import org.antlr.v5.runtime.kotlin.atn.ATNConfigSet
-import org.antlr.v5.runtime.kotlin.dfa.DFA
-import org.antlr.v5.runtime.kotlin.jvm.BitSet
+import org.antlr.v5.runtime.core.Parser
+import org.antlr.v5.runtime.core.Recognizer
+import org.antlr.v5.runtime.core.atn.ATNConfigSet
+import org.antlr.v5.runtime.core.dfa.DFA
+import org.antlr.v5.runtime.core.error.ANTLRErrorListener
+import org.antlr.v5.runtime.core.error.RecognitionException
+import org.antlr.v5.runtime.core.jvm.BitSet
 
 /**
  * This implementation of [ANTLRErrorListener] dispatches all calls to a
@@ -19,12 +23,12 @@ import org.antlr.v5.runtime.kotlin.jvm.BitSet
  */
 public class ProxyErrorListener(private val delegates: Collection<ANTLRErrorListener>) : ANTLRErrorListener {
   override fun syntaxError(
-    recognizer: Recognizer<*, *>,
-    offendingSymbol: Any?,
-    line: Int,
-    charPositionInLine: Int,
-    msg: String,
-    e: RecognitionException?,
+      recognizer: Recognizer<*, *>,
+      offendingSymbol: Any?,
+      line: Int,
+      charPositionInLine: Int,
+      msg: String,
+      e: RecognitionException?,
   ) {
     for (listener in delegates) {
       listener.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e)

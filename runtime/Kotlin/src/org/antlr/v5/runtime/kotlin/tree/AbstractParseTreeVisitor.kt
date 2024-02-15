@@ -6,6 +6,8 @@
 
 package org.antlr.v5.runtime.kotlin.tree
 
+import org.antlr.v5.runtime.core.tree.*
+
 public abstract class AbstractParseTreeVisitor<T> : ParseTreeVisitor<T> {
   /**
    * The default implementation calls [ParseTree.accept] on the specified tree.

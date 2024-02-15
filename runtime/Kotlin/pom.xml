@@ -26,6 +26,11 @@
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr5-core-runtime</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
 	<properties>

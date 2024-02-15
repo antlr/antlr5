@@ -1,7 +1,6 @@
 package org.antlr.v5.test.runtime.states.jvm;
 
-import org.antlr.v5.runtime.kotlin.*;
-import org.antlr.v5.runtime.kotlin.jvm.CharStreams;
+import org.antlr.v5.runtime.kotlin.CharStreams;
 import org.antlr.v5.test.runtime.RuntimeRunner;
 import org.antlr.v5.test.runtime.states.GeneratedState;
 

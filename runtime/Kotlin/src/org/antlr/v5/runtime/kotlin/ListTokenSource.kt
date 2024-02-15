@@ -6,6 +6,7 @@
 
 package org.antlr.v5.runtime.kotlin
 
+import org.antlr.v5.runtime.core.*
 import kotlin.math.max
 
 /**
@@ -23,8 +24,8 @@ import kotlin.math.max
  */
 @Suppress("MemberVisibilityCanBePrivate")
 public open class ListTokenSource(
-  protected val tokens: List<Token>,
-  private val source: String? = null,
+    protected val tokens: List<Token>,
+    private val source: String? = null,
 ) : TokenSource {
   /**
    * The index into [tokens] of token to return by the next call to [nextToken].

@@ -5,6 +5,9 @@
  */
 package org.antlr.v5.runtime.kotlin
 
+import org.antlr.v5.runtime.core.Recognizer
+import org.antlr.v5.runtime.core.error.RecognitionException
+
 /**
  * @author Sam Harwell
  */
@@ -25,12 +28,12 @@ public open class ConsoleErrorListener : BaseErrorListener() {
    * ```
    */
   override fun syntaxError(
-    recognizer: Recognizer<*, *>,
-    offendingSymbol: Any?,
-    line: Int,
-    charPositionInLine: Int,
-    msg: String,
-    e: RecognitionException?,
+      recognizer: Recognizer<*, *>,
+      offendingSymbol: Any?,
+      line: Int,
+      charPositionInLine: Int,
+      msg: String,
+      e: RecognitionException?,
   ) {
     System.err.println("line $line:$charPositionInLine $msg")
   }

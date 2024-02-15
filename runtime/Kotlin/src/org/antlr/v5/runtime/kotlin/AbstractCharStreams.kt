@@ -5,6 +5,8 @@
  */
 package org.antlr.v5.runtime.kotlin
 
+import org.antlr.v5.runtime.core.CharStream
+import org.antlr.v5.runtime.core.IntStream
 import kotlin.jvm.JvmOverloads
 
 public abstract class AbstractCharStreams {

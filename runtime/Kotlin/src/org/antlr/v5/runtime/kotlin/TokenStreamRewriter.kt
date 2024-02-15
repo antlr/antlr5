@@ -5,7 +5,9 @@
  */
 package org.antlr.v5.runtime.kotlin
 
-import org.antlr.v5.runtime.kotlin.misc.Interval
+import org.antlr.v5.runtime.core.Token
+import org.antlr.v5.runtime.core.TokenStream
+import org.antlr.v5.runtime.core.misc.Interval
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.reflect.KClass
