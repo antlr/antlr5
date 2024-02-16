@@ -16,6 +16,8 @@ import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.java.JavaRunner;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
 import org.antlr.v5.test.runtime.states.jvm.JavaExecutedState;
+import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import static org.antlr.v5.test.tool.ToolTestUtils.createExecOptionsForJavaToolT
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Disabled("Since we plan to no longer support XPath")
 public class TestXPath {
 	public static final String grammar =
 		"grammar Expr;\n" +
