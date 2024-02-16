@@ -93,6 +93,11 @@ public class UnbufferedCharStream implements CharStream {
 		data = new int[bufferSize];
 	}
 
+	public UnbufferedCharStream(int[] data, int n) {
+		this.n = n;
+		this.data = data;
+	}
+
 	public UnbufferedCharStream(InputStream input) {
 		this(input, 256);
 	}

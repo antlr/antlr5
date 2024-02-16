@@ -6,7 +6,7 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.gui.Trees;
-import org.antlr.v5.runtime.ANTLRInputStream;
+import org.antlr.v5.runtime.CharStreams;
 import org.antlr.v5.runtime.CommonTokenStream;
 import org.antlr.v5.runtime.InterpreterRuleContext;
 import org.antlr.v5.runtime.LexerInterpreter;
@@ -105,7 +105,7 @@ public class TestGrammarParserInterpreter {
 	                                  String startRule, String input,
 	                                  String expectedParseTree)
 	{
-		LexerInterpreter lexEngine = lg.createLexerInterpreter(new ANTLRInputStream(input));
+		LexerInterpreter lexEngine = lg.createLexerInterpreter(CharStreams.fromString(input));
 		CommonTokenStream tokens = new CommonTokenStream(lexEngine);
 		GrammarParserInterpreter parser = g.createGrammarParserInterpreter(tokens);
 		ParseTree t = parser.parse(g.rules.get(startRule).index);

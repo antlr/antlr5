@@ -7,7 +7,6 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.gui.Trees;
-import org.antlr.v5.runtime.ANTLRInputStream;
 import org.antlr.v5.runtime.CharStream;
 import org.antlr.v5.runtime.CharStreams;
 import org.antlr.v5.runtime.CommonTokenStream;
@@ -137,7 +136,7 @@ public class TestUnicodeGrammar {
 		     // Note we use ISO_8859_1 to treat all byte values as Unicode "characters" from
 		     // U+0000 to U+00FF.
 		     InputStreamReader isr = new InputStreamReader(is, StandardCharsets.ISO_8859_1)) {
-			charStream = new ANTLRInputStream(isr);
+			charStream = CharStreams.fromReader(isr);
 		}
 		Grammar grammar = new Grammar(grammarText);
 		LexerInterpreter lexEngine = grammar.createLexerInterpreter(charStream);
