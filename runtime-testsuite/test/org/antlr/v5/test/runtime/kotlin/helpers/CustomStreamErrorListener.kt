@@ -1,8 +1,8 @@
 package org.antlr.v5.test.runtime.kotlin.helpers
 
 import org.antlr.v5.runtime.kotlin.BaseErrorListener
-import org.antlr.v5.runtime.kotlin.RecognitionException
-import org.antlr.v5.runtime.kotlin.Recognizer
+import org.antlr.v5.runtime.core.error.RecognitionException
+import org.antlr.v5.runtime.core.Recognizer
 import java.io.PrintStream
 
 class CustomStreamErrorListener(private val printStream: PrintStream) : BaseErrorListener() {

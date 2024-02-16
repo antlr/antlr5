@@ -5,11 +5,7 @@
  */
 package org.antlr.v5.test.runtime.java.api;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.BaseErrorListener;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.RecognitionException;
-import org.antlr.v5.runtime.Recognizer;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v5.runtime.tree.ErrorNode;
 import org.antlr.v5.runtime.tree.RuleNode;
@@ -30,7 +26,7 @@ public class TestVisitors {
 	@Test
 	public void testVisitTerminalNode() {
 		String input = "A";
-		VisitorBasicLexer lexer = new VisitorBasicLexer(new ANTLRInputStream(input));
+		VisitorBasicLexer lexer = new VisitorBasicLexer(CharStreams.fromString(input));
 		VisitorBasicParser parser = new VisitorBasicParser(new CommonTokenStream(lexer));
 
 		VisitorBasicParser.SContext context = parser.s();
@@ -67,7 +63,7 @@ public class TestVisitors {
 	@Test
 	public void testVisitErrorNode() {
 		String input = "";
-		VisitorBasicLexer lexer = new VisitorBasicLexer(new ANTLRInputStream(input));
+		VisitorBasicLexer lexer = new VisitorBasicLexer(CharStreams.fromString(input));
 		VisitorBasicParser parser = new VisitorBasicParser(new CommonTokenStream(lexer));
 
 		final List<String> errors = new ArrayList<>();
@@ -115,7 +111,7 @@ public class TestVisitors {
 	@Test
 	public void testShouldNotVisitEOF() {
 		String input = "A";
-		VisitorBasicLexer lexer = new VisitorBasicLexer(new ANTLRInputStream(input));
+		VisitorBasicLexer lexer = new VisitorBasicLexer(CharStreams.fromString(input));
 		VisitorBasicParser parser = new VisitorBasicParser(new CommonTokenStream(lexer));
 
 		VisitorBasicParser.SContext context = parser.s();
@@ -146,7 +142,7 @@ public class TestVisitors {
 	@Test
 	public void testShouldNotVisitTerminal() {
 		String input = "A";
-		VisitorBasicLexer lexer = new VisitorBasicLexer(new ANTLRInputStream(input));
+		VisitorBasicLexer lexer = new VisitorBasicLexer(CharStreams.fromString(input));
 		VisitorBasicParser parser = new VisitorBasicParser(new CommonTokenStream(lexer));
 
 		VisitorBasicParser.SContext context = parser.s();
@@ -180,7 +176,7 @@ public class TestVisitors {
 	@Test
 	public void testCalculatorVisitor() {
 		String input = "2 + 8 / 2";
-		VisitorCalcLexer lexer = new VisitorCalcLexer(new ANTLRInputStream(input));
+		VisitorCalcLexer lexer = new VisitorCalcLexer(CharStreams.fromString(input));
 		VisitorCalcParser parser = new VisitorCalcParser(new CommonTokenStream(lexer));
 
 		VisitorCalcParser.SContext context = parser.s();

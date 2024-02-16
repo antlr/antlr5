@@ -6,16 +6,7 @@
 
 package org.antlr.v5.runtime.tree.pattern;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.BailErrorStrategy;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.ListTokenSource;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.ParserInterpreter;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.RecognitionException;
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.atn.ATN;
 import org.antlr.v5.runtime.misc.MultiMap;
 import org.antlr.v5.runtime.misc.ParseCancellationException;
@@ -394,7 +385,7 @@ public class ParseTreePatternMatcher {
 			}
 			else {
 				TextChunk textChunk = (TextChunk)chunk;
-				ANTLRInputStream in = new ANTLRInputStream(textChunk.getText());
+				CharStream in = CharStreams.fromString(textChunk.getText());
 				lexer.setInputStream(in);
 				Token t = lexer.nextToken();
 				while ( t.getType()!=Token.EOF ) {

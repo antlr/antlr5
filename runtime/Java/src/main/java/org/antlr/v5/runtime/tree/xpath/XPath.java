@@ -6,12 +6,7 @@
 
 package org.antlr.v5.runtime.tree.xpath;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.LexerNoViableAltException;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.tree.ParseTree;
 
 import java.io.IOException;
@@ -83,9 +78,9 @@ public class XPath {
 	// TODO: check for invalid token/rule names, bad syntax
 
 	public XPathElement[] split(String path) {
-		ANTLRInputStream in;
+		CharStream in;
 		try {
-			in = new ANTLRInputStream(new StringReader(path));
+			in = CharStreams.fromFileName(path);
 		}
 		catch (IOException ioe) {
 			throw new IllegalArgumentException("Could not read path: "+path, ioe);

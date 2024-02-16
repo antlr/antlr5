@@ -3,7 +3,7 @@
  * Use of this file is governed by the BSD 3-clause license that
  * can be found in the LICENSE.txt file in the project root.
  */
-package org.antlr.v5.runtime.kotlin
+package org.antlr.v5.runtime.core.error
 
 import org.antlr.v5.runtime.core.Parser
 import org.antlr.v5.runtime.core.Recognizer

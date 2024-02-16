@@ -54,12 +54,15 @@ package <file.genPackage>
 <endif>
 <namedActions.header>
 
+import org.antlr.v5.runtime.core.*
+import org.antlr.v5.runtime.core.atn.*
+import org.antlr.v5.runtime.core.atn.ATN.Companion.INVALID_ALT_NUMBER
+import org.antlr.v5.runtime.core.context.*
+import org.antlr.v5.runtime.core.error.*
+import org.antlr.v5.runtime.core.dfa.*
+import org.antlr.v5.runtime.core.misc.*
+import org.antlr.v5.runtime.core.tree.*
 import org.antlr.v5.runtime.kotlin.*
-import org.antlr.v5.runtime.kotlin.atn.*
-import org.antlr.v5.runtime.kotlin.atn.ATN.Companion.INVALID_ALT_NUMBER
-import org.antlr.v5.runtime.kotlin.dfa.*
-import org.antlr.v5.runtime.kotlin.misc.*
-import org.antlr.v5.runtime.kotlin.tree.*
 
 <parser>
 >>
@@ -71,7 +74,7 @@ package <file.genPackage>
 <endif>
 <header>
 
-import org.antlr.v5.runtime.kotlin.tree.ParseTreeListener
+import org.antlr.v5.runtime.core.tree.ParseTreeListener
 
 /**
  * This interface defines a complete listener for a parse tree produced by [<file.parserName>].
@@ -110,9 +113,9 @@ package <file.genPackage>
 <endif>
 <header>
 
-import org.antlr.v5.runtime.kotlin.ParserRuleContext
-import org.antlr.v5.runtime.kotlin.tree.ErrorNode
-import org.antlr.v5.runtime.kotlin.tree.TerminalNode
+import org.antlr.v5.runtime.core.context.ParserRuleContext
+import org.antlr.v5.runtime.core.tree.ErrorNode
+import org.antlr.v5.runtime.core.tree.TerminalNode
 
 /**
  * This class provides an empty implementation of [<file.grammarName>Listener],
@@ -161,7 +164,7 @@ package <file.genPackage>
 <endif>
 <header>
 
-import org.antlr.v5.runtime.kotlin.tree.ParseTreeVisitor
+import org.antlr.v5.runtime.core.tree.ParseTreeVisitor
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced by [<file.parserName>].
@@ -226,6 +229,11 @@ Parser(parser, funcs, atn, sempredFuncs, superClass) ::= <<
 Parser_(parser, funcs, atn, sempredFuncs, superClass) ::= <<
 @Suppress("UNUSED_VARIABLE", "ClassName", "FunctionName", "LocalVariableName", "ConstPropertyName", "ConvertSecondaryConstructorToPrimary")
 public open class <parser.name>(input: TokenStream) : <superClass; null="Parser">(input) {
+
+	init {
+		addErrorListener(ConsoleErrorListener())
+	}
+
     private companion object {
         init {
             RuntimeMetaData.checkVersion("<file.ANTLRVersion>", RuntimeMetaData.runtimeVersion)
@@ -918,10 +926,13 @@ package <lexerFile.genPackage>
 <endif>
 <namedActions.header>
 
+import org.antlr.v5.runtime.core.*
+import org.antlr.v5.runtime.core.atn.*
+import org.antlr.v5.runtime.core.context.*
+import org.antlr.v5.runtime.core.error.*
+import org.antlr.v5.runtime.core.dfa.*
+import org.antlr.v5.runtime.core.misc.*
 import org.antlr.v5.runtime.kotlin.*
-import org.antlr.v5.runtime.kotlin.atn.*
-import org.antlr.v5.runtime.kotlin.dfa.*
-import org.antlr.v5.runtime.kotlin.misc.*
 
 <lexer>
 >>
@@ -929,6 +940,11 @@ import org.antlr.v5.runtime.kotlin.misc.*
 Lexer(lexer, atn, actionFuncs, sempredFuncs, superClass) ::= <<
 @Suppress("ClassName", "FunctionName", "LocalVariableName", "ConstPropertyName")
 public open class <lexer.name>(input: CharStream) : <superClass; null="Lexer">(input) {
+
+	init {
+		addErrorListener(ConsoleErrorListener())
+	}
+
     private companion object {
         init {
             RuntimeMetaData.checkVersion("<lexerFile.ANTLRVersion>", RuntimeMetaData.runtimeVersion)

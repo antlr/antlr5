@@ -7,7 +7,7 @@ package org.antlr.v5.test.runtime.kotlin.commonTest.org.antlr.v5.kotlinruntime
 
 import org.antlr.v5.runtime.kotlin.ext.codePointIndices
 import org.antlr.v5.runtime.kotlin.CharStreams
-import org.antlr.v5.runtime.kotlin.misc.Interval
+import org.antlr.v5.runtime.core.misc.Interval
 import org.junit.jupiter.api.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals

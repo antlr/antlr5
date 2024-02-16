@@ -10,6 +10,7 @@ import org.antlr.v5.runtime.core.atn.ATN
 import org.antlr.v5.runtime.core.atn.ATNSimulator
 import org.antlr.v5.runtime.core.context.RuleContext
 import org.antlr.v5.runtime.core.error.ANTLRErrorListener
+import org.antlr.v5.runtime.core.error.ProxyErrorListener
 import org.antlr.v5.runtime.core.error.RecognitionException
 import org.antlr.v5.runtime.core.info.ParseInfo
 import org.antlr.v5.runtime.core.jvm.CopyOnWriteArrayList
@@ -153,12 +154,10 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
     get() = null
 
   public val errorListeners: List<ANTLRErrorListener>
-      // TODO implement a single callback listener, move multi-listener to host language
     get() = _listeners
 
   public val errorListenerDispatch: ANTLRErrorListener
-      // TODO implement a single callback listener, move multi-listener to host language
-    get() = errorListeners.get(0); // ProxyErrorListener(errorListeners)
+    get() = ProxyErrorListener(errorListeners)
 
   public abstract var tokenFactory: TokenFactory<*>
 

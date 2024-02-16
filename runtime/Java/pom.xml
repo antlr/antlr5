@@ -23,10 +23,25 @@
 	<properties>
 		<!-- Assumes dot is in the system path, or specified for the build. -->
 		<dot.path>dot</dot.path>
-	</properties>
+        <junit.version>5.9.0</junit.version>
+    </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin> <!-- create src jar -->
 				<groupId>org.apache.maven.plugins</groupId>

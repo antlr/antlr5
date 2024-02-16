@@ -6,7 +6,6 @@
 
 package org.antlr.v5.test.runtime.java.api.perf;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
 import org.antlr.v5.runtime.CharStream;
 import org.antlr.v5.runtime.CharStreams;
 import org.antlr.v5.runtime.CommonTokenStream;
@@ -365,7 +364,7 @@ public class TimeLexerSpeed { // don't call it Test else it'll run during "mvn t
 		try (InputStream is = TimeLexerSpeed.class.getClassLoader().getResourceAsStream(Parser_java_file);
 		     InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 		     BufferedReader br = new BufferedReader(isr)) {
-			CharStream input = new ANTLRInputStream(br);
+			CharStream input = CharStreams.fromReader(br);
 			JavaLexer lexer = new JavaLexer(input);
 			double avg = tokenize(lexer, n, clearLexerDFACache);
 			String currentMethodName = new Exception().getStackTrace()[0].getMethodName();
@@ -399,7 +398,7 @@ public class TimeLexerSpeed { // don't call it Test else it'll run during "mvn t
 		try (InputStream is = TimeLexerSpeed.class.getClassLoader().getResourceAsStream(PerfDir+"/"+fileName);
 		     InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 		     BufferedReader br = new BufferedReader(isr)) {
-			CharStream input = new ANTLRInputStream(br);
+			CharStream input = CharStreams.fromReader(br);
 			graphemesLexer lexer = new graphemesLexer(input);
 			double avg = tokenize(lexer, n, clearLexerDFACache);
 			String currentMethodName = new Exception().getStackTrace()[0].getMethodName();
