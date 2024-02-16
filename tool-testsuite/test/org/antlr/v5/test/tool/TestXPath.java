@@ -16,7 +16,6 @@ import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.java.JavaRunner;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
 import org.antlr.v5.test.runtime.states.jvm.JavaExecutedState;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
