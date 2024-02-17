@@ -390,8 +390,8 @@ public class TestSymbolIssues {
 				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:2:18: chars 'a' used multiple times in set [aa-f]\n" +
 				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:3:18: chars {'D'..'F'} used multiple times in set [A-FD-J]\n" +
 				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:4:38: chars {'O'..'R'} used multiple times in set 'Z' | 'K'..'R' | 'O'..'V'\n" +
-				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:0:: chars {'i'..'l'} used multiple times in set {'g'..'l'}\n" +
-				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:0:: chars {'\\n'..'\\r'} used multiple times in set {'\\n'..'\\r'}\n"
+				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:5:0: chars {'i'..'l'} used multiple times in set {'g'..'l'}\n" +
+				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:7:0: chars {'\\n'..'\\r'} used multiple times in set {'\\n'..'\\r'}\n"
 		};
 
 		testErrors(test, false);
@@ -407,7 +407,7 @@ public class TestSymbolIssues {
 
 				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:3:18: chars {'a'..'f'} used multiple times in set [a-fA-F0-9]\n" +
 				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:4:32: chars {'g'..'l'} used multiple times in set 'g'..'l' | 'G'..'L'\n" +
-				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:0:: chars {'M'..'Q', 'm'..'q'} used multiple times in set {'M'..'Q', 'm'..'q'}\n"
+				"warning(" + ErrorType.CHARACTERS_COLLISION_IN_SET.code + "): L.g4:5:0: chars {'M'..'Q', 'm'..'q'} used multiple times in set {'M'..'Q', 'm'..'q'}\n"
 		};
 
 		testErrors(test, false);
