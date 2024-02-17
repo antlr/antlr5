@@ -91,12 +91,9 @@ public class ToolTestUtils {
 
 			StringBuilder buf = new StringBuilder();
 			for (ANTLRMessage message : errorQueue.all) {
-				ANTLRMessage newMessage = new ANTLRMessage(message.getErrorType(), message.getCause(), message.offendingToken, message.getArgs());
-				newMessage.line = message.line;
-				newMessage.charPosition = message.charPosition;
-				if (message.fileName != null) {
-					newMessage.fileName = new File(message.fileName).getName();
-				}
+				String newFileName = message.fileName != null ? new File(message.fileName).getName() : null;
+				ANTLRMessage newMessage = new ANTLRMessage(message.getErrorType(), message.getCause(),
+						newFileName, message.offendingToken, message.getArgs());
 				ST st = errorQueue.tool.errMgr.getMessageTemplate(newMessage);
 				buf.append(st.render());
 				buf.append("\n");
