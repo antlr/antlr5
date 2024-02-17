@@ -12,7 +12,6 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.v5.analysis.LeftRecursiveRuleTransformer;
-import org.antlr.v5.misc.CharSupport;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.ATNBuilder;
 import org.antlr.v5.parse.GrammarASTAdaptor;
@@ -245,17 +244,6 @@ public class ParserATNFactory implements ATNFactory {
 		                           b.getToken().getText());
 		// From a..b, yield ATN for just a.
 		return tokenRef((TerminalAST)a);
-	}
-
-	protected int getTokenType(GrammarAST atom) {
-		int ttype;
-		if ( g.isLexer() ) {
-			ttype = CharSupport.getCharValueFromGrammarCharLiteral(atom.getText());
-		}
-		else {
-			ttype = g.getTokenType(atom.getText());
-		}
-		return ttype;
 	}
 
 	/** For a non-lexer, just build a simple token reference atom. */
