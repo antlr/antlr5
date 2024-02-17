@@ -26,6 +26,11 @@
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr5-core-runtime</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
 	<properties>
@@ -63,7 +68,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>1.8</jvmTarget>
+                    <jvmTarget>17</jvmTarget>
                     <args>
                         <arg>-Xmulti-platform</arg>
                         <arg>-Xexpect-actual-classes</arg>
@@ -88,9 +93,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <release>8</release>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>17</release>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
         </plugins>

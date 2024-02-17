@@ -6,7 +6,12 @@
 
 package org.antlr.v5.runtime.kotlin
 
-import org.antlr.v5.runtime.kotlin.misc.ParseCancellationException
+import org.antlr.v5.runtime.core.Parser
+import org.antlr.v5.runtime.core.Token
+import org.antlr.v5.runtime.core.error.DefaultErrorStrategy
+import org.antlr.v5.runtime.core.error.InputMismatchException
+import org.antlr.v5.runtime.core.error.RecognitionException
+import org.antlr.v5.runtime.core.misc.ParseCancellationException
 
 /**
  * This implementation of [ANTLRErrorStrategy] responds to syntax errors

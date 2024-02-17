@@ -6,22 +6,7 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.ANTLRFileStream;
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.BailErrorStrategy;
-import org.antlr.v5.runtime.BaseErrorListener;
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.DefaultErrorStrategy;
-import org.antlr.v5.runtime.DiagnosticErrorListener;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.ParserInterpreter;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.RecognitionException;
-import org.antlr.v5.runtime.Recognizer;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenStream;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.atn.ATN;
 import org.antlr.v5.runtime.atn.ATNConfig;
 import org.antlr.v5.runtime.atn.ATNConfigSet;
@@ -47,15 +32,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -102,10 +87,6 @@ public class TestPerformance {
 	 * otherwise fit into memory.
 	 */
 	private static final boolean PRELOAD_SOURCES = true;
-	/**
-	 * The encoding to use when reading source files.
-	 */
-	private static final String ENCODING = "UTF-8";
 	/**
 	 * The maximum number of files to parse in a single iteration.
 	 */
@@ -1855,7 +1836,7 @@ public class TestPerformance {
 
 	protected static final class InputDescriptor {
 		private final String source;
-		private Reference<CloneableANTLRFileStream> inputStream;
+		private Reference<CloneableStream> inputStream;
 
 		public InputDescriptor(String source) {
 			this.source = source;
@@ -1866,18 +1847,18 @@ public class TestPerformance {
 
 
 		public synchronized CharStream getInputStream() {
-			CloneableANTLRFileStream stream = inputStream != null ? inputStream.get() : null;
+			CloneableStream stream = inputStream != null ? inputStream.get() : null;
 			if (stream == null) {
 				try {
-					stream = new CloneableANTLRFileStream(source, ENCODING);
+					stream = CloneableStream.of(source, StandardCharsets.UTF_8);
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);
 				}
 
 				if (PRELOAD_SOURCES) {
-					inputStream = new StrongReference<CloneableANTLRFileStream>(stream);
+					inputStream = new StrongReference<CloneableStream>(stream);
 				} else {
-					inputStream = new SoftReference<CloneableANTLRFileStream>(stream);
+					inputStream = new SoftReference<CloneableStream>(stream);
 				}
 			}
 
@@ -1885,14 +1866,19 @@ public class TestPerformance {
 		}
 	}
 
-	protected static class CloneableANTLRFileStream extends ANTLRFileStream {
+	protected static class CloneableStream extends UnbufferedCharStream {
 
-		public CloneableANTLRFileStream(String fileName, String encoding) throws IOException {
-			super(fileName, encoding);
+		public static CloneableStream of(String fileName, Charset charSet) throws IOException {
+			Reader reader = new FileReader(fileName, charSet);
+			return new CloneableStream(reader);
 		}
 
-		public ANTLRInputStream createCopy() {
-			ANTLRInputStream stream = new ANTLRInputStream(this.data, this.n);
+		public CloneableStream(Reader reader) throws IOException {
+			super(reader);
+		}
+
+		public CharStream createCopy() {
+			UnbufferedCharStream stream = new UnbufferedCharStream(data, n);
 			stream.name = this.getSourceName();
 			return stream;
 		}

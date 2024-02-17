@@ -5,11 +5,7 @@
  */
 package org.antlr.v5.test.runtime.java.api;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.BufferedTokenStream;
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenStream;
+import org.antlr.v5.runtime.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,14 +20,14 @@ public class TestTokenStream {
 	 */
 	@Test
 	public void testBufferedTokenStreamReuseAfterFill() {
-		CharStream firstInput = new ANTLRInputStream("A");
+		CharStream firstInput = CharStreams.fromString("A");
 		BufferedTokenStream tokenStream = new BufferedTokenStream(new VisitorBasicLexer(firstInput));
 		tokenStream.fill();
 		assertEquals(2, tokenStream.size());
 		assertEquals(VisitorBasicLexer.A, tokenStream.get(0).getType());
 		assertEquals(Token.EOF, tokenStream.get(1).getType());
 
-		CharStream secondInput = new ANTLRInputStream("AA");
+		CharStream secondInput = CharStreams.fromString("AA");
 		tokenStream.setTokenSource(new VisitorBasicLexer(secondInput));
 		tokenStream.fill();
 		assertEquals(3, tokenStream.size());

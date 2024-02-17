@@ -6,7 +6,8 @@
 
 package org.antlr.v5.runtime.kotlin.tree
 
-import org.antlr.v5.runtime.kotlin.ParserRuleContext
+import org.antlr.v5.runtime.core.context.ParserRuleContext
+import org.antlr.v5.runtime.core.tree.*
 import kotlin.jvm.JvmStatic
 
 public open class ParseTreeWalker {

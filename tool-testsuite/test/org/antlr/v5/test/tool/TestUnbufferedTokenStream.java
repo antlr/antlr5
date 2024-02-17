@@ -6,13 +6,7 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenSource;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.UnbufferedTokenStream;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
 
@@ -38,9 +32,7 @@ public class TestUnbufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 302;
-        CharStream input = new ANTLRInputStream(
-			new StringReader("x = 302;")
-		);
+        CharStream input = CharStreams.fromString("x = 302;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
         TokenStream tokens = new UnbufferedTokenStream<Token>(lexEngine);
 
@@ -64,9 +56,7 @@ public class TestUnbufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 302;
-        CharStream input = new ANTLRInputStream(
-			new StringReader("x = 302;")
-		);
+        CharStream input = CharStreams.fromString("x = 302;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
 		TestingUnbufferedTokenStream<Token> tokens = new TestingUnbufferedTokenStream<Token>(lexEngine);
 
@@ -101,9 +91,7 @@ public class TestUnbufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 302;
-        CharStream input = new ANTLRInputStream(
-			new StringReader("x = 302;")
-		);
+        CharStream input = CharStreams.fromString("x = 302;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
 		TestingUnbufferedTokenStream<Token> tokens = new TestingUnbufferedTokenStream<Token>(lexEngine);
 
@@ -136,9 +124,7 @@ public class TestUnbufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 302;
-        CharStream input = new ANTLRInputStream(
-			new StringReader("x = 302 + 1;")
-		);
+        CharStream input = CharStreams.fromString("x = 302 + 1;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
 		TestingUnbufferedTokenStream<Token> tokens = new TestingUnbufferedTokenStream<Token>(lexEngine);
 

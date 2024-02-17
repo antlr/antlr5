@@ -5,8 +5,10 @@
  */
 package org.antlr.v5.runtime.kotlin
 
+import org.antlr.v5.runtime.core.CharStream
+import org.antlr.v5.runtime.core.IntStream
 import org.antlr.v5.runtime.kotlin.ext.codePointIndices
-import org.antlr.v5.runtime.kotlin.misc.Interval
+import org.antlr.v5.runtime.core.misc.Interval
 
 public class StringCharStream(
   private val source: String,

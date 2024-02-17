@@ -6,7 +6,8 @@
 
 package org.antlr.v5.runtime.kotlin.tree
 
-import org.antlr.v5.runtime.kotlin.misc.IntegerStack
+import org.antlr.v5.runtime.core.misc.IntegerStack
+import org.antlr.v5.runtime.core.tree.*
 
 /**
  * An iterative (read: non-recursive) pre-order and post-order tree walker that

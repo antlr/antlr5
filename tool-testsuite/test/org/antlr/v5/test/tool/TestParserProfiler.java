@@ -7,11 +7,7 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.runtime.RecognitionException;
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.ParserInterpreter;
-import org.antlr.v5.runtime.ParserRuleContext;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.atn.DecisionInfo;
 import org.antlr.v5.test.runtime.states.ExecutedState;
 import org.antlr.v5.tool.Grammar;
@@ -239,7 +235,7 @@ public class TestParserProfiler {
 		for (String s : input) {
 			lexEngine.reset();
 			parser.reset();
-			lexEngine.setInputStream(new ANTLRInputStream(s));
+			lexEngine.setInputStream(CharStreams.fromString(s));
 			CommonTokenStream tokens = new CommonTokenStream(lexEngine);
 			parser.setInputStream(tokens);
 			Rule r = g.rules.get(startRule);

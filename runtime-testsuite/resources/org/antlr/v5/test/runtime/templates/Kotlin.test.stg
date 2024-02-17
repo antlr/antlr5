@@ -180,7 +180,7 @@ inner class LeafListener : TBaseListener() {
 >>
 
 WalkListener(s) ::= <<
-val walker = ParseTreeWalker()
+val walker = org.antlr.v5.runtime.kotlin.tree.ParseTreeWalker()
 walker.walk(LeafListener(), <s> as ParseTree)
 >>
 

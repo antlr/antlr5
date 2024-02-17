@@ -6,13 +6,7 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.BufferedTokenStream;
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenSource;
-import org.antlr.v5.runtime.TokenStream;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +29,7 @@ public class TestBufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 3 * 0 + 2 * 0;
-        CharStream input = new ANTLRInputStream("x = 3 * 0 + 2 * 0;");
+        CharStream input = CharStreams.fromString("x = 3 * 0 + 2 * 0;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
         TokenStream tokens = createTokenStream(lexEngine);
 
@@ -56,7 +50,7 @@ public class TestBufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 3 * 0 + 2 * 0;
-        CharStream input = new ANTLRInputStream("x = 3 * 0 + 2 * 0;");
+        CharStream input = CharStreams.fromString("x = 3 * 0 + 2 * 0;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
         TokenStream tokens = createTokenStream(lexEngine);
 
@@ -77,7 +71,7 @@ public class TestBufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 3 * 0 + 2 * 0;
-        CharStream input = new ANTLRInputStream("x = 3 * 0 + 2 * 0;");
+        CharStream input = CharStreams.fromString("x = 3 * 0 + 2 * 0;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
         TokenStream tokens = createTokenStream(lexEngine);
 
@@ -107,7 +101,7 @@ public class TestBufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 3 * 0 + 2 * 0;
-        CharStream input = new ANTLRInputStream("x = 3 * 0 + 2 * 0;");
+        CharStream input = CharStreams.fromString("x = 3 * 0 + 2 * 0;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
         TokenStream tokens = createTokenStream(lexEngine);
 
@@ -134,7 +128,7 @@ public class TestBufferedTokenStream {
             "WS : ' '+;\n");
         // Tokens: 012345678901234567
         // Input:  x = 3 * 0 + 2 * 0;
-        CharStream input = new ANTLRInputStream("x = 3 * 0 + 2 * 0;");
+        CharStream input = CharStreams.fromString("x = 3 * 0 + 2 * 0;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
         TokenStream tokens = createTokenStream(lexEngine);
 

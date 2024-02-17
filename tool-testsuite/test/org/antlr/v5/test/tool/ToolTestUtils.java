@@ -9,7 +9,8 @@ package org.antlr.v5.test.tool;
 import org.antlr.v5.Tool;
 import org.antlr.v5.automata.LexerATNFactory;
 import org.antlr.v5.automata.ParserATNFactory;
-import org.antlr.v5.runtime.ANTLRInputStream;
+import org.antlr.v5.runtime.CharStream;
+import org.antlr.v5.runtime.CharStreams;
 import org.antlr.v5.runtime.Lexer;
 import org.antlr.v5.runtime.Token;
 import org.antlr.v5.runtime.atn.*;
@@ -176,7 +177,7 @@ public class ToolTestUtils {
 	}
 
 	public static IntegerList getTokenTypesViaATN(String input, LexerATNSimulator lexerATN) {
-		ANTLRInputStream in = new ANTLRInputStream(input);
+		CharStream in = CharStreams.fromString(input);
 		IntegerList tokenTypes = new IntegerList();
 		int ttype;
 		do {

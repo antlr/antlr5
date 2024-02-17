@@ -7,11 +7,7 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.gui.Trees;
-import org.antlr.v5.runtime.ANTLRInputStream;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.ParserInterpreter;
-import org.antlr.v5.runtime.ParserRuleContext;
+import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.atn.ATNState;
 import org.antlr.v5.runtime.atn.AmbiguityInfo;
 import org.antlr.v5.runtime.atn.BasicBlockStartState;
@@ -224,7 +220,7 @@ public class TestAmbigParseTrees {
 	{
 		InterpreterTreeTextProvider nodeTextProvider = new InterpreterTreeTextProvider(g.getRuleNames());
 
-		LexerInterpreter lexEngine = lg.createLexerInterpreter(new ANTLRInputStream(input));
+		LexerInterpreter lexEngine = lg.createLexerInterpreter(CharStreams.fromString(input));
 		CommonTokenStream tokens = new CommonTokenStream(lexEngine);
 		final GrammarParserInterpreter parser = g.createGrammarParserInterpreter(tokens);
 		parser.setProfile(true);
@@ -264,7 +260,7 @@ public class TestAmbigParseTrees {
 								 String input,
 								 String expectedParseTree)
 	{
-		LexerInterpreter lexEngine = lg.createLexerInterpreter(new ANTLRInputStream(input));
+		LexerInterpreter lexEngine = lg.createLexerInterpreter(CharStreams.fromString(input));
 		CommonTokenStream tokens = new CommonTokenStream(lexEngine);
 		ParserInterpreter parser = g.createGrammarParserInterpreter(tokens);
 		RuleStartState ruleStartState = g.atn.ruleToStartState[g.getRule(startRule).index];

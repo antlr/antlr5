@@ -5,10 +5,12 @@
  */
 package org.antlr.v5.runtime.kotlin.ext
 
-import org.antlr.v5.runtime.kotlin.highSurrogate
-import org.antlr.v5.runtime.kotlin.isBmpCodePoint
-import org.antlr.v5.runtime.kotlin.isValidCodePoint
-import org.antlr.v5.runtime.kotlin.lowSurrogate
+import org.antlr.v5.runtime.core.ext.toHex
+import org.antlr.v5.runtime.core.misc.highSurrogate
+import org.antlr.v5.runtime.core.misc.isBmpCodePoint
+import org.antlr.v5.runtime.core.misc.isValidCodePoint
+import org.antlr.v5.runtime.core.misc.lowSurrogate
+
 
 /**
  * Appends the string representation of the [codePoint] argument to this sequence.

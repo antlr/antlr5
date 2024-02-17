@@ -1,11 +1,15 @@
 package org.antlr.v5.test.runtime.kotlin;
 
-import org.antlr.v5.runtime.kotlin.*;
-import org.antlr.v5.runtime.kotlin.atn.PredictionMode;
-import org.antlr.v5.runtime.kotlin.atn.ProfilingATNSimulator;
-import org.antlr.v5.runtime.kotlin.tree.ParseTree;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.atn.ParserATNSimulator;
+import org.antlr.v5.runtime.core.atn.PredictionMode;
+import org.antlr.v5.runtime.core.atn.ProfilingATNSimulator;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.tree.ParseTree;
+import org.antlr.v5.runtime.kotlin.DiagnosticErrorListener;
 import org.antlr.v5.runtime.kotlin.tree.ParseTreeWalker;
-import org.antlr.v5.runtime.kotlin.atn.ParserATNSimulator;
 import org.antlr.v5.test.runtime.JvmRunner;
 import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.kotlin.helpers.*;
