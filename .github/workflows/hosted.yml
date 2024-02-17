@@ -73,10 +73,14 @@ jobs:
         cd runtime/Core
         mvn test
 
+    - uses: ASzc/change-string-case-action@v6
+      with:
+        string: ${{ matrix.target }}
+    
     - name: Unit test target module
       if: matrix.target != 'tool'
       run: |
-        cd runtime/${{ matrix.target }}
+        cd runtime/${{ steps.string.outputs.capitalized }}
         mvn test
 
     - name: Test tool
