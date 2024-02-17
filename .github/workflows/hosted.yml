@@ -73,14 +73,15 @@ jobs:
         cd runtime/Core
         mvn test
 
-    - uses: ASzc/change-string-case-action@v6
+    - name: Capitalize
+      uses: ASzc/change-string-case-action@v6
       with:
         string: ${{ matrix.target }}
     
     - name: Unit test target module
       if: matrix.target != 'tool'
       run: |
-        cd runtime/${{ steps.string.outputs.capitalized }}
+        cd runtime/${{ steps.Capitalize.outputs.capitalized }}
         mvn test
 
     - name: Test tool
