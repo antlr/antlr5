@@ -63,8 +63,21 @@ jobs:
       with:
         maven-version: 3.9.4
 
-    - name: Build ANTLR with Maven
+    - name: Build ANTLR modules without testing
       run: mvn install -DskipTests=true -Darguments="-Dmaven.javadoc.skip=true" -B -V
+
+
+    - name: Unit test core module
+      if: matrix.target != 'tool'
+      run: |
+        cd runtime/Core
+        mvn test
+
+    - name: Unit test target module
+      if: matrix.target != 'tool'
+      run: |
+        cd runtime/${{ matrix.target }}
+        mvn test
 
     - name: Test tool
       if: matrix.target == 'tool'
@@ -72,7 +85,7 @@ jobs:
         cd tool-testsuite
         mvn test
 
-    - name: Test runtime (Windows)
+    - name: End-to-end test runtime (Windows)
       if: startsWith(matrix.os, 'windows') && (matrix.target != 'tool')
       run: |
         gci env:* | sort-object name
@@ -83,7 +96,7 @@ jobs:
       env:
         CMAKE_GENERATOR: Ninja
 
-    - name: Test runtime (non-Windows)
+    - name: End-to-end test runtime (non-Windows)
       if: (startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos'))  && (matrix.target != 'tool')
       run: |
         env
