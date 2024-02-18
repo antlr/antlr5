@@ -74,6 +74,8 @@ jobs:
         mvn test
 
     - id: capitalize
+      name: Capitalize target module name
+      if: matrix.target != 'tool'
       uses: ASzc/change-string-case-action@v6
       with:
         string: ${{ matrix.target }}
