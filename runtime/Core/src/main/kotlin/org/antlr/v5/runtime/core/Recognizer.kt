@@ -159,7 +159,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
   public val errorListenerDispatch: ANTLRErrorListener
     get() = ProxyErrorListener(errorListeners)
 
-  public abstract var tokenFactory: TokenFactory<*>
+  public abstract var tokenFactory: TokenFactory<out Token>
 
   public fun getTokenType(tokenName: String): Int {
     val ttype = tokenTypeMap[tokenName]

@@ -7,7 +7,7 @@
 package org.antlr.v5.analysis;
 
 import org.antlr.v5.runtime.atn.*;
-import org.antlr.v5.runtime.misc.OrderedHashSet;
+import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;

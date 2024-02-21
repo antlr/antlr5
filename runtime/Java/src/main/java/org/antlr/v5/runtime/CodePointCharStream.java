@@ -6,14 +6,15 @@
 
 package org.antlr.v5.runtime;
 
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.IntStream;
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.misc.Interval;
 
 import java.nio.charset.StandardCharsets;
 
 /**
- * Alternative to {@link ANTLRInputStream} which treats the input
- * as a series of Unicode code points, instead of a series of UTF-16
- * code units.
+ * Treats the input as a series of Unicode code points,
+ * instead of a series of UTF-16 code units.
  *
  * Use this if you need to parse input which potentially contains
  * Unicode values > U+FFFF.
@@ -134,7 +135,7 @@ public abstract class CodePointCharStream implements CharStream {
 
 	@Override
 	public final String toString() {
-		return getText(Interval.of(0, size - 1));
+		return getText(Interval.Companion.of(0, size - 1));
 	}
 
 	// 8-bit storage for code points <= U+00FF.
@@ -151,8 +152,8 @@ public abstract class CodePointCharStream implements CharStream {
 		/** Return the UTF-16 encoded string for the given interval */
 		@Override
 		public String getText(Interval interval) {
-			int startIdx = Math.min(interval.a, size);
-			int len = Math.min(interval.b - interval.a + 1, size - startIdx);
+			int startIdx = Math.min(interval.getA(), size);
+			int len = Math.min(interval.getB() - interval.getA() + 1, size - startIdx);
 
 			// We know the maximum code point in byteArray is U+00FF,
 			// so we can treat this as if it were ISO-8859-1, aka Latin-1,
@@ -203,8 +204,8 @@ public abstract class CodePointCharStream implements CharStream {
 		/** Return the UTF-16 encoded string for the given interval */
 		@Override
 		public String getText(Interval interval) {
-			int startIdx = Math.min(interval.a, size);
-			int len = Math.min(interval.b - interval.a + 1, size - startIdx);
+			int startIdx = Math.min(interval.getA(), size);
+			int len = Math.min(interval.getB() - interval.getA() + 1, size - startIdx);
 
 			// We know there are no surrogates in this
 			// array, since otherwise we would be given a
@@ -258,8 +259,8 @@ public abstract class CodePointCharStream implements CharStream {
 		/** Return the UTF-16 encoded string for the given interval */
 		@Override
 		public String getText(Interval interval) {
-			int startIdx = Math.min(interval.a, size);
-			int len = Math.min(interval.b - interval.a + 1, size - startIdx);
+			int startIdx = Math.min(interval.getA(), size);
+			int len = Math.min(interval.getB() - interval.getA() + 1, size - startIdx);
 
 			// Note that we pass the int[] code points to the String constructor --
 			// this is supported, and the constructor will convert to UTF-16 internally.

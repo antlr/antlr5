@@ -5,7 +5,9 @@
  */
 package org.antlr.v5.runtime;
 
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.TokenStream;
+import org.antlr.v5.runtime.core.misc.Interval;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -357,14 +359,14 @@ public class TokenStreamRewriter {
 	 *  instructions given to this rewriter.
  	 */
 	public String getText() {
-		return getText(DEFAULT_PROGRAM_NAME, Interval.of(0,tokens.size()-1));
+		return getText(DEFAULT_PROGRAM_NAME, Interval.Companion.of(0,tokens.size()-1));
 	}
 
 	/** Return the text from the original tokens altered per the
 	 *  instructions given to this rewriter in programName.
  	 */
 	public String getText(String programName) {
-		return getText(programName, Interval.of(0,tokens.size()-1));
+		return getText(programName, Interval.Companion.of(0,tokens.size()-1));
 	}
 
 	/** Return the text associated with the tokens in the interval from the
@@ -382,8 +384,8 @@ public class TokenStreamRewriter {
 
 	public String getText(String programName, Interval interval) {
 		List<RewriteOperation> rewrites = programs.get(programName);
-		int start = interval.a;
-		int stop = interval.b;
+		int start = interval.getA();
+		int stop = interval.getB();
 
 		// ensure start/end are in range
 		if ( stop>tokens.size()-1 ) stop = tokens.size()-1;
@@ -405,7 +407,7 @@ public class TokenStreamRewriter {
 			Token t = tokens.get(i);
 			if ( op==null ) {
 				// no operation at that index, just dump token
-				if ( t.getType()!=Token.EOF ) buf.append(t.getText());
+				if ( t.getType()!= Token.EOF ) buf.append(t.getText());
 				i++; // move to next token
 			}
 			else {

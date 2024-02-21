@@ -6,7 +6,8 @@
 
 package org.antlr.v5.runtime;
 
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
+import org.antlr.v5.runtime.core.*;
 
 import java.util.List;
 
@@ -46,9 +47,9 @@ public class ListTokenSource implements TokenSource {
 
 	/**
 	 * This is the backing field for {@link #getTokenFactory} and
-	 * {@link setTokenFactory}.
+	 * {@link #setTokenFactory}.
 	 */
-	private TokenFactory<?> _factory = CommonTokenFactory.DEFAULT;
+	private TokenFactory<?> _factory = CommonTokenFactory.Companion.getDEFAULT();
 
 	/**
 	 * Constructs a new {@link ListTokenSource} instance from the specified

@@ -6,6 +6,9 @@
 
 package org.antlr.v5.runtime;
 
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.IntStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;

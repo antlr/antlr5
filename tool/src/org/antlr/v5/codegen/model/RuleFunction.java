@@ -25,7 +25,7 @@ import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.GrammarASTAdaptor;
 import org.antlr.v5.runtime.atn.ATNState;
 import org.antlr.v5.runtime.misc.IntervalSet;
-import org.antlr.v5.runtime.misc.OrderedHashSet;
+import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
 import org.antlr.v5.runtime.misc.Pair;
 import org.antlr.v5.tool.Attribute;
 import org.antlr.v5.tool.ErrorType;

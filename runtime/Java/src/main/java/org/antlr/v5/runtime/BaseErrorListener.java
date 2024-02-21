@@ -5,8 +5,13 @@
  */
 package org.antlr.v5.runtime;
 
-import org.antlr.v5.runtime.atn.ATNConfigSet;
-import org.antlr.v5.runtime.dfa.DFA;
+import org.antlr.v5.runtime.core.atn.ATNConfigSet;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.Recognizer;
+import org.antlr.v5.runtime.core.error.ANTLRErrorListener;
+import org.antlr.v5.runtime.core.error.RecognitionException;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.BitSet;
 
@@ -19,7 +24,7 @@ import java.util.BitSet;
  */
 public class BaseErrorListener implements ANTLRErrorListener {
 	@Override
-	public void syntaxError(Recognizer<?, ?> recognizer,
+	public void syntaxError(@NotNull Recognizer<?, ?> recognizer,
 							Object offendingSymbol,
 							int line,
 							int charPositionInLine,

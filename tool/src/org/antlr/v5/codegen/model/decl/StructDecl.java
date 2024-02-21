@@ -12,7 +12,7 @@ import org.antlr.v5.codegen.model.ListenerDispatchMethod;
 import org.antlr.v5.codegen.model.ModelElement;
 import org.antlr.v5.codegen.model.OutputModelObject;
 import org.antlr.v5.codegen.model.VisitorDispatchMethod;
-import org.antlr.v5.runtime.misc.OrderedHashSet;
+import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
 import org.antlr.v5.tool.Attribute;
 import org.antlr.v5.tool.Rule;
 

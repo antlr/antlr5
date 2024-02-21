@@ -5,6 +5,9 @@
  */
 package org.antlr.v5.runtime;
 
+import org.antlr.v5.runtime.core.Recognizer;
+import org.antlr.v5.runtime.core.error.RecognitionException;
+
 /**
  *
  * @author Sam Harwell

@@ -11,7 +11,7 @@ import org.antlr.v5.runtime.RuleContext;
 import org.antlr.v5.runtime.misc.Pair;
 import org.antlr.v5.runtime.tree.ParseTree;
 import org.antlr.v5.runtime.tree.TerminalNode;
-import org.antlr.v5.runtime.tree.xpath.XPath;
+import org.antlr.v5.runtime._unused.xpath.XPath;
 import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.java.JavaRunner;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;

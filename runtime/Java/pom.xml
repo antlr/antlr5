@@ -24,9 +24,20 @@
 		<!-- Assumes dot is in the system path, or specified for the build. -->
 		<dot.path>dot</dot.path>
         <junit.version>5.9.0</junit.version>
+        <kotlin.version>2.0.0-Beta3</kotlin.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr5-core-runtime</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
