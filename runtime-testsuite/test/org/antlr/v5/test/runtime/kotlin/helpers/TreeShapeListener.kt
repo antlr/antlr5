@@ -14,7 +14,7 @@ class TreeShapeListener : ParseTreeListener {
 
     override fun enterEveryRule(ctx: ParserRuleContext) {
         for (i in 0 until ctx.childCount) {
-            val parent = ctx.getChild(i)!!.readParent()
+            val parent = ctx.getChild(i)!!.getParent()
             check(!(parent !is RuleNode || parent.ruleContext !== ctx)) { "Invalid parse tree shape detected." }
         }
     }
