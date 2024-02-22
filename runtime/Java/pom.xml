@@ -12,7 +12,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-	<artifactId>antlr5-runtime</artifactId>
+	<artifactId>antlr5-java-runtime</artifactId>
 	<name>ANTLR 5 Java Runtime</name>
 	<description>The ANTLR 5 Runtime</description>
 
