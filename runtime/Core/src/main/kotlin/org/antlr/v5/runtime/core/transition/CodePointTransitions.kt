@@ -4,12 +4,9 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v5.runtime.kotlin._unused.atn
+package org.antlr.v5.runtime.core.transition
 
 import org.antlr.v5.runtime.core.state.ATNState
-import org.antlr.v5.runtime.core.transition.AtomTransition
-import org.antlr.v5.runtime.core.transition.RangeTransition
-import org.antlr.v5.runtime.core.transition.Transition
 
 /**
  * Utility class to create [AtomTransition], [RangeTransition],

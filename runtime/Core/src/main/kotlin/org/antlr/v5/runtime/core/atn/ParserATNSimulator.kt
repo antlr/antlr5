@@ -2250,8 +2250,8 @@ public open class ParserATNSimulator(
       return D
     }
 
-    synchronized(dfa.states) {
-      val existing = dfa.states[D]
+    synchronized(dfa.getStatesMap()) {
+      val existing = dfa.getStatesMap()[D]
 
       if (existing != null) {
         if (trace_atn_sim) {
@@ -2261,7 +2261,7 @@ public open class ParserATNSimulator(
         return existing
       }
 
-      D.stateNumber = dfa.states.size
+      D.stateNumber = dfa.getStatesMap().size
 
       if (!D.configs.isReadonly) {
         D.configs.optimizeConfigs(this)
@@ -2272,7 +2272,7 @@ public open class ParserATNSimulator(
         System.out.println("addDFAState new $D")
       }
 
-      dfa.states[D] = D
+      dfa.getStatesMap()[D] = D
       return D
     }
   }

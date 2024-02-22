@@ -94,7 +94,7 @@ public abstract class ATNState {
   override fun toString(): String =
     stateNumber.toString()
 
-  public fun getTransitions(): Array<Transition> =
+  public fun getTransitionsArray(): Array<Transition> =
     transitions.toTypedArray()
 
   public fun addTransition(e: Transition): Unit =

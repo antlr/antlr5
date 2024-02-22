@@ -752,17 +752,17 @@ public open class LexerATNSimulator(
     }
 
     val dfa = decisionToDFA[mode]
-    synchronized(dfa.states) {
-      val existing = dfa.states[proposed]
+    synchronized(dfa.getStatesMap()) {
+      val existing = dfa.getStatesMap()[proposed]
 
       if (existing != null) {
         return existing
       }
 
-      proposed.stateNumber = dfa.states.size
+      proposed.stateNumber = dfa.getStatesMap().size
       configs.isReadonly = true
       proposed.configs = configs
-      dfa.states[proposed] = proposed
+      dfa.getStatesMap()[proposed] = proposed
       return proposed
     }
   }

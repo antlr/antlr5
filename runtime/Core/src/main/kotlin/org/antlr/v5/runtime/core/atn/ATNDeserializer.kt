@@ -9,6 +9,7 @@ package org.antlr.v5.runtime.core.atn
 import org.antlr.v5.runtime.core.Token
 import org.antlr.v5.runtime.core.action.*
 import org.antlr.v5.runtime.core.misc.IntervalSet
+import org.antlr.v5.runtime.core.misc.decodeIntsEncodedAs16BitWords
 import org.antlr.v5.runtime.core.state.*
 import org.antlr.v5.runtime.core.transition.*
 
@@ -544,42 +545,5 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
       LexerActionType.TYPE -> LexerTypeAction(data1)
     }
 
-  public open fun decodeIntsEncodedAs16BitWords(data16: CharArray): IntArray =
-    decodeIntsEncodedAs16BitWords(data16, false)
 
-  /**
-   * Convert a list of chars (16 uint) that represent a serialized and compressed list of ints for an ATN.
-   */
-  public open fun decodeIntsEncodedAs16BitWords(data16: CharArray, trimToSize: Boolean): IntArray {
-    // Will be strictly smaller, but we waste bit of space to avoid copying during initialization of parsers
-    val data = IntArray(data16.size)
-    var i = 0
-    var i2 = 0
-
-    while (i < data16.size) {
-      val v = data16[i++]
-
-      if (v.code and 0x8000 == 0) {
-        // Hi-bit not set? Implies 1-word value
-        // 7 bit int
-        data[i2++] = v.code
-      } else {
-        // Hi.bit set. Implies 2-word value
-        val vnext = data16[i++]
-
-        if (v.code == 0xFFFF && vnext.code == 0xFFFF) { // Is it -1?
-          data[i2++] = -1
-        } else {
-          // 31-bit int
-          data[i2++] = (v.code and 0x7FFF) shl 16 or (vnext.code and 0xFFFF)
-        }
-      }
-    }
-
-    if (trimToSize) {
-      return data.copyOf(i2)
-    }
-
-    return data
-  }
 }

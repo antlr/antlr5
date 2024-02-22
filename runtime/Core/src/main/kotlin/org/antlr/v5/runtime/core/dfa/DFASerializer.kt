@@ -21,7 +21,7 @@ public open class DFASerializer(
     }
 
     val buf = StringBuilder()
-    val states = dfa.getStates()
+    val states = dfa.getStatesList()
 
     for (s in states) {
       var n = 0

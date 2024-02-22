@@ -4,14 +4,11 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v5.runtime.kotlin._unused.atn
+package org.antlr.v5.runtime.core.atn
 
 import org.antlr.v5.runtime.core.misc.assert
 import org.antlr.v5.runtime.core.Token
 import org.antlr.v5.runtime.core.action.*
-import org.antlr.v5.runtime.core.atn.ATN
-import org.antlr.v5.runtime.core.atn.ATNDeserializer
-import org.antlr.v5.runtime.core.atn.ATNType
 import org.antlr.v5.runtime.core.misc.IntegerList
 import org.antlr.v5.runtime.core.misc.IntervalSet
 import org.antlr.v5.runtime.core.state.*

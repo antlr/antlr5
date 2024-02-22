@@ -106,7 +106,7 @@ public open class ParserInterpreter(
    * This tells us what the root of the parse tree is when using override
    * for an ambiguity/lookahead check.
    */
-  public var overrideDecisionRoot: InterpreterRuleContext? = null
+  open var overrideDecisionRoot: InterpreterRuleContext? = null
     protected set
 
   /**

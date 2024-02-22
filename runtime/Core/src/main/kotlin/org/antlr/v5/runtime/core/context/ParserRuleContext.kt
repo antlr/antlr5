@@ -107,8 +107,8 @@ public open class ParserRuleContext : RuleContext {
   public constructor()
   public constructor(parent: ParserRuleContext?, invokingStateNumber: Int) : super(parent, invokingStateNumber)
 
-  override fun readParent(): ParserRuleContext? =
-    super.readParent() as ParserRuleContext?
+  override fun getParent(): ParserRuleContext? =
+    super.getParent() as ParserRuleContext?
 
   /**
    * Copy a context (I'm deliberately not using copy constructor) to avoid
@@ -124,7 +124,7 @@ public open class ParserRuleContext : RuleContext {
    * the `YContext` as well else they are lost!
    */
   public open fun copyFrom(ctx: ParserRuleContext) {
-    parent = ctx.parent
+    setParent(ctx.getParent())
     invokingState = ctx.invokingState
 
     start = ctx.start
@@ -159,7 +159,7 @@ public open class ParserRuleContext : RuleContext {
    * Other [addChild] methods call this.
    *
    * We cannot set the parent pointer of the incoming node
-   * because the existing interfaces do not have a [assignParent]
+   * because the existing interfaces do not have a [setParent]
    * method and I don't want to break backward compatibility for this.
    *
    * @since 4.7
@@ -183,7 +183,7 @@ public open class ParserRuleContext : RuleContext {
    * Add a token leaf node child and force its parent to be this node.
    */
   public fun addChild(t: TerminalNode): TerminalNode {
-    t.assignParent(this)
+    t.setParent(this)
     return addAnyChild(t)
   }
 
@@ -193,7 +193,7 @@ public open class ParserRuleContext : RuleContext {
    * @since 4.7
    */
   public fun addErrorNode(errorNode: ErrorNode): ErrorNode {
-    errorNode.assignParent(this)
+    errorNode.setParent(this)
     return addAnyChild(errorNode)
   }
 
