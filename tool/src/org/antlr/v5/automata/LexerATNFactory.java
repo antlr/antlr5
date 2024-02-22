@@ -14,12 +14,16 @@ import org.antlr.v5.misc.CharParseResult;
 import org.antlr.v5.misc.GrammarLiteralParser;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.IntStream;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.atn.*;
-import org.antlr.v5.runtime.misc.CharSupport;
-import org.antlr.v5.runtime.misc.Interval;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.IntStream;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.action.*;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.misc.Interval;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.RuleStartState;
+import org.antlr.v5.runtime.core.state.TokensStartState;
+import org.antlr.v5.runtime.core.transition.*;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.LexerGrammar;
 import org.antlr.v5.tool.Rule;
@@ -27,6 +31,7 @@ import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 import org.antlr.v5.tool.ast.RangeAST;
 import org.antlr.v5.tool.ast.TerminalAST;
+import org.antlr.v5.misc.CharSupport;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 
@@ -91,32 +96,32 @@ public class LexerATNFactory extends ParserATNFactory {
 			// create s0, start state; implied Tokens rule node
 			TokensStartState startState =
 				newState(TokensStartState.class, null);
-			atn.modeNameToStartState.put(modeName, startState);
-			atn.modeToStartState.add(startState);
+			atn.getModeNameToStartState().put(modeName, startState);
+			atn.getModeToStartState().add(startState);
 			atn.defineDecisionState(startState);
 		}
 
 		// INIT ACTION, RULE->TOKEN_TYPE MAP
-		atn.ruleToTokenType = new int[g.rules.size()];
+		atn.setRuleToTokenType(new int[g.rules.size()]);
 		for (Rule r : g.rules.values()) {
-			atn.ruleToTokenType[r.index] = g.getTokenType(r.name);
+			atn.getRuleToTokenType()[r.index] = g.getTokenType(r.name);
 		}
 
 		// CREATE ATN FOR EACH RULE
 		_createATN(g.rules.values());
 
-		atn.lexerActions = new LexerAction[indexToActionMap.size()];
+		atn.setLexerActions(new LexerAction[indexToActionMap.size()]);
 		for (Map.Entry<Integer, LexerAction> entry : indexToActionMap.entrySet()) {
-			atn.lexerActions[entry.getKey()] = entry.getValue();
+			atn.getLexerActions()[entry.getKey()] = entry.getValue();
 		}
 
 		// LINK MODE START STATE TO EACH TOKEN RULE
 		for (String modeName : modes) {
 			List<Rule> rules = ((LexerGrammar)g).modes.get(modeName);
-			TokensStartState startState = atn.modeNameToStartState.get(modeName);
+			TokensStartState startState = atn.getModeNameToStartState().get(modeName);
 			for (Rule r : rules) {
 				if ( !r.isFragment() ) {
-					RuleStartState s = atn.ruleToStartState[r.index];
+					RuleStartState s = atn.getRuleToStartState()[r.index];
 					epsilon(startState, s);
 				}
 			}
@@ -248,7 +253,7 @@ public class LexerATNFactory extends ParserATNFactory {
 		ATNState right = newState(associatedAST);
 		IntervalSet set = new IntervalSet();
 		for (GrammarAST t : alts) {
-			if ( t.getType()==ANTLRParser.RANGE ) {
+			if ( t.getType() == ANTLRParser.RANGE ) {
 				GrammarAST child0 = (GrammarAST) t.getChild(0);
 				GrammarAST child1 = (GrammarAST) t.getChild(1);
 				CharParseResult a = GrammarLiteralParser.parseCharFromStringLiteral(child0.getText());
@@ -259,10 +264,10 @@ public class LexerATNFactory extends ParserATNFactory {
 					checkRangeAndAddToSet(associatedAST, t, set, codePoint0, codePoint1, currentRule.caseInsensitive, null);
 				}
 			}
-			else if ( t.getType()==ANTLRParser.LEXER_CHAR_SET ) {
+			else if ( t.getType() == ANTLRParser.LEXER_CHAR_SET ) {
 				set.addAll(getSetFromCharSetLiteral(t));
 			}
-			else if ( t.getType()==ANTLRParser.STRING_LITERAL ) {
+			else if ( t.getType() == ANTLRParser.STRING_LITERAL ) {
 				CharParseResult parseResult = GrammarLiteralParser.parseCharFromStringLiteral(t.getText());
 				if (parseResult instanceof CharParseResult.CodePoint) {
 					checkCharAndAddToSet(associatedAST, set, ((CharParseResult.CodePoint)parseResult).codePoint);
@@ -272,7 +277,7 @@ public class LexerATNFactory extends ParserATNFactory {
 											   g.fileName, t.getToken(), t.getText());
 				}
 			}
-			else if ( t.getType()==ANTLRParser.TOKEN_REF ) {
+			else if ( t.getType() == ANTLRParser.TOKEN_REF ) {
 				g.tool.errMgr.grammarError(ErrorType.UNSUPPORTED_REFERENCE_IN_LEXER_SET,
 										   g.fileName, t.getToken(), t.getText());
 			}
@@ -284,7 +289,7 @@ public class LexerATNFactory extends ParserATNFactory {
 			Transition transition;
 			if (set.getIntervals().size() == 1) {
 				Interval interval = set.getIntervals().get(0);
-				transition = CodePointTransitions.createWithCodePointRange(right, interval.a, interval.b);
+				transition = CodePointTransitions.INSTANCE.createWithCodePointRange(right, interval.getA(), interval.getB());
 			}
 			else {
 				transition = new SetTransition(right, set);
@@ -440,7 +445,7 @@ public class LexerATNFactory extends ParserATNFactory {
 					CharSetParseState.Mode.PREV_CODE_POINT,
 					false,
 					codePoint,
-					IntervalSet.EMPTY_SET);
+					IntervalSet.Companion.getEMPTY_SET());
 		}
 		return state;
 	}
@@ -505,7 +510,7 @@ public class LexerATNFactory extends ParserATNFactory {
 		else {
 			boolean charactersCollision = previousStatus != null && previousStatus.collision;
 			if (!charactersCollision) {
-				IntervalSet intersection = set.and(IntervalSet.of(a, b));
+				IntervalSet intersection = set.and(IntervalSet.Companion.of(a, b));
 				if (!intersection.isNil()) {
 					String setText;
 					if (rootAst.getChildren() == null) {
@@ -545,7 +550,7 @@ public class LexerATNFactory extends ParserATNFactory {
 		RangeBorderCharactersData charactersData = RangeBorderCharactersData.getAndCheckCharactersData(from, to, g, tree, true);
 		if (currentRule.caseInsensitive) {
 			if (charactersData.isSingleRange()) {
-				return CodePointTransitions.createWithCodePointRange(target, from, to);
+				return CodePointTransitions.INSTANCE.createWithCodePointRange(target, from, to);
 			}
 			else {
 				IntervalSet intervalSet = new IntervalSet();
@@ -555,7 +560,7 @@ public class LexerATNFactory extends ParserATNFactory {
 			}
 		}
 		else {
-			return CodePointTransitions.createWithCodePointRange(target, from, to);
+			return CodePointTransitions.INSTANCE.createWithCodePointRange(target, from, to);
 		}
 	}
 
@@ -576,13 +581,13 @@ public class LexerATNFactory extends ParserATNFactory {
 		checkCommands(command, ID.getToken());
 
 		if ("skip".equals(command) && arg == null) {
-			return LexerSkipAction.INSTANCE;
+			return LexerSkipAction.Companion.getINSTANCE();
 		}
 		else if ("more".equals(command) && arg == null) {
-			return LexerMoreAction.INSTANCE;
+			return LexerMoreAction.Companion.getINSTANCE();
 		}
 		else if ("popMode".equals(command) && arg == null) {
-			return LexerPopModeAction.INSTANCE;
+			return LexerPopModeAction.Companion.getINSTANCE();
 		}
 		else if ("mode".equals(command) && arg != null) {
 			String modeName = arg.getText();
@@ -714,7 +719,7 @@ public class LexerATNFactory extends ParserATNFactory {
 		}
 
 		int tokenType = g.getTokenType(tokenName);
-		if (tokenType != org.antlr.v5.runtime.Token.INVALID_TYPE) {
+		if (tokenType != org.antlr.v5.runtime.core.Token.INVALID_TYPE) {
 			return tokenType;
 		}
 
@@ -743,7 +748,7 @@ public class LexerATNFactory extends ParserATNFactory {
 		}
 
 		int channelValue = g.getChannelValue(channelName);
-		if (channelValue >= org.antlr.v5.runtime.Token.MIN_USER_CHANNEL_VALUE) {
+		if (channelValue >= org.antlr.v5.runtime.core.Token.MIN_USER_CHANNEL_VALUE) {
 			return channelValue;
 		}
 

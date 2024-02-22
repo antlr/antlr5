@@ -6,8 +6,9 @@
 
 package org.antlr.v5.automata;
 
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.Transition;
+
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.transition.Transition;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,14 +23,14 @@ public class ATNVisitor {
 	}
 
 	public void visit_(ATNState s, Set<Integer> visited) {
-		if ( !visited.add(s.stateNumber) ) return;
-		visited.add(s.stateNumber);
+		if ( !visited.add(s.getStateNumber()) ) return;
+		visited.add(s.getStateNumber());
 
 		visitState(s);
 		int n = s.getNumberOfTransitions();
 		for (int i=0; i<n; i++) {
 			Transition t = s.transition(i);
-			visit_(t.target, visited);
+			visit_(t.getTarget(), visited);
 		}
 	}
 

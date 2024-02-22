@@ -14,7 +14,7 @@ import org.antlr.v5.misc.GrammarLiteralParser;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.runtime.RuntimeMetaData;
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.core.Token;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;

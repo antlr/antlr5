@@ -16,8 +16,8 @@ import org.antlr.v5.codegen.CodeGenerator;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.GrammarASTAdaptor;
 import org.antlr.v5.parse.LeftRecursiveRuleWalker;
-import org.antlr.v5.runtime.misc.IntervalSet;
-import org.antlr.v5.runtime.misc.Pair;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
+import kotlin.Pair;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.ast.AltAST;
 import org.antlr.v5.tool.ast.GrammarAST;
@@ -243,7 +243,7 @@ public class LeftRecursiveRuleAnalyzer extends LeftRecursiveRuleWalker {
 	public AltAST addPrecedenceArgToRules(AltAST t, int prec) {
 		if ( t==null ) return null;
 		// get all top-level rule refs from ALT
-		List<GrammarAST> outerAltRuleRefs = t.getNodesWithTypePreorderDFS(IntervalSet.of(RULE_REF));
+		List<GrammarAST> outerAltRuleRefs = t.getNodesWithTypePreorderDFS(IntervalSet.Companion.of(RULE_REF));
 		for (GrammarAST x : outerAltRuleRefs) {
 			RuleRefAST rref = (RuleRefAST)x;
 			boolean recursive = rref.getText().equals(ruleName);

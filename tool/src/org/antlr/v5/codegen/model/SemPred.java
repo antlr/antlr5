@@ -10,7 +10,7 @@ import org.antlr.v5.codegen.ActionTranslator;
 import org.antlr.v5.codegen.CodeGenerator;
 import org.antlr.v5.codegen.OutputModelFactory;
 import org.antlr.v5.codegen.model.chunk.ActionChunk;
-import org.antlr.v5.runtime.atn.AbstractPredicateTransition;
+import org.antlr.v5.runtime.core.transition.AbstractPredicateTransition;
 import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 

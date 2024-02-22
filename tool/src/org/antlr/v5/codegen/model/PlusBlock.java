@@ -7,8 +7,8 @@
 package org.antlr.v5.codegen.model;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.atn.PlusBlockStartState;
-import org.antlr.v5.runtime.atn.PlusLoopbackState;
+import org.antlr.v5.runtime.core.state.PlusBlockStartState;
+import org.antlr.v5.runtime.core.state.PlusLoopbackState;
 import org.antlr.v5.tool.ast.BlockAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 
@@ -24,11 +24,11 @@ public class PlusBlock extends Loop {
 		super(factory, plusRoot, alts);
 		BlockAST blkAST = (BlockAST)plusRoot.getChild(0);
 		PlusBlockStartState blkStart = (PlusBlockStartState)blkAST.atnState;
-		PlusLoopbackState loop = blkStart.loopBackState;
-		stateNumber = blkStart.loopBackState.stateNumber;
-		blockStartStateNumber = blkStart.stateNumber;
-		loopBackStateNumber = loop.stateNumber;
+		PlusLoopbackState loop = blkStart.getLoopBackState();
+		stateNumber = blkStart.getLoopBackState().getStateNumber();
+		blockStartStateNumber = blkStart.getStateNumber();
+		loopBackStateNumber = loop.getStateNumber();
 		this.error = getThrowNoViableAlt(factory, plusRoot, null);
-		decision = loop.decision;
+		decision = loop.getDecision();
 	}
 }

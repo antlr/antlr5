@@ -11,9 +11,9 @@ import org.abego.treelayout.NodeExtentProvider;
 import org.abego.treelayout.TreeForTreeLayout;
 import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
-import org.antlr.v5.runtime.misc.Utils;
-import org.antlr.v5.runtime.tree.ErrorNode;
-import org.antlr.v5.runtime.tree.Tree;
+import org.antlr.v5.runtime.core.misc.Utils;
+import org.antlr.v5.runtime.core.tree.ErrorNode;
+import org.antlr.v5.runtime.core.tree.Tree;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -137,7 +137,7 @@ public class TreePostScriptGenerator {
 
 	protected String getText(Tree tree) {
 		String s = treeTextProvider.getText(tree);
-		s = Utils.escapeWhitespace(s, false);
+		s = Utils.INSTANCE.escapeWhitespace(s, false);
 		return s;
 	}
 

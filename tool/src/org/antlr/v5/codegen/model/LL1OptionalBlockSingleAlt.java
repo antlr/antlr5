@@ -7,8 +7,8 @@
 package org.antlr.v5.codegen.model;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.atn.DecisionState;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.state.DecisionState;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.ast.GrammarAST;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class LL1OptionalBlockSingleAlt extends LL1Choice {
 									 List<CodeBlockForAlt> alts)
 	{
 		super(factory, blkAST, alts);
-		this.decision = ((DecisionState)blkAST.atnState).decision;
+		this.decision = ((DecisionState) blkAST.atnState).getDecision();
 
 		/** Lookahead for each alt 1..n */
 //		IntervalSet[] altLookSets = LinearApproximator.getLL1LookaheadSets(dfa);

@@ -10,11 +10,11 @@ import org.abego.treelayout.NodeExtentProvider;
 import org.abego.treelayout.TreeForTreeLayout;
 import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.util.DefaultConfiguration;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.misc.Utils;
-import org.antlr.v5.runtime.tree.ErrorNode;
-import org.antlr.v5.runtime.tree.Tree;
-import org.antlr.v5.runtime.tree.Trees;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.misc.Utils;
+import org.antlr.v5.runtime.core.tree.ErrorNode;
+import org.antlr.v5.runtime.core.tree.Tree;
+import org.antlr.v5.runtime.core.tree.Trees;
 
 import javax.imageio.ImageIO;
 import javax.print.PrintException;
@@ -62,7 +62,7 @@ public class TreeViewer extends JComponent {
 
 		@Override
 		public String getText(Tree node) {
-			return String.valueOf(Trees.getNodeText(node, ruleNames));
+			return String.valueOf(Trees.INSTANCE.getNodeText(node, ruleNames));
 		}
 	}
 
@@ -178,8 +178,8 @@ public class TreeViewer extends JComponent {
 		boolean ruleFailedAndMatchedNothing = false;
 		if ( tree instanceof ParserRuleContext ) {
 			ParserRuleContext ctx = (ParserRuleContext) tree;
-			ruleFailedAndMatchedNothing = ctx.exception != null &&
-										  ctx.stop != null && ctx.stop.getTokenIndex() < ctx.start.getTokenIndex();
+			ruleFailedAndMatchedNothing = ctx.getException() != null &&
+										  ctx.getStop() != null && ctx.getStop().getTokenIndex() < ctx.getStart().getTokenIndex();
 		}
 		if ( isHighlighted(tree) || boxColor!=null ||
 			 tree instanceof ErrorNode ||
@@ -212,7 +212,7 @@ public class TreeViewer extends JComponent {
 
 	public void text(Graphics g, String s, int x, int y) {
 //		System.out.println("drawing '"+s+"' @ "+x+","+y);
-		s = Utils.escapeWhitespace(s, true);
+		s = Utils.INSTANCE.escapeWhitespace(s, true);
 		g.drawString(s, x, y);
 	}
 
@@ -682,7 +682,7 @@ public class TreeViewer extends JComponent {
 
 	protected String getText(Tree tree) {
 		String s = treeTextProvider.getText(tree);
-		s = Utils.escapeWhitespace(s, true);
+		s = Utils.INSTANCE.escapeWhitespace(s, true);
 		return s;
 	}
 

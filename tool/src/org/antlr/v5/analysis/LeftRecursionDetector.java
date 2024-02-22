@@ -6,8 +6,11 @@
 
 package org.antlr.v5.analysis;
 
-import org.antlr.v5.runtime.atn.*;
-import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
+import org.antlr.v5.runtime.core.atn.*;
+import org.antlr.v5.runtime.core.state.*;
+import org.antlr.v5.misc.OrderedHashSet;
+import org.antlr.v5.runtime.core.transition.RuleTransition;
+import org.antlr.v5.runtime.core.transition.Transition;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;
@@ -36,10 +39,10 @@ public class LeftRecursionDetector {
 	}
 
 	public void check() {
-		for (RuleStartState start : atn.ruleToStartState) {
+		for (RuleStartState start : atn.getRuleToStartState()) {
 			rulesVisitedPerRuleCheck.clear();
 			rulesVisitedPerRuleCheck.add(start);
-			check(g.getRule(start.ruleIndex), start, new HashSet<>());
+			check(g.getRule(start.getRuleIndex()), start, new HashSet<>());
 		}
 
 		for (Collection<Rule> cycle : listOfRecursiveCycles) {
@@ -69,26 +72,26 @@ public class LeftRecursionDetector {
 		boolean stateReachesStopState = false;
 		for (int i=0; i<n; i++) {
 			Transition t = s.transition(i);
-			if ( t instanceof RuleTransition ) {
+			if ( t instanceof RuleTransition) {
 				RuleTransition rt = (RuleTransition) t;
-				Rule r = g.getRule(rt.ruleIndex);
-				if ( rulesVisitedPerRuleCheck.contains((RuleStartState)t.target) ) {
+				Rule r = g.getRule(rt.getRuleIndex());
+				if ( rulesVisitedPerRuleCheck.contains((RuleStartState)t.getTarget()) ) {
 					addRulesToCycle(enclosingRule, r);
 				}
 				else {
 					// must visit if not already visited; mark target, pop when done
-					rulesVisitedPerRuleCheck.add((RuleStartState)t.target);
+					rulesVisitedPerRuleCheck.add((RuleStartState)t.getTarget());
 					// send new visitedStates set per rule invocation
-					boolean nullable = check(r, t.target, new HashSet<ATNState>());
+					boolean nullable = check(r, t.getTarget(), new HashSet<ATNState>());
 					// we're back from visiting that rule
-					rulesVisitedPerRuleCheck.remove((RuleStartState)t.target);
+					rulesVisitedPerRuleCheck.remove((RuleStartState)t.getTarget());
 					if ( nullable ) {
-						stateReachesStopState |= check(enclosingRule, rt.followState, visitedStates);
+						stateReachesStopState |= check(enclosingRule, rt.getFollowState(), visitedStates);
 					}
 				}
 			}
 			else if ( t.isEpsilon() ) {
-				stateReachesStopState |= check(enclosingRule, t.target, visitedStates);
+				stateReachesStopState |= check(enclosingRule, t.getTarget(), visitedStates);
 			}
 			// else ignore non-epsilon transitions
 		}

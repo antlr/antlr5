@@ -7,7 +7,7 @@
 package org.antlr.v5.gui;
 
 import org.abego.treelayout.TreeForTreeLayout;
-import org.antlr.v5.runtime.tree.Tree;
+import org.antlr.v5.runtime.core.tree.Tree;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

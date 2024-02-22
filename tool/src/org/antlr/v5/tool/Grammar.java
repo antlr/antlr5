@@ -6,29 +6,27 @@
 
 package org.antlr.v5.tool;
 
+import kotlin.Pair;
 import org.antlr.v5.Tool;
 import org.antlr.v5.analysis.LeftRecursiveRuleTransformer;
 import org.antlr.v5.automata.ParserATNFactory;
+import org.antlr.v5.misc.CharSupport;
 import org.antlr.v5.misc.OrderedHashMap;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.GrammarASTAdaptor;
 import org.antlr.v5.parse.GrammarTreeVisitor;
 import org.antlr.v5.parse.TokenVocabParser;
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.ParserInterpreter;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.Vocabulary;
-import org.antlr.v5.runtime.VocabularyImpl;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNDeserializer;
-import org.antlr.v5.runtime.atn.ATNSerializer;
-import org.antlr.v5.runtime.atn.SemanticContext;
-import org.antlr.v5.runtime.dfa.DFA;
-import org.antlr.v5.runtime.misc.*;
+import org.antlr.v5.runtime.core.*;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ATNDeserializer;
+import org.antlr.v5.runtime.core.atn.ATNSerializer;
+import org.antlr.v5.runtime.core.context.SemanticContext;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.misc.IntSet;
+import org.antlr.v5.runtime.core.misc.IntegerList;
+import org.antlr.v5.runtime.core.misc.Interval;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 import org.antlr.v5.tool.ast.GrammarASTWithOptions;
@@ -833,7 +831,7 @@ public class Grammar implements AttributeResolver {
 	 */
 
 	public Vocabulary getVocabulary() {
-		return new VocabularyImpl(getTokenLiteralNames(), getTokenSymbolicNames());
+		return new VocabularyImpl(getTokenLiteralNames(), getTokenSymbolicNames(), null);
 	}
 
 	/** Given an arbitrarily complex SemanticContext, walk the "tree" and get display string.
@@ -884,7 +882,7 @@ public class Grammar implements AttributeResolver {
 		if ( indexToPredMap==null ) {
 			indexToPredMap = getIndexToPredicateMap();
 		}
-		ActionAST actionAST = indexToPredMap.get(pred.predIndex);
+		ActionAST actionAST = indexToPredMap.get(pred.getPredIndex());
 		return actionAST.getText();
 	}
 
@@ -892,7 +890,7 @@ public class Grammar implements AttributeResolver {
 	 *  unicode max if no target defined.
 	 */
 	public int getMaxCharValue() {
-		return org.antlr.v5.runtime.Lexer.MAX_CHAR_VALUE;
+		return org.antlr.v5.runtime.core.Lexer.MAX_CHAR_VALUE;
 //		if ( generator!=null ) {
 //			return generator.getTarget().getMaxCharValue(generator);
 //		}
@@ -906,14 +904,14 @@ public class Grammar implements AttributeResolver {
 		if ( isLexer() ) {
 			return getAllCharValues();
 		}
-		return IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, getMaxTokenType());
+		return IntervalSet.Companion.of(Token.MIN_USER_TOKEN_TYPE, getMaxTokenType());
 	}
 
 	/** Return min to max char as defined by the target.
 	 *  If no target, use max unicode char value.
 	 */
 	public IntSet getAllCharValues() {
-		return IntervalSet.of(Lexer.MIN_CHAR_VALUE, getMaxCharValue());
+		return IntervalSet.Companion.of(Lexer.MIN_CHAR_VALUE, getMaxCharValue());
 	}
 
 	/** How many token types have been allocated so far? */
@@ -1277,7 +1275,7 @@ public class Grammar implements AttributeResolver {
 		List<GrammarAST> nodes = ast.getNodesWithType(grammarTokenTypes);
 		for (GrammarAST n : nodes) {
 			if (n.atnState != null) {
-				Interval tokenRegion = Interval.of(n.getTokenStartIndex(), n.getTokenStopIndex());
+				Interval tokenRegion = Interval.Companion.of(n.getTokenStartIndex(), n.getTokenStopIndex());
 				org.antlr.runtime.tree.Tree ruleNode = null;
 				// RULEs, BLOCKs of transformed recursive rules point to original token interval
 				switch ( n.getType() ) {
@@ -1294,10 +1292,10 @@ public class Grammar implements AttributeResolver {
 					Rule r = ast.g.getRule(ruleName);
 					if ( r instanceof LeftRecursiveRule ) {
 						RuleAST originalAST = ((LeftRecursiveRule) r).getOriginalAST();
-						tokenRegion = Interval.of(originalAST.getTokenStartIndex(), originalAST.getTokenStopIndex());
+						tokenRegion = Interval.Companion.of(originalAST.getTokenStartIndex(), originalAST.getTokenStopIndex());
 					}
 				}
-				stateToGrammarRegionMap.put(n.atnState.stateNumber, tokenRegion);
+				stateToGrammarRegionMap.put(n.atnState.getStateNumber(), tokenRegion);
 			}
 		}
 		return stateToGrammarRegionMap;
@@ -1308,7 +1306,7 @@ public class Grammar implements AttributeResolver {
 		if ( stateToGrammarRegionMap==null ) {
 			stateToGrammarRegionMap = getStateToGrammarRegionMap(ast, null); // map all nodes with non-null atn state ptr
 		}
-		if ( stateToGrammarRegionMap==null ) return Interval.INVALID;
+		if ( stateToGrammarRegionMap==null ) return Interval.Companion.getINVALID();
 
 		return stateToGrammarRegionMap.get(atnStateNumber);
 	}
@@ -1328,7 +1326,7 @@ public class Grammar implements AttributeResolver {
 		allChannels.addAll(channelValueToNameList);
 
 		// must run ATN through serializer to set some state flags
-		IntegerList serialized = ATNSerializer.getSerialized(atn);
+		IntegerList serialized = ATNSerializer.Companion.getSerialized(atn);
 		ATN deserializedATN = new ATNDeserializer().deserialize(serialized.toArray());
 		return new LexerInterpreter(
 				fileName,
@@ -1346,7 +1344,7 @@ public class Grammar implements AttributeResolver {
 			throw new IllegalStateException("A parser interpreter can only be created for a parser or combined grammar.");
 		}
 		// must run ATN through serializer to set some state flags
-		IntegerList serialized = ATNSerializer.getSerialized(atn);
+		IntegerList serialized = ATNSerializer.Companion.getSerialized(atn);
 		ATN deserializedATN = new ATNDeserializer().deserialize(serialized.toArray());
 
 		return new GrammarParserInterpreter(this, deserializedATN, tokenStream);
@@ -1358,7 +1356,7 @@ public class Grammar implements AttributeResolver {
 		}
 
 		// must run ATN through serializer to set some state flags
-		IntegerList serialized = ATNSerializer.getSerialized(atn);
+		IntegerList serialized = ATNSerializer.Companion.getSerialized(atn);
 		ATN deserializedATN = new ATNDeserializer().deserialize(serialized.toArray());
 
 		return new ParserInterpreter(fileName, getVocabulary(), Arrays.asList(getRuleNames()), deserializedATN, tokenStream);

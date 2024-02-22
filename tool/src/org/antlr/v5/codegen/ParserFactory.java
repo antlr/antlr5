@@ -39,10 +39,10 @@ import org.antlr.v5.codegen.model.decl.RuleContextDecl;
 import org.antlr.v5.codegen.model.decl.TokenDecl;
 import org.antlr.v5.codegen.model.decl.TokenListDecl;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.atn.DecisionState;
-import org.antlr.v5.runtime.atn.PlusLoopbackState;
-import org.antlr.v5.runtime.atn.StarLoopEntryState;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
+import org.antlr.v5.runtime.core.state.DecisionState;
+import org.antlr.v5.runtime.core.state.PlusLoopbackState;
+import org.antlr.v5.runtime.core.state.StarLoopEntryState;
 import org.antlr.v5.tool.Alternative;
 import org.antlr.v5.tool.LeftRecursiveRule;
 import org.antlr.v5.tool.Rule;
@@ -194,7 +194,7 @@ public class ParserFactory extends DefaultOutputModelFactory {
 
 	@Override
 	public Choice getChoiceBlock(BlockAST blkAST, List<CodeBlockForAlt> alts, GrammarAST labelAST) {
-		int decision = ((DecisionState)blkAST.atnState).decision;
+		int decision = ((DecisionState) blkAST.atnState).getDecision();
 		Choice c;
 		if ( !g.tool.force_atn && AnalysisPipeline.disjoint(g.decisionLOOK.get(decision)) ) {
 			c = getLL1ChoiceBlock(blkAST, alts);
@@ -223,13 +223,13 @@ public class ParserFactory extends DefaultOutputModelFactory {
 		if (!g.tool.force_atn) {
 			int decision;
 			if ( ebnfRoot.getType()==ANTLRParser.POSITIVE_CLOSURE ) {
-				decision = ((PlusLoopbackState)ebnfRoot.atnState).decision;
+				decision = ((PlusLoopbackState) ebnfRoot.atnState).getDecision();
 			}
 			else if ( ebnfRoot.getType()==ANTLRParser.CLOSURE ) {
-				decision = ((StarLoopEntryState)ebnfRoot.atnState).decision;
+				decision = ((StarLoopEntryState) ebnfRoot.atnState).getDecision();
 			}
 			else {
-				decision = ((DecisionState)ebnfRoot.atnState).decision;
+				decision = ((DecisionState) ebnfRoot.atnState).getDecision();
 			}
 
 			if ( AnalysisPipeline.disjoint(g.decisionLOOK.get(decision)) ) {

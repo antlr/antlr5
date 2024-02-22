@@ -8,7 +8,7 @@ package org.antlr.v5.codegen;
 
 import org.antlr.v5.Tool;
 import org.antlr.v5.codegen.model.OutputModelObject;
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.core.Token;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Grammar;
 import org.stringtemplate.v4.AutoIndentWriter;

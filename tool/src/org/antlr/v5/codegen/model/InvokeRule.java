@@ -15,7 +15,7 @@ import org.antlr.v5.codegen.model.decl.Decl;
 import org.antlr.v5.codegen.model.decl.RuleContextDecl;
 import org.antlr.v5.codegen.model.decl.RuleContextListDecl;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
+import org.antlr.v5.misc.OrderedHashSet;
 import org.antlr.v5.tool.Rule;
 import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.GrammarAST;
@@ -34,7 +34,7 @@ public class InvokeRule extends RuleElement implements LabeledOp {
 	public InvokeRule(ParserFactory factory, GrammarAST ast, GrammarAST labelAST) {
 		super(factory, ast);
 		if ( ast.atnState!=null ) {
-			stateNumber = ast.atnState.stateNumber;
+			stateNumber = ast.atnState.getStateNumber();
 		}
 
 		CodeGenerator gen = factory.getGenerator();

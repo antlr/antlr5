@@ -6,7 +6,7 @@
 package org.antlr.v5.codegen.model;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;
 import org.antlr.v5.tool.ast.ActionAST;

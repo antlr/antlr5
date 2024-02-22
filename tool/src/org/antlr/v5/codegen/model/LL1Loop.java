@@ -7,7 +7,7 @@
 package org.antlr.v5.codegen.model;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.ast.GrammarAST;
 
 import java.util.ArrayList;

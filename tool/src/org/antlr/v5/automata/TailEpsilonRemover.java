@@ -6,14 +6,15 @@
 
 package org.antlr.v5.automata;
 
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.BlockEndState;
-import org.antlr.v5.runtime.atn.EpsilonTransition;
-import org.antlr.v5.runtime.atn.PlusLoopbackState;
-import org.antlr.v5.runtime.atn.RuleTransition;
-import org.antlr.v5.runtime.atn.StarLoopbackState;
-import org.antlr.v5.runtime.atn.Transition;
+
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.BlockEndState;
+import org.antlr.v5.runtime.core.state.PlusLoopbackState;
+import org.antlr.v5.runtime.core.state.StarLoopbackState;
+import org.antlr.v5.runtime.core.transition.EpsilonTransition;
+import org.antlr.v5.runtime.core.transition.RuleTransition;
+import org.antlr.v5.runtime.core.transition.Transition;
 
 /**
  *
@@ -30,9 +31,9 @@ public class TailEpsilonRemover extends ATNVisitor {
 	@Override
 	public void visitState(ATNState p) {
 		if (p.getStateType() == ATNState.BASIC && p.getNumberOfTransitions() == 1) {
-			ATNState q = p.transition(0).target;
+			ATNState q = p.transition(0).getTarget();
 			if (p.transition(0) instanceof RuleTransition) {
-				q = ((RuleTransition) p.transition(0)).followState;
+				q = ((RuleTransition) p.transition(0)).getFollowState();
 			}
 			if (q.getStateType() == ATNState.BASIC) {
 				// we have p-x->q for x in {rule, action, pred, token, ...}
@@ -40,14 +41,14 @@ public class TailEpsilonRemover extends ATNVisitor {
 				// we can strip epsilon p-x->q-eps->r
 				Transition trans = q.transition(0);
 				if (q.getNumberOfTransitions() == 1 && trans instanceof EpsilonTransition) {
-					ATNState r = trans.target;
+					ATNState r = trans.getTarget();
 					if (r instanceof BlockEndState || r instanceof PlusLoopbackState || r instanceof StarLoopbackState) {
 						// skip over q
 						if (p.transition(0) instanceof RuleTransition) {
-							((RuleTransition) p.transition(0)).followState = r;
+							((RuleTransition) p.transition(0)).setFollowState(r);
 						}
 						else {
-							p.transition(0).target = r;
+							p.transition(0).setTarget(r);
 						}
 						_atn.removeState(q);
 					}

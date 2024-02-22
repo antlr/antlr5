@@ -18,8 +18,8 @@ import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.BlockSetTransformer;
 import org.antlr.v5.parse.GrammarASTAdaptor;
 import org.antlr.v5.parse.GrammarToken;
-import org.antlr.v5.runtime.misc.DoubleKeyMap;
-import org.antlr.v5.runtime.misc.Pair;
+import org.antlr.v5.runtime.core.misc.DoubleKeyMap;
+import kotlin.Pair;
 import org.antlr.v5.tool.ast.AltAST;
 import org.antlr.v5.tool.ast.BlockAST;
 import org.antlr.v5.tool.ast.GrammarAST;
@@ -473,7 +473,7 @@ public class GrammarTransformPipeline {
 			// if lexer already has a rule for literal, continue
 			if ( litAliases!=null ) {
 				for (Pair<GrammarAST,GrammarAST> pair : litAliases) {
-					GrammarAST litAST = pair.b;
+					GrammarAST litAST = pair.getSecond();
 					if ( lit.equals(litAST.getText()) ) continue nextLit;
 				}
 			}

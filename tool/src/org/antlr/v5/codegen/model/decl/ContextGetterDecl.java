@@ -7,7 +7,7 @@
 package org.antlr.v5.codegen.model.decl;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.misc.MurmurHash;
+import org.antlr.v5.runtime.core.misc.MurmurHash;
 
 public abstract class ContextGetterDecl extends Decl {
 	public ContextGetterDecl(OutputModelFactory factory, String name) {
@@ -29,10 +29,10 @@ public abstract class ContextGetterDecl extends Decl {
 
 	@Override
 	public int hashCode() {
-		int hash = MurmurHash.initialize();
-		hash = MurmurHash.update(hash, name);
-		hash = MurmurHash.update(hash, getArgType());
-		hash = MurmurHash.finish(hash, 2);
+		int hash = MurmurHash.INSTANCE.initialize();
+		hash = MurmurHash.INSTANCE.update(hash, name);
+		hash = MurmurHash.INSTANCE.update(hash, getArgType());
+		hash = MurmurHash.INSTANCE.finish(hash, 2);
 		return hash;
 	}
 

@@ -6,7 +6,7 @@
 
 package org.antlr.v5.misc;
 
-import org.antlr.v5.runtime.misc.IntegerList;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.tool.ast.GrammarAST;
 
 import java.io.IOException;

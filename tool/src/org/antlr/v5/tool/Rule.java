@@ -6,7 +6,7 @@
 
 package org.antlr.v5.tool;
 
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.AltAST;
 import org.antlr.v5.tool.ast.GrammarAST;

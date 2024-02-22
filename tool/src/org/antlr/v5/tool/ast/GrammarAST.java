@@ -14,8 +14,8 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.GrammarASTAdaptor;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.Grammar;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class GrammarAST extends CommonTree {
 	}
 
 	public List<GrammarAST> getNodesWithType(int ttype) {
-		return getNodesWithType(IntervalSet.of(ttype));
+		return getNodesWithType(IntervalSet.Companion.of(ttype));
 	}
 
 	public List<GrammarAST> getAllChildrenWithType(int type) {

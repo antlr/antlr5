@@ -6,7 +6,7 @@
 
 package org.antlr.v5.automata;
 
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ public class CharSetParseState {
 		PREV_PROPERTY
 	}
 
-	public static final CharSetParseState NONE = new CharSetParseState(Mode.NONE, false, -1, IntervalSet.EMPTY_SET);
+	public static final CharSetParseState NONE = new CharSetParseState(Mode.NONE, false, -1, IntervalSet.Companion.getEMPTY_SET());
 
 	public final Mode mode;
 	public final boolean inRange;

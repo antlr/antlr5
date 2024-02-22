@@ -6,7 +6,7 @@
 
 package org.antlr.v5.gui;
 
-import org.antlr.v5.runtime.tree.Tree;
+import org.antlr.v5.runtime.core.tree.Tree;
 
 public interface TreeTextProvider {
 	String getText(Tree node);

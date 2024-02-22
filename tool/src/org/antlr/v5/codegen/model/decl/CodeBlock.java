@@ -9,7 +9,7 @@ package org.antlr.v5.codegen.model.decl;
 import org.antlr.v5.codegen.OutputModelFactory;
 import org.antlr.v5.codegen.model.ModelElement;
 import org.antlr.v5.codegen.model.SrcOp;
-import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
+import org.antlr.v5.misc.OrderedHashSet;
 
 import java.util.ArrayList;
 import java.util.List;

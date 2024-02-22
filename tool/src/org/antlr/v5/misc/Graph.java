@@ -5,8 +5,6 @@
  */
 package org.antlr.v5.misc;
 
-import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;

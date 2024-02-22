@@ -23,10 +23,10 @@ import org.antlr.v5.codegen.model.decl.StructDecl;
 import org.antlr.v5.misc.FrequencySet;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.GrammarASTAdaptor;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.misc.IntervalSet;
-import org.antlr.v5.runtime._unused.misc.OrderedHashSet;
-import org.antlr.v5.runtime.misc.Pair;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
+import org.antlr.v5.misc.OrderedHashSet;
+import kotlin.Pair;
 import org.antlr.v5.tool.Attribute;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Rule;
@@ -114,7 +114,7 @@ public class RuleFunction extends OutputModelObject {
 			}
 		}
 
-		startState = factory.getGrammar().atn.ruleToStartState[r.index];
+		startState = factory.getGrammar().atn.getRuleToStartState()[r.index];
 	}
 
 	public void addContextGetters(OutputModelFactory factory, Rule r) {
@@ -134,12 +134,12 @@ public class RuleFunction extends OutputModelObject {
 				String label = entry.getKey();
 				List<AltAST> alts = new ArrayList<AltAST>();
 				for (Pair<Integer, AltAST> pair : entry.getValue()) {
-					alts.add(pair.b);
+					alts.add(pair.getSecond());
 				}
 
 				Set<Decl> decls = getDeclsForAllElements(alts);
 				for (Pair<Integer, AltAST> pair : entry.getValue()) {
-					Integer altNum = pair.a;
+					Integer altNum = pair.getFirst();
 					altToContext[altNum] = new AltLabelStructDecl(factory, r, altNum, label);
 					if (!altLabelCtxs.containsKey(label)) {
 						altLabelCtxs.put(label, altToContext[altNum]);
@@ -180,8 +180,8 @@ public class RuleFunction extends OutputModelObject {
 			List<GrammarAST> refs = getRuleTokens(ast.getNodesWithType(reftypes));
 			allRefs.addAll(refs);
 			Pair<FrequencySet<String>, FrequencySet<String>> minAndAltFreq = getElementFrequenciesForAlt(ast);
-			FrequencySet<String> minFreq = minAndAltFreq.a;
-			FrequencySet<String> altFreq = minAndAltFreq.b;
+			FrequencySet<String> minFreq = minAndAltFreq.getFirst();
+			FrequencySet<String> altFreq = minAndAltFreq.getSecond();
 			for (GrammarAST t : refs) {
 				String refLabelName = getName(t);
 

@@ -18,7 +18,7 @@ import org.antlr.v5.codegen.model.ParserFile;
 import org.antlr.v5.codegen.model.RuleFunction;
 import org.antlr.v5.codegen.model.SrcOp;
 import org.antlr.v5.codegen.model.decl.CodeBlock;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.Alternative;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;
