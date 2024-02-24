@@ -5,9 +5,9 @@
  */
 package org.antlr.v5.test.runtime.java.api;
 
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.test.runtime.RuntimeTestUtils;
 import org.antlr.v5.test.runtime.java.JavaRunner;
 import org.antlr.v5.tool.Grammar;
@@ -38,7 +38,7 @@ public class TestExpectedTokens extends JavaRunner {
 		ATN atn = g.getATN();
 		int blkStartStateNumber = 5;
 		IntervalSet tokens = atn.getExpectedTokens(blkStartStateNumber, null);
-		assertEquals("{B, C}", tokens.toString(g.getTokenNames()));
+		assertEquals("{B, C}", tokens.toString(g.getVocabulary()));
 	}
 
 	@Test public void testOptionalSubrule() throws Exception {
@@ -61,7 +61,7 @@ public class TestExpectedTokens extends JavaRunner {
 		ATN atn = g.getATN();
 		int blkStartStateNumber = 4;
 		IntervalSet tokens = atn.getExpectedTokens(blkStartStateNumber, null);
-		assertEquals("{B, C}", tokens.toString(g.getTokenNames()));
+		assertEquals("{B, C}", tokens.toString(g.getVocabulary()));
 	}
 
 	@Test public void testFollowIncluded() throws Exception {
@@ -91,12 +91,12 @@ public class TestExpectedTokens extends JavaRunner {
 
 		// From the start of 'b' with empty stack, can only see B and EOF
 		int blkStartStateNumber = 9;
-		IntervalSet tokens = atn.getExpectedTokens(blkStartStateNumber, ParserRuleContext.EMPTY);
-		assertEquals("{<EOF>, B}", tokens.toString(g.getTokenNames()));
+		IntervalSet tokens = atn.getExpectedTokens(blkStartStateNumber, ParserRuleContext.getEMPTY());
+		assertEquals("{<EOF>, B}", tokens.toString(g.getVocabulary()));
 
 		// Now call from 'a'
-		tokens = atn.getExpectedTokens(blkStartStateNumber, new ParserRuleContext(ParserRuleContext.EMPTY, 4));
-		assertEquals("{A, B}", tokens.toString(g.getTokenNames()));
+		tokens = atn.getExpectedTokens(blkStartStateNumber, new ParserRuleContext(ParserRuleContext.getEMPTY(), 4));
+		assertEquals("{A, B}", tokens.toString(g.getVocabulary()));
 	}
 
 	// Test for https://github.com/antlr/antlr4/issues/1480
@@ -146,11 +146,11 @@ public class TestExpectedTokens extends JavaRunner {
 		ParserRuleContext callStackFrom_expr = new ParserRuleContext(callStackFrom_s, 9);
 		int afterID = 14;
 		IntervalSet tokens = atn.getExpectedTokens(afterID, callStackFrom_expr);
-		assertEquals("{R, PLUS}", tokens.toString(g.getTokenNames()));
+		assertEquals("{R, PLUS}", tokens.toString(g.getVocabulary()));
 
 		// Simulate call stack after input '(x' from within rule expr
 		callStackFrom_expr = new ParserRuleContext(null, 9);
 		tokens = atn.getExpectedTokens(afterID, callStackFrom_expr);
-		assertEquals("{R, PLUS}", tokens.toString(g.getTokenNames()));
+		assertEquals("{R, PLUS}", tokens.toString(g.getVocabulary()));
 	}
 }

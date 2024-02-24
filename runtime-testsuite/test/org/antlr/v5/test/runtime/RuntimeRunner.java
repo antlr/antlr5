@@ -115,6 +115,7 @@ public abstract class RuntimeRunner extends Runner {
 	}
 
 	public State run(RunOptions runOptions) {
+
 		GeneratedState generatedState = Generator.generate(runOptions, getLanguage(), getTempDirPath(), null);
 
 		if (generatedState.containsErrors() || runOptions.endStage == Stage.Generate) {
@@ -126,7 +127,11 @@ public abstract class RuntimeRunner extends Runner {
 			return new CompiledState(generatedState, new Exception(getTitleName() + " ANTLR runtime is not initialized"));
 		}
 
-		writeRecognizerFile(runOptions, generatedState);
+		try {
+			writeRecognizerFile(runOptions, generatedState);
+		} catch (IOException e) {
+			return new CompiledState(generatedState, e);
+		}
 
 		CompiledState compiledState = compile(runOptions, generatedState);
 
@@ -134,12 +139,16 @@ public abstract class RuntimeRunner extends Runner {
 			return compiledState;
 		}
 
-		writeInputFile(runOptions);
+		try {
+			writeInputFile(runOptions);
+		} catch (IOException e) {
+			return new CompiledState(generatedState, e);
+		}
 
 		return execute(runOptions, compiledState);
 	}
 
-	protected void writeRecognizerFile(RunOptions runOptions, GeneratedState generatedState) {
+	protected void writeRecognizerFile(RunOptions runOptions, GeneratedState generatedState) throws IOException {
 		String text = RuntimeTestUtils.getTextFromResource("org/antlr/v5/test/runtime/helpers/" + getTestFileWithExt() + ".stg");
 		ST outputFileST = new ST(text);
 		outputFileST.add("grammarName", generatedState.getMainGrammarFile().grammarName);
@@ -206,7 +215,7 @@ public abstract class RuntimeRunner extends Runner {
 		return new CompiledState(generatedState, null);
 	}
 
-	protected void writeInputFile(RunOptions runOptions) {
+	protected void writeInputFile(RunOptions runOptions) throws IOException {
 		writeFile(getTempDirPath(), InputFileName, runOptions.input);
 	}
 

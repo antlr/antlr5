@@ -6,7 +6,7 @@
 
 package org.antlr.v5.test.runtime;
 
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 import org.antlr.v5.test.runtime.java.JavaRuntimeTests;
 import org.antlr.v5.test.runtime.states.ExecutedState;
 import org.antlr.v5.test.runtime.states.State;
@@ -121,8 +121,8 @@ public abstract class RuntimeTests {
 		Pair<String[], String[]> allGrammars = prepareGrammars(descriptor, runner);
 
 		RunOptions runOptions = new RunOptions(
-				allGrammars.a,
-				allGrammars.b,
+				allGrammars.getFirst(),
+				allGrammars.getSecond(),
 				true,
 				true,
 				descriptor.startRule,

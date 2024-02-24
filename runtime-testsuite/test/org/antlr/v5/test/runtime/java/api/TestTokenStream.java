@@ -5,7 +5,8 @@
  */
 package org.antlr.v5.test.runtime.java.api;
 
-import org.antlr.v5.runtime.*;
+import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.core.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

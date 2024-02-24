@@ -5,11 +5,14 @@
  */
 package org.antlr.v5.test.runtime.java.api;
 
-import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.tree.AbstractParseTreeVisitor;
-import org.antlr.v5.runtime.tree.ErrorNode;
-import org.antlr.v5.runtime.tree.RuleNode;
-import org.antlr.v5.runtime.tree.TerminalNode;
+import org.antlr.v5.runtime.BaseErrorListener;
+import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.Recognizer;
+import org.antlr.v5.runtime.core.error.RecognitionException;
+import org.antlr.v5.runtime.core.tree.ErrorNode;
+import org.antlr.v5.runtime.core.tree.RuleNode;
+import org.antlr.v5.runtime.core.tree.TerminalNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -32,10 +35,10 @@ public class TestVisitors {
 		VisitorBasicParser.SContext context = parser.s();
 		assertEquals("(s A <EOF>)", context.toStringTree(parser));
 
-		VisitorBasicVisitor<String> listener = new VisitorBasicBaseVisitor<String>() {
+		VisitorBasicVisitor<String> visitor = new VisitorBasicBaseVisitor<>() {
 			@Override
 			public String visitTerminal(TerminalNode node) {
-				return node.getSymbol().toString() + "\n";
+				return node.getSymbol() + "\n";
 			}
 
 			@Override
@@ -49,7 +52,7 @@ public class TestVisitors {
 			}
 		};
 
-		String result = listener.visit(context);
+		String result = visitor.visit(context);
 		String expected =
 			"[@0,0:0='A',<1>,1:0]\n" +
 			"[@1,1:0='<EOF>',<-1>,1:1]\n";

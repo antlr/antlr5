@@ -4,10 +4,10 @@
  * can be found in the LICENSE.txt file in the project root.
  */
 
-package org.antlr.v5.runtime.kotlin
+package org.antlr.v5.runtime.core
 
-import org.antlr.v5.runtime.kotlin.RuntimeMetaData.checkVersion
-import org.antlr.v5.runtime.kotlin.RuntimeMetaData.runtimeVersion
+import org.antlr.v5.runtime.core.RuntimeMetaData.checkVersion
+import org.antlr.v5.runtime.core.RuntimeMetaData.runtimeVersion
 import kotlin.math.min
 
 /**

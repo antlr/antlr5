@@ -6,7 +6,7 @@
 
 package org.antlr.v5.test.runtime;
 
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 
 import java.net.URI;
 import java.util.*;
@@ -124,10 +124,10 @@ public class RuntimeTestDescriptorParser {
 		boolean buildParseTree = true;
 		String[] skipTargets = new String[0];
 		for (Pair<String,String> p : pairs) {
-			String section = p.a;
+			String section = p.getFirst();
 			String value = "";
-			if ( p.b!=null ) {
-				value = p.b.trim();
+			if ( p.getSecond()!=null ) {
+				value = p.getSecond().trim();
 			}
 			if ( value.startsWith("\"\"\"") ) {
 				value = value.replace("\"\"\"", "");

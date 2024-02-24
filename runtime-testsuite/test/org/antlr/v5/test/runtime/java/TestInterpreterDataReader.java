@@ -7,13 +7,12 @@
 package org.antlr.v5.test.runtime.java;
 
 import org.antlr.v5.Tool;
-import org.antlr.v5.runtime.Vocabulary;
-import org.antlr.v5.runtime.VocabularyImpl;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNDeserializer;
-import org.antlr.v5.runtime.atn.ATNSerializer;
-import org.antlr.v5.runtime.misc.IntegerList;
-import org.antlr.v5.runtime.misc.InterpreterDataReader;
+import org.antlr.v5.runtime.core.Vocabulary;
+import org.antlr.v5.runtime.core.VocabularyImpl;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ATNDeserializer;
+import org.antlr.v5.runtime.core.atn.ATNSerializer;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.tool.Grammar;
 import org.junit.jupiter.api.Test;
 
@@ -81,7 +80,7 @@ public class TestInterpreterDataReader {
 		assertNull(channels);
 		assertNull(modes);
 
-		IntegerList serialized = ATNSerializer.getSerialized(atn);
+		IntegerList serialized = ATNSerializer.Companion.getSerialized(atn);
 		assertEquals(ATNDeserializer.SERIALIZED_VERSION, serialized.get(0));
     }
 

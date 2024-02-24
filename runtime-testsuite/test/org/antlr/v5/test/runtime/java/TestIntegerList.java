@@ -6,7 +6,7 @@
 
 package org.antlr.v5.test.runtime.java;
 
-import org.antlr.v5.runtime.misc.IntegerList;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

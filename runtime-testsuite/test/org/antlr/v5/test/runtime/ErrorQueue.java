@@ -6,7 +6,7 @@
 package org.antlr.v5.test.runtime;
 
 import org.antlr.v5.Tool;
-import org.antlr.v5.runtime.misc.Utils;
+import org.antlr.v5.runtime.core.misc.Utils;
 import org.antlr.v5.tool.ANTLRMessage;
 import org.antlr.v5.tool.ANTLRToolListener;
 import org.antlr.v5.tool.ToolMessage;
@@ -14,6 +14,7 @@ import org.stringtemplate.v4.ST;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ErrorQueue implements ANTLRToolListener {
 	public final Tool tool;
@@ -63,7 +64,7 @@ public class ErrorQueue implements ANTLRToolListener {
 
 	public String toString(boolean rendered) {
 		if (!rendered) {
-			return Utils.join(all.iterator(), "\n");
+			return all.stream().map(Object::toString).collect(Collectors.joining("\n"));
 		}
 
 		if (tool == null) {

@@ -163,7 +163,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
   public val parseListeners: List<ParseTreeListener>
     get() = _parseListeners
 
-  override var tokenFactory: TokenFactory<*>
+  override var tokenFactory: TokenFactory<out Token>
     get() = _input.tokenSource.tokenFactory
     set(value) {
       _input.tokenSource.tokenFactory = value

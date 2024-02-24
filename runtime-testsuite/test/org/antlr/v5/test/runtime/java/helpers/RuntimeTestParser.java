@@ -1,7 +1,7 @@
 package org.antlr.v5.test.runtime.java.helpers;
 
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.TokenStream;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.TokenStream;
 
 public abstract class RuntimeTestParser extends Parser {
 	protected java.io.PrintStream outStream = System.out;

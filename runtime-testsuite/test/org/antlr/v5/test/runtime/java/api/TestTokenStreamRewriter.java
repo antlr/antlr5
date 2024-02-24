@@ -6,7 +6,9 @@
 package org.antlr.v5.test.runtime.java.api;
 
 import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.LexerInterpreter;
+import org.antlr.v5.runtime.core.misc.Interval;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
 
@@ -150,11 +152,11 @@ public class TestTokenStreamRewriter {
 		expecting = "x = 0;";
 		assertEquals(expecting, result);
 
-		result = tokens.getText(Interval.of(0, 9));
+		result = tokens.getText(Interval.Companion.of(0, 9));
 		expecting = "x = 0;";
 		assertEquals(expecting, result);
 
-		result = tokens.getText(Interval.of(4, 8));
+		result = tokens.getText(Interval.Companion.of(4, 8));
 		expecting = "0";
 		assertEquals(expecting, result);
 	}
@@ -188,28 +190,28 @@ public class TestTokenStreamRewriter {
 		expecting = "x = 0 + 2 * 0;";
 		assertEquals(expecting, result);
 
-		result = tokens.getText(Interval.of(0, 17));
+		result = tokens.getText(Interval.Companion.of(0, 17));
 		expecting = "x = 0 + 2 * 0;";
 		assertEquals(expecting, result);
 
-		result = tokens.getText(Interval.of(4, 8));
+		result = tokens.getText(Interval.Companion.of(4, 8));
 		expecting = "0";
 		assertEquals(expecting, result);
 
-		result = tokens.getText(Interval.of(0, 8));
+		result = tokens.getText(Interval.Companion.of(0, 8));
 		expecting = "x = 0";
 		assertEquals(expecting, result);
 
-		result = tokens.getText(Interval.of(12, 16));
+		result = tokens.getText(Interval.Companion.of(12, 16));
 		expecting = "2 * 0";
 		assertEquals(expecting, result);
 
 		tokens.insertAfter(17, "// comment");
-		result = tokens.getText(Interval.of(12, 18));
+		result = tokens.getText(Interval.Companion.of(12, 18));
 		expecting = "2 * 0;// comment";
 		assertEquals(expecting, result);
 
-		result = tokens.getText(Interval.of(0, 8));
+		result = tokens.getText(Interval.Companion.of(0, 8));
 		stream.fill();
 // try again after insert at end
 		expecting = "x = 0";
@@ -499,7 +501,7 @@ public class TestTokenStreamRewriter {
 		stream.fill();
 		TokenStreamRewriter tokens = new TokenStreamRewriter(stream);
 		tokens.replace(2, 4, "xyz");
-		String result = tokens.getText(Interval.of(0, 6));
+		String result = tokens.getText(Interval.Companion.of(0, 6));
 		String expecting = "abxyzba";
 		assertEquals(expecting, result);
 	}

@@ -38,4 +38,6 @@ public class NoViableAltException(
   init {
     this.offendingToken = offendingToken
   }
+
+    constructor(recognizer: Parser) : this(recognizer, recognizer.tokenStream, recognizer.currentToken, recognizer.currentToken, null, recognizer.context!!)
 }

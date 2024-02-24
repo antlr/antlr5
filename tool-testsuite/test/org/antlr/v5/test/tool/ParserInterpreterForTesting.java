@@ -7,16 +7,17 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.Tool;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.DecisionState;
-import org.antlr.v5.runtime.atn.ParserATNSimulator;
-import org.antlr.v5.runtime.atn.PredictionContextCache;
-import org.antlr.v5.runtime.dfa.DFA;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.TokenStream;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ParserATNSimulator;
+import org.antlr.v5.runtime.core.atn.PredictionContextCache;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.DecisionState;
 import org.antlr.v5.tool.Grammar;
+import org.jetbrains.annotations.NotNull;
 
 public class ParserInterpreterForTesting {
 	public static class DummyParser extends Parser {
@@ -36,16 +37,25 @@ public class ParserInterpreterForTesting {
 			}
 		}
 
+		@NotNull
+		@Override
+		public ParserATNSimulator getInterpreter() {
+			return null;
+		}
+
+		@NotNull
 		@Override
 		public String getGrammarFileName() {
 			throw new UnsupportedOperationException("not implemented");
 		}
 
+		@NotNull
 		@Override
 		public String[] getRuleNames() {
 			return g.rules.keySet().toArray(new String[0]);
 		}
 
+		@NotNull
 		@Override
 		@Deprecated
 		public String[] getTokenNames() {
@@ -89,7 +99,7 @@ public class ParserInterpreterForTesting {
 			return 1;
 		}
 		else if (startState instanceof DecisionState) {
-			return atnSimulator.adaptivePredict(input, ((DecisionState)startState).decision, null);
+			return atnSimulator.adaptivePredict(input, ((DecisionState) startState).getDecision(), null);
 		}
 		else if (startState.getNumberOfTransitions() > 0) {
 			return 1;

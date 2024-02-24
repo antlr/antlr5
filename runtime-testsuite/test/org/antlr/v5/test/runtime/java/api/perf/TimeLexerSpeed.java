@@ -6,10 +6,10 @@
 
 package org.antlr.v5.test.runtime.java.api.perf;
 
-import org.antlr.v5.runtime.CharStream;
 import org.antlr.v5.runtime.CharStreams;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.Lexer;
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.Lexer;
 import org.antlr.v5.test.runtime.java.api.JavaLexer;
 import org.openjdk.jol.info.GraphLayout;
 

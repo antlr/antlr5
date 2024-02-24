@@ -1,7 +1,7 @@
 package org.antlr.v5.test.runtime.java.helpers;
 
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.tree.*;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.tree.*;
 
 public class TreeShapeListener implements ParseTreeListener {
 	public static final TreeShapeListener INSTANCE = new TreeShapeListener();
