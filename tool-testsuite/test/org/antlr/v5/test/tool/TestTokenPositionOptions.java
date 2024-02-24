@@ -8,7 +8,7 @@ package org.antlr.v5.test.tool;
 import org.antlr.runtime.Token;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.ast.GrammarAST;
 import org.junit.jupiter.api.Test;

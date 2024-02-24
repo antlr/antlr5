@@ -245,4 +245,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
   ) {
     // Noop
   }
+
+    public abstract val sourceName: String
+        get
 }

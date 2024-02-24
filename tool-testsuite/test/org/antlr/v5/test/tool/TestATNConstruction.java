@@ -10,8 +10,8 @@ import org.antlr.v5.automata.ATNPrinter;
 import org.antlr.v5.automata.LexerATNFactory;
 import org.antlr.v5.automata.ParserATNFactory;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.state.ATNState;
 import org.antlr.v5.test.runtime.ErrorQueue;
 import org.antlr.v5.test.runtime.RuntimeTestUtils;
 import org.antlr.v5.tool.ErrorType;
@@ -841,7 +841,7 @@ public class TestATNConstruction {
 		}
 		ParserATNFactory f = new LexerATNFactory(g);
 		ATN nfa = f.createATN();
-		ATNState startState = nfa.modeNameToStartState.get(modeName);
+		ATNState startState = nfa.getModeNameToStartState().get(modeName);
 		ATNPrinter serializer = new ATNPrinter(g, startState);
 		String result = serializer.asString();
 		//System.out.print(result);

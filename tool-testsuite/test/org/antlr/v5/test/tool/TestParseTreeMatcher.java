@@ -6,15 +6,16 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.InputMismatchException;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.NoViableAltException;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.misc.Pair;
-import org.antlr.v5.runtime._unused.pattern.ParseTreeMatch;
-import org.antlr.v5.runtime._unused.pattern.ParseTreePattern;
-import org.antlr.v5.runtime._unused.pattern.ParseTreePatternMatcher;
+import kotlin.Pair;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreeMatch;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePattern;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePatternCompiler;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePatternMatcher;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.error.InputMismatchException;
+import org.antlr.v5.runtime.core.error.NoViableAltException;
 import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.java.JavaRunner;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
@@ -388,9 +389,9 @@ public class TestParseTreeMatcher {
 		try (JavaRunner runner = new JavaRunner()) {
 			JavaExecutedState executedState = (JavaExecutedState)runner.run(runOptions);
 			JavaCompiledState compiledState = (JavaCompiledState)executedState.previousState;
-			Parser parser = compiledState.initializeDummyLexerAndParser().b;
+			Parser parser = compiledState.initializeDummyLexerAndParser().getSecond();
 
-			ParseTreePattern p = parser.compileParseTreePattern(pattern, parser.getRuleIndex(startRule));
+			ParseTreePattern p = ParseTreePatternCompiler.compile(parser, pattern, parser.getRuleIndex(startRule));
 
 			ParseTreeMatch match = p.match(executedState.parseTree);
 			boolean matched = match.succeeded();
@@ -408,7 +409,7 @@ public class TestParseTreeMatcher {
 
 			Pair<Lexer, Parser> lexerParserPair = compiledState.initializeDummyLexerAndParser();
 
-			return new ParseTreePatternMatcher(lexerParserPair.a, lexerParserPair.b);
+			return new ParseTreePatternMatcher(lexerParserPair.getFirst(), lexerParserPair.getSecond());
 		}
 	}
 }

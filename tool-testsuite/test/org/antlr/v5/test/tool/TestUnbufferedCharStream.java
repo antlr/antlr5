@@ -6,13 +6,8 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.CommonTokenFactory;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.IntStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.UnbufferedCharStream;
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.*;
+import org.antlr.v5.runtime.core.misc.Interval;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
 

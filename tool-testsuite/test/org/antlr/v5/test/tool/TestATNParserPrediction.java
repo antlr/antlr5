@@ -7,15 +7,15 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.automata.ParserATNFactory;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.NoViableAltException;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.LexerATNSimulator;
-import org.antlr.v5.runtime.atn.PredictionContextCache;
-import org.antlr.v5.runtime.dfa.DFA;
-import org.antlr.v5.runtime.misc.IntegerList;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.TokenStream;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.LexerATNSimulator;
+import org.antlr.v5.runtime.core.atn.PredictionContextCache;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.error.NoViableAltException;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.tool.DOTGenerator;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LeftRecursiveRule;
@@ -29,8 +29,6 @@ import static org.antlr.v5.test.tool.ToolTestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// NOTICE: TOKENS IN LEXER, PARSER MUST BE SAME OR TOKEN TYPE MISMATCH
-// NOTICE: TOKENS IN LEXER, PARSER MUST BE SAME OR TOKEN TYPE MISMATCH
 // NOTICE: TOKENS IN LEXER, PARSER MUST BE SAME OR TOKEN TYPE MISMATCH
 
 public class TestATNParserPrediction {
@@ -492,7 +490,7 @@ public class TestATNParserPrediction {
 	{
 		ATN lexatn = createATN(lg, true);
 		LexerATNSimulator lexInterp =
-		new LexerATNSimulator(lexatn,new DFA[] { new DFA(lexatn.modeToStartState.get(Lexer.DEFAULT_MODE)) },new PredictionContextCache());
+		new LexerATNSimulator(lexatn,new DFA[] { new DFA(lexatn.getModeToStartState().get(Lexer.DEFAULT_MODE), 0) },new PredictionContextCache());
 		IntegerList types = getTokenTypesViaATN(inputString, lexInterp);
 //		System.out.println(types);
 
@@ -520,7 +518,7 @@ public class TestATNParserPrediction {
 //		ParserATNSimulator interp = new ParserATNSimulator(atn);
 		TokenStream input = new MockIntTokenStream(types);
 		ParserInterpreterForTesting interp = new ParserInterpreterForTesting(g, input);
-		int alt = interp.adaptivePredict(input, decision, ParserRuleContext.EMPTY);
+		int alt = interp.adaptivePredict(input, decision, ParserRuleContext.getEMPTY());
 
 		assertEquals(expectedAlt, alt);
 
@@ -540,7 +538,7 @@ public class TestATNParserPrediction {
 //		Tool.internalOption_ShowATNConfigsInDFA = true;
 		ATN lexatn = createATN(lg, true);
 		LexerATNSimulator lexInterp =
-		new LexerATNSimulator(lexatn,new DFA[] { new DFA(lexatn.getDecisionState(Lexer.DEFAULT_MODE)) }, new PredictionContextCache());
+		new LexerATNSimulator(lexatn,new DFA[] { new DFA(lexatn.getDecisionState(Lexer.DEFAULT_MODE), 0) }, new PredictionContextCache());
 
 		semanticProcess(lg);
 		g.importVocab(lg);
@@ -553,7 +551,7 @@ public class TestATNParserPrediction {
 //			System.out.println(types);
 			TokenStream input = new MockIntTokenStream(types);
 			try {
-				interp.adaptivePredict(input, decision, ParserRuleContext.EMPTY);
+				interp.adaptivePredict(input, decision, ParserRuleContext.getEMPTY());
 			}
 			catch (NoViableAltException nvae) {
 				nvae.printStackTrace(System.err);

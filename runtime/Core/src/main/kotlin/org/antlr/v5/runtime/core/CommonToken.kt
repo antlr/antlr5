@@ -98,7 +98,16 @@ public open class CommonToken : WritableToken {
     source = EMPTY_SOURCE
   }
 
-  /**
+    @Suppress("LeakingThis")
+    public constructor(type: Int, text: String, channel: Int) {
+        this.type = type
+        this.text = text
+        this.channel = channel
+        source = EMPTY_SOURCE
+    }
+
+
+    /**
    * Constructs a new [CommonToken] as a copy of another [Token].
    *
    * If [oldToken] is also a [CommonToken] instance, the newly

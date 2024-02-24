@@ -6,10 +6,10 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.atn.ArrayPredictionContext;
-import org.antlr.v5.runtime.atn.EmptyPredictionContext;
-import org.antlr.v5.runtime.atn.PredictionContext;
-import org.antlr.v5.runtime.atn.SingletonPredictionContext;
+import org.antlr.v5.runtime.core.context.ArrayPredictionContext;
+import org.antlr.v5.runtime.core.context.EmptyPredictionContext;
+import org.antlr.v5.runtime.core.context.PredictionContext;
+import org.antlr.v5.runtime.core.context.SingletonPredictionContext;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +25,8 @@ public class TestGraphNodes {
 	public boolean fullCtx() { return false; }
 
 	@Test public void test_$_$() {
-		PredictionContext r = PredictionContext.merge(
-				EmptyPredictionContext.Instance, EmptyPredictionContext.Instance, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(
+				EmptyPredictionContext.getInstance(), EmptyPredictionContext.getInstance(), rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -37,8 +37,8 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_$_$_fullctx() {
-		PredictionContext r = PredictionContext.merge(
-				EmptyPredictionContext.Instance, EmptyPredictionContext.Instance, fullCtx(), null);
+		PredictionContext r = PredictionContext.Companion.merge(
+				EmptyPredictionContext.getInstance(), EmptyPredictionContext.getInstance(), fullCtx(), null);
 //		System.out.println(toDOTString(r, fullCtx()));
 		String expecting =
 			"digraph G {\n" +
@@ -49,7 +49,7 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_x_$() {
-		PredictionContext r = PredictionContext.merge(x(), EmptyPredictionContext.Instance, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(x(), EmptyPredictionContext.getInstance(), rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -60,7 +60,7 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_x_$_fullctx() {
-		PredictionContext r = PredictionContext.merge(x(), EmptyPredictionContext.Instance, fullCtx(), null);
+		PredictionContext r = PredictionContext.Companion.merge(x(), EmptyPredictionContext.getInstance(), fullCtx(), null);
 //		System.out.println(toDOTString(r, fullCtx()));
 		String expecting =
 			"digraph G {\n" +
@@ -73,7 +73,7 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_$_x() {
-		PredictionContext r = PredictionContext.merge(EmptyPredictionContext.Instance, x(), rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(EmptyPredictionContext.getInstance(), x(), rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -84,7 +84,7 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_$_x_fullctx() {
-		PredictionContext r = PredictionContext.merge(EmptyPredictionContext.Instance, x(), fullCtx(), null);
+		PredictionContext r = PredictionContext.Companion.merge(EmptyPredictionContext.getInstance(), x(), fullCtx(), null);
 //		System.out.println(toDOTString(r, fullCtx()));
 		String expecting =
 			"digraph G {\n" +
@@ -97,7 +97,7 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_a_a() {
-		PredictionContext r = PredictionContext.merge(a(), a(), rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a(), a(), rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -113,7 +113,7 @@ public class TestGraphNodes {
 		PredictionContext a1 = a();
 		PredictionContext x = x();
 		PredictionContext a2 = createSingleton(x, 1);
-		PredictionContext r = PredictionContext.merge(a1, a2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -129,7 +129,7 @@ public class TestGraphNodes {
 		PredictionContext a1 = a();
 		PredictionContext x = x();
 		PredictionContext a2 = createSingleton(x, 1);
-		PredictionContext r = PredictionContext.merge(a1, a2, fullCtx(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, fullCtx(), null);
 //		System.out.println(toDOTString(r, fullCtx()));
 		String expecting =
 			"digraph G {\n" +
@@ -147,7 +147,7 @@ public class TestGraphNodes {
 		PredictionContext x = x();
 		PredictionContext a1 = createSingleton(x, 1);
 		PredictionContext a2 = a();
-		PredictionContext r = PredictionContext.merge(a1, a2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -160,11 +160,11 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_aa$_a$_$_fullCtx() {
-		PredictionContext empty = EmptyPredictionContext.Instance;
+		PredictionContext empty = EmptyPredictionContext.getInstance();
 		PredictionContext child1 = createSingleton(empty, 8);
-		PredictionContext right = PredictionContext.merge(empty, child1, false, null);
+		PredictionContext right = PredictionContext.Companion.merge(empty, child1, false, null);
 		PredictionContext left = createSingleton(right, 8);
-		PredictionContext merged = PredictionContext.merge(left, right, false, null);
+		PredictionContext merged = PredictionContext.Companion.merge(left, right, false, null);
 		String actual = toDOTString(merged, false);
 //		System.out.println(actual);
 		String expecting =
@@ -183,7 +183,7 @@ public class TestGraphNodes {
 		PredictionContext x = x();
 		PredictionContext a1 = createSingleton(x, 1);
 		PredictionContext a2 = a();
-		PredictionContext r = PredictionContext.merge(a1, a2, fullCtx(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, fullCtx(), null);
 //		System.out.println(toDOTString(r, fullCtx()));
 		String expecting =
 			"digraph G {\n" +
@@ -198,7 +198,7 @@ public class TestGraphNodes {
 	}
 
 	@Test public void test_a_b() {
-		PredictionContext r = PredictionContext.merge(a(), b(), rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a(), b(), rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -215,7 +215,7 @@ public class TestGraphNodes {
 		PredictionContext x = x();
 		PredictionContext a1 = createSingleton(x, 1);
 		PredictionContext a2 = createSingleton(x, 1);
-		PredictionContext r = PredictionContext.merge(a1, a2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -234,7 +234,7 @@ public class TestGraphNodes {
 		PredictionContext x2 = x();
 		PredictionContext a1 = createSingleton(x1, 1);
 		PredictionContext a2 = createSingleton(x2, 1);
-		PredictionContext r = PredictionContext.merge(a1, a2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -255,7 +255,7 @@ public class TestGraphNodes {
 		PredictionContext b2 = createSingleton(x2, 2);
 		PredictionContext a1 = createSingleton(b1, 1);
 		PredictionContext a2 = createSingleton(b2, 1);
-		PredictionContext r = PredictionContext.merge(a1, a2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -278,7 +278,7 @@ public class TestGraphNodes {
 		PredictionContext c = createSingleton(x2, 3);
 		PredictionContext a1 = createSingleton(b, 1);
 		PredictionContext a2 = createSingleton(c, 1);
-		PredictionContext r = PredictionContext.merge(a1, a2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a1, a2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -299,7 +299,7 @@ public class TestGraphNodes {
 		PredictionContext x = x();
 		PredictionContext a = createSingleton(x, 1);
 		PredictionContext b = createSingleton(x, 2);
-		PredictionContext r = PredictionContext.merge(a, b, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a, b, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -319,7 +319,7 @@ public class TestGraphNodes {
 		PredictionContext x2 = x();
 		PredictionContext a = createSingleton(x1, 1);
 		PredictionContext b = createSingleton(x2, 2);
-		PredictionContext r = PredictionContext.merge(a, b, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a, b, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -337,7 +337,7 @@ public class TestGraphNodes {
 	@Test public void test_ax_by() {
 		PredictionContext a = createSingleton(x(), 1);
 		PredictionContext b = createSingleton(y(), 2);
-		PredictionContext r = PredictionContext.merge(a, b, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a, b, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -358,7 +358,7 @@ public class TestGraphNodes {
 		PredictionContext x2 = x();
 		PredictionContext a = a();
 		PredictionContext b = createSingleton(x2, 2);
-		PredictionContext r = PredictionContext.merge(a, b, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a, b, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -377,7 +377,7 @@ public class TestGraphNodes {
 		PredictionContext x2 = x();
 		PredictionContext a = a();
 		PredictionContext b = createSingleton(x2, 2);
-		PredictionContext r = PredictionContext.merge(a, b, fullCtx(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a, b, fullCtx(), null);
 //		System.out.println(toDOTString(r, fullCtx()));
 		String expecting =
 			"digraph G {\n" +
@@ -401,7 +401,7 @@ public class TestGraphNodes {
 		PredictionContext f = createSingleton(x2, 6);
 		PredictionContext a = createSingleton(e, 1);
 		PredictionContext b = createSingleton(f, 2);
-		PredictionContext r = PredictionContext.merge(a, b, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(a, b, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -423,9 +423,9 @@ public class TestGraphNodes {
 	// Array merges
 
 	@Test public void test_A$_A$_fullctx() {
-		ArrayPredictionContext A1 = array(EmptyPredictionContext.Instance);
-		ArrayPredictionContext A2 = array(EmptyPredictionContext.Instance);
-		PredictionContext r = PredictionContext.merge(A1, A2, fullCtx(), null);
+		ArrayPredictionContext A1 = array(EmptyPredictionContext.getInstance());
+		ArrayPredictionContext A2 = array(EmptyPredictionContext.getInstance());
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, fullCtx(), null);
 //		System.out.println(toDOTString(r, fullCtx()));
 		String expecting =
 			"digraph G {\n" +
@@ -441,7 +441,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext c = c();
 		ArrayPredictionContext A1 = array(a, b);
 		ArrayPredictionContext A2 = array(c);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -460,7 +460,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext a2 = a();
 		ArrayPredictionContext A1 = array(a1);
 		ArrayPredictionContext A2 = array(a2);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -478,7 +478,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext c = c();
 		ArrayPredictionContext A1 = array(a);
 		ArrayPredictionContext A2 = array(b, c);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -498,7 +498,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext c = c();
 		ArrayPredictionContext A1 = array(a, c);
 		ArrayPredictionContext A2 = array(b);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -515,7 +515,7 @@ public class TestGraphNodes {
 	@Test public void test_Aab_Aa() { // a,b + a
 		ArrayPredictionContext A1 = array(a(), b());
 		ArrayPredictionContext A2 = array(a());
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -531,7 +531,7 @@ public class TestGraphNodes {
 	@Test public void test_Aab_Ab() { // a,b + b
 		ArrayPredictionContext A1 = array(a(), b());
 		ArrayPredictionContext A2 = array(b());
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -549,7 +549,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext b = createSingleton(y(), 2);
 		ArrayPredictionContext A1 = array(a);
 		ArrayPredictionContext A2 = array(b);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -571,7 +571,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext a2 = createSingleton(y(), 1);
 		ArrayPredictionContext A1 = array(a1);
 		ArrayPredictionContext A2 = array(a2);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -591,7 +591,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext a2 = createSingleton(y(), 1);
 		ArrayPredictionContext A1 = array(a1, c());
 		ArrayPredictionContext A2 = array(a2, d());
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -615,7 +615,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext d = createSingleton(x(), 4);
 		ArrayPredictionContext A1 = array(a, b);
 		ArrayPredictionContext A2 = array(c, d);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -645,7 +645,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext d = createSingleton(x(), 4);
 		ArrayPredictionContext A1 = array(a, b1);
 		ArrayPredictionContext A2 = array(b2, d);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -672,7 +672,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext d = createSingleton(x(), 4);
 		ArrayPredictionContext A1 = array(a, b1);
 		ArrayPredictionContext A2 = array(b2, d);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -700,7 +700,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext d = createSingleton(u(), 4);
 		ArrayPredictionContext A1 = array(a, b1);
 		ArrayPredictionContext A2 = array(b2, d);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -725,7 +725,7 @@ public class TestGraphNodes {
 		SingletonPredictionContext d = createSingleton(u(), 4);
 		ArrayPredictionContext A1 = array(a, b);
 		ArrayPredictionContext A2 = array(c, d);
-		PredictionContext r = PredictionContext.merge(A1, A2, rootIsWildcard(), null);
+		PredictionContext r = PredictionContext.Companion.merge(A1, A2, rootIsWildcard(), null);
 //		System.out.println(toDOTString(r, rootIsWildcard()));
 		String expecting =
 			"digraph G {\n" +
@@ -746,43 +746,43 @@ public class TestGraphNodes {
 	// ------------ SUPPORT -------------------------
 
 	protected SingletonPredictionContext a() {
-		return createSingleton(EmptyPredictionContext.Instance, 1);
+		return createSingleton(EmptyPredictionContext.getInstance(), 1);
 	}
 
 	private SingletonPredictionContext b() {
-		return createSingleton(EmptyPredictionContext.Instance, 2);
+		return createSingleton(EmptyPredictionContext.getInstance(), 2);
 	}
 
 	private SingletonPredictionContext c() {
-		return createSingleton(EmptyPredictionContext.Instance, 3);
+		return createSingleton(EmptyPredictionContext.getInstance(), 3);
 	}
 
 	private SingletonPredictionContext d() {
-		return createSingleton(EmptyPredictionContext.Instance, 4);
+		return createSingleton(EmptyPredictionContext.getInstance(), 4);
 	}
 
 	private SingletonPredictionContext u() {
-		return createSingleton(EmptyPredictionContext.Instance, 6);
+		return createSingleton(EmptyPredictionContext.getInstance(), 6);
 	}
 
 	private SingletonPredictionContext v() {
-		return createSingleton(EmptyPredictionContext.Instance, 7);
+		return createSingleton(EmptyPredictionContext.getInstance(), 7);
 	}
 
 	private SingletonPredictionContext w() {
-		return createSingleton(EmptyPredictionContext.Instance, 8);
+		return createSingleton(EmptyPredictionContext.getInstance(), 8);
 	}
 
 	private SingletonPredictionContext x() {
-		return createSingleton(EmptyPredictionContext.Instance, 9);
+		return createSingleton(EmptyPredictionContext.getInstance(), 9);
 	}
 
 	private SingletonPredictionContext y() {
-		return createSingleton(EmptyPredictionContext.Instance, 10);
+		return createSingleton(EmptyPredictionContext.getInstance(), 10);
 	}
 
 	public SingletonPredictionContext createSingleton(PredictionContext parent, int payload) {
-		SingletonPredictionContext a = SingletonPredictionContext.create(parent, payload);
+		SingletonPredictionContext a = SingletonPredictionContext.Companion.create(parent, payload);
 		return a;
 	}
 
@@ -790,8 +790,8 @@ public class TestGraphNodes {
 		PredictionContext[] parents = new PredictionContext[nodes.length];
 		int[] invokingStates = new int[nodes.length];
 		for (int i=0; i<nodes.length; i++) {
-			parents[i] = nodes[i].parent;
-			invokingStates[i] = nodes[i].returnState;
+			parents[i] = nodes[i].getParent();
+			invokingStates[i] = nodes[i].getReturnState();
 		}
 		return new ArrayPredictionContext(parents, invokingStates);
 	}

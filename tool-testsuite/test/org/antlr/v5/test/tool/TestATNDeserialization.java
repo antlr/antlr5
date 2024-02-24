@@ -6,18 +6,18 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNDeserializer;
-import org.antlr.v5.runtime.atn.ATNSerializer;
-import org.antlr.v5.runtime.misc.IntegerList;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ATNDeserializer;
+import org.antlr.v5.runtime.core.atn.ATNSerializer;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.antlr.v5.runtime.atn.ATNDeserializer.encodeIntsWith16BitWords;
-import static org.antlr.v5.runtime.atn.ATNDeserializer.decodeIntsEncodedAs16BitWords;
+import static org.antlr.v5.runtime.core.misc.IntsEncoderKt.decodeIntsEncodedAs16BitWords;
+import static org.antlr.v5.runtime.core.misc.IntsEncoderKt.encodeIntsWith16BitWords;
 import static org.antlr.v5.test.tool.ToolTestUtils.createATN;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -167,7 +167,7 @@ public class TestATNDeserialization {
 
 	protected void checkDeserializationIsStable(Grammar g) {
 		ATN atn = createATN(g, false);
-		IntegerList serialized = ATNSerializer.getSerialized(atn);
+		IntegerList serialized = ATNSerializer.Companion.getSerialized(atn);
 		String atnData = new ATNDescriber(atn, Arrays.asList(g.getTokenNames())).decode(serialized.toArray());
 
 		IntegerList serialized16 = encodeIntsWith16BitWords(serialized);
@@ -181,7 +181,7 @@ public class TestATNDeserialization {
 		assertArrayEquals(serialized.toArray(), serialized32);
 
 		ATN atn2 = new ATNDeserializer().deserialize(serialized.toArray());
-		IntegerList serialized1 = ATNSerializer.getSerialized(atn2);
+		IntegerList serialized1 = ATNSerializer.Companion.getSerialized(atn2);
 		String atn2Data = new ATNDescriber(atn2, Arrays.asList(g.getTokenNames())).decode(serialized1.toArray());
 
 		assertEquals(atnData, atn2Data);

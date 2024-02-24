@@ -7,16 +7,20 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.gui.Trees;
-import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.AmbiguityInfo;
-import org.antlr.v5.runtime.atn.BasicBlockStartState;
-import org.antlr.v5.runtime.atn.DecisionInfo;
-import org.antlr.v5.runtime.atn.DecisionState;
-import org.antlr.v5.runtime.atn.PredictionMode;
-import org.antlr.v5.runtime.atn.RuleStartState;
-import org.antlr.v5.runtime.atn.Transition;
-import org.antlr.v5.runtime.tree.ParseTree;
+import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.LexerInterpreter;
+import org.antlr.v5.runtime.core.ParserInterpreter;
+import org.antlr.v5.runtime.core.atn.PredictionMode;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.info.AmbiguityInfo;
+import org.antlr.v5.runtime.core.info.DecisionInfo;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.BasicBlockStartState;
+import org.antlr.v5.runtime.core.state.DecisionState;
+import org.antlr.v5.runtime.core.state.RuleStartState;
+import org.antlr.v5.runtime.core.transition.Transition;
+import org.antlr.v5.runtime.core.tree.ParseTree;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.GrammarParserInterpreter;
 import org.antlr.v5.tool.LexerGrammar;
@@ -233,21 +237,21 @@ public class TestAmbigParseTrees {
 		System.out.println();
 
 		DecisionInfo[] decisionInfo = parser.getParseInfo().getDecisionInfo();
-		List<AmbiguityInfo> ambiguities = decisionInfo[decision].ambiguities;
+		List<AmbiguityInfo> ambiguities = decisionInfo[decision].getAmbiguities();
 		assertEquals(1, ambiguities.size());
 		AmbiguityInfo ambiguityInfo = ambiguities.get(0);
 
 		List<ParserRuleContext> ambiguousParseTrees =
 			GrammarParserInterpreter.getAllPossibleParseTrees(g,
-															  parser,
-															  tokens,
-															  decision,
-															  ambiguityInfo.ambigAlts,
-															  ambiguityInfo.startIndex,
-															  ambiguityInfo.stopIndex,
-															  ruleIndex);
-		assertEquals(expectedAmbigAlts, ambiguityInfo.ambigAlts.toString());
-		assertEquals(ambiguityInfo.ambigAlts.cardinality(), ambiguousParseTrees.size());
+												parser,
+												tokens,
+												decision,
+												ambiguityInfo.getAmbigAlts(),
+												ambiguityInfo.getStartIndex(),
+												ambiguityInfo.getStopIndex(),
+												ruleIndex);
+		assertEquals(expectedAmbigAlts, ambiguityInfo.getAmbigAlts().toString());
+		assertEquals(ambiguityInfo.getAmbigAlts().cardinality(), ambiguousParseTrees.size());
 
 		for (int i = 0; i<ambiguousParseTrees.size(); i++) {
 			ParserRuleContext t = ambiguousParseTrees.get(i);
@@ -263,13 +267,13 @@ public class TestAmbigParseTrees {
 		LexerInterpreter lexEngine = lg.createLexerInterpreter(CharStreams.fromString(input));
 		CommonTokenStream tokens = new CommonTokenStream(lexEngine);
 		ParserInterpreter parser = g.createGrammarParserInterpreter(tokens);
-		RuleStartState ruleStartState = g.atn.ruleToStartState[g.getRule(startRule).index];
+		RuleStartState ruleStartState = g.atn.getRuleToStartState()[g.getRule(startRule).index];
 		Transition tr = ruleStartState.transition(0);
-		ATNState t2 = tr.target;
+		ATNState t2 = tr.getTarget();
 		if ( !(t2 instanceof BasicBlockStartState) ) {
 			throw new IllegalArgumentException("rule has no decision: "+startRule);
 		}
-		parser.addDecisionOverride(((DecisionState)t2).decision, 0, startAlt);
+		parser.addDecisionOverride(((DecisionState) t2).getDecision(), 0, startAlt);
 		ParseTree t = parser.parse(g.rules.get(startRule).index);
 		InterpreterTreeTextProvider nodeTextProvider = new InterpreterTreeTextProvider(g.getRuleNames());
 		assertEquals(expectedParseTree, Trees.toStringTree(t, nodeTextProvider));

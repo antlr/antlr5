@@ -7,6 +7,7 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.runtime.*;
+import org.antlr.v5.runtime.core.*;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ public class TestUnbufferedTokenStream {
         // Input:  x = 302;
         CharStream input = CharStreams.fromString("x = 302;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
-        TokenStream tokens = new UnbufferedTokenStream<Token>(lexEngine);
+        TokenStream tokens = new UnbufferedTokenStream(lexEngine, 256);
 
 		assertEquals("x", tokens.LT(1).getText());
 		assertEquals(" ", tokens.LT(2).getText());
@@ -58,7 +59,7 @@ public class TestUnbufferedTokenStream {
         // Input:  x = 302;
         CharStream input = CharStreams.fromString("x = 302;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
-		TestingUnbufferedTokenStream<Token> tokens = new TestingUnbufferedTokenStream<Token>(lexEngine);
+		TestingUnbufferedTokenStream tokens = new TestingUnbufferedTokenStream(lexEngine);
 
 		assertEquals("[[@0,0:0='x',<1>,1:0]]", tokens.getBuffer().toString());
 		assertEquals("x", tokens.LT(1).getText());
@@ -93,7 +94,7 @@ public class TestUnbufferedTokenStream {
         // Input:  x = 302;
         CharStream input = CharStreams.fromString("x = 302;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
-		TestingUnbufferedTokenStream<Token> tokens = new TestingUnbufferedTokenStream<Token>(lexEngine);
+		TestingUnbufferedTokenStream tokens = new TestingUnbufferedTokenStream(lexEngine);
 
 		int m = tokens.mark();
 		assertEquals("[[@0,0:0='x',<1>,1:0]]", tokens.getBuffer().toString());
@@ -126,7 +127,7 @@ public class TestUnbufferedTokenStream {
         // Input:  x = 302;
         CharStream input = CharStreams.fromString("x = 302 + 1;");
         LexerInterpreter lexEngine = g.createLexerInterpreter(input);
-		TestingUnbufferedTokenStream<Token> tokens = new TestingUnbufferedTokenStream<Token>(lexEngine);
+		TestingUnbufferedTokenStream tokens = new TestingUnbufferedTokenStream(lexEngine);
 
 		int m = tokens.mark();
 		assertEquals("[[@0,0:0='x',<1>,1:0]]", tokens.getBuffer().toString());
@@ -155,32 +156,32 @@ public class TestUnbufferedTokenStream {
 		tokens.release(m);
     }
 
-	protected static class TestingUnbufferedTokenStream<T extends Token> extends UnbufferedTokenStream<T> {
+	protected static class TestingUnbufferedTokenStream extends UnbufferedTokenStream {
 
 		public TestingUnbufferedTokenStream(TokenSource tokenSource) {
-			super(tokenSource);
+			super(tokenSource, 256);
 		}
 
 		/** For testing.  What's in moving window into token stream from
 		 *  current index, LT(1) or tokens[p], to end of buffer?
 		 */
 		protected List<? extends Token> getRemainingBuffer() {
-			if ( n==0 ) {
+			if ( getN()==0 ) {
 				return Collections.emptyList();
 			}
 
-			return Arrays.asList(tokens).subList(p, n);
+			return Arrays.asList(getTokens()).subList(getP(), getN());
 		}
 
 		/** For testing.  What's in moving window buffer into data stream.
 		 *  From 0..p-1 have been consume.
 		 */
 		protected List<? extends Token> getBuffer() {
-			if ( n==0 ) {
+			if ( getN()==0 ) {
 				return Collections.emptyList();
 			}
 
-			return Arrays.asList(tokens).subList(0, n);
+			return Arrays.asList(getTokens()).subList(0, getN());
 		}
 
 	}

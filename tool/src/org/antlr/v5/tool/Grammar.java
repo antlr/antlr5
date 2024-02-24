@@ -23,6 +23,7 @@ import org.antlr.v5.runtime.core.atn.ATNDeserializer;
 import org.antlr.v5.runtime.core.atn.ATNSerializer;
 import org.antlr.v5.runtime.core.context.SemanticContext;
 import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.error.RecognitionException;
 import org.antlr.v5.runtime.core.misc.IntSet;
 import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.runtime.core.misc.Interval;
@@ -282,38 +283,34 @@ public class Grammar implements AttributeResolver {
     }
 
 	/** For testing */
-	public Grammar(String grammarText) throws org.antlr.runtime.RecognitionException {
+	public Grammar(String grammarText) throws RecognitionException {
 		this(GRAMMAR_FROM_STRING_NAME, grammarText, null);
 	}
 
-	public Grammar(String grammarText, LexerGrammar tokenVocabSource) throws org.antlr.runtime.RecognitionException {
+	public Grammar(String grammarText, LexerGrammar tokenVocabSource) throws RecognitionException {
 		this(GRAMMAR_FROM_STRING_NAME, grammarText, tokenVocabSource, null);
 	}
 
 	/** For testing */
-	public Grammar(String grammarText, ANTLRToolListener listener)
-		throws org.antlr.runtime.RecognitionException
+	public Grammar(String grammarText, ANTLRToolListener listener) throws RecognitionException
 	{
 		this(GRAMMAR_FROM_STRING_NAME, grammarText, listener);
 	}
 
 	/** For testing; builds trees, does sem anal */
-	public Grammar(String fileName, String grammarText)
-		throws org.antlr.runtime.RecognitionException
+	public Grammar(String fileName, String grammarText) throws RecognitionException
 	{
 		this(fileName, grammarText, null);
 	}
 
 	/** For testing; builds trees, does sem anal */
-	public Grammar(String fileName, String grammarText, ANTLRToolListener listener)
-		throws org.antlr.runtime.RecognitionException
+	public Grammar(String fileName, String grammarText, ANTLRToolListener listener) throws RecognitionException
 	{
 		this(fileName, grammarText, null, listener);
 	}
 
 	/** For testing; builds trees, does sem anal */
-	public Grammar(String fileName, String grammarText, Grammar tokenVocabSource, ANTLRToolListener listener)
-		throws org.antlr.runtime.RecognitionException
+	public Grammar(String fileName, String grammarText, Grammar tokenVocabSource, ANTLRToolListener listener) throws RecognitionException
 	{
         this.text = grammarText;
 		this.fileName = fileName;

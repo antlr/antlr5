@@ -5,9 +5,9 @@
  */
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.Vocabulary;
-import org.antlr.v5.runtime.VocabularyImpl;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.Vocabulary;
+import org.antlr.v5.runtime.core.VocabularyImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestVocabulary {
 	@Test
 	public void testEmptyVocabulary() {
-		assertNotNull(VocabularyImpl.EMPTY_VOCABULARY);
-		assertEquals("EOF", VocabularyImpl.EMPTY_VOCABULARY.getSymbolicName(Token.EOF));
-		assertEquals("0", VocabularyImpl.EMPTY_VOCABULARY.getDisplayName(Token.INVALID_TYPE));
+		assertNotNull(VocabularyImpl.Companion.getEMPTY_VOCABULARY());
+		assertEquals("EOF", VocabularyImpl.Companion.getEMPTY_VOCABULARY().getSymbolicName(Token.EOF));
+		assertEquals("0", VocabularyImpl.Companion.getEMPTY_VOCABULARY().getDisplayName(Token.INVALID_TYPE));
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class TestVocabulary {
 			"TOKEN_REF", "RULE_REF", "'//'", "'/'", "'*'", "'!'", "ID", "STRING"
 		};
 
-		Vocabulary vocabulary = VocabularyImpl.fromTokenNames(tokenNames);
+		Vocabulary vocabulary = VocabularyImpl.Companion.fromTokenNames(tokenNames);
 		assertNotNull(vocabulary);
 		assertEquals("EOF", vocabulary.getSymbolicName(Token.EOF));
 		for (int i = 0; i < tokenNames.length; i++) {

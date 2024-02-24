@@ -7,8 +7,12 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.runtime.RecognitionException;
-import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.atn.DecisionInfo;
+import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.LexerInterpreter;
+import org.antlr.v5.runtime.core.ParserInterpreter;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.info.DecisionInfo;
 import org.antlr.v5.test.runtime.states.ExecutedState;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LexerGrammar;
@@ -26,19 +30,15 @@ public class TestParserProfiler {
 	final static LexerGrammar lg;
 
 	static {
-		try {
-			lg = new LexerGrammar(
-					"lexer grammar L;\n" +
-							"WS : [ \\r\\t\\n]+ -> channel(HIDDEN) ;\n" +
-							"SEMI : ';' ;\n" +
-							"DOT : '.' ;\n" +
-							"ID : [a-zA-Z]+ ;\n" +
-							"INT : [0-9]+ ;\n" +
-							"PLUS : '+' ;\n" +
-							"MULT : '*' ;\n");
-		} catch (RecognitionException e) {
-			throw new RuntimeException(e);
-		}
+		lg = new LexerGrammar(
+				"lexer grammar L;\n" +
+						"WS : [ \\r\\t\\n]+ -> channel(HIDDEN) ;\n" +
+						"SEMI : ';' ;\n" +
+						"DOT : '.' ;\n" +
+						"ID : [a-zA-Z]+ ;\n" +
+						"INT : [0-9]+ ;\n" +
+						"PLUS : '+' ;\n" +
+						"MULT : '*' ;\n");
 	}
 
 	@Test public void testLL1() throws Exception {
@@ -237,7 +237,7 @@ public class TestParserProfiler {
 			parser.reset();
 			lexEngine.setInputStream(CharStreams.fromString(s));
 			CommonTokenStream tokens = new CommonTokenStream(lexEngine);
-			parser.setInputStream(tokens);
+			parser.setTokenStream(tokens);
 			Rule r = g.rules.get(startRule);
 			if ( r==null ) {
 				return parser.getParseInfo().getDecisionInfo();

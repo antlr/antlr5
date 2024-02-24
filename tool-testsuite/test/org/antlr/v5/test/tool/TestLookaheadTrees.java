@@ -8,12 +8,12 @@ package org.antlr.v5.test.tool;
 
 import org.antlr.v5.gui.Trees;
 import org.antlr.v5.runtime.CharStreams;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.atn.DecisionInfo;
-import org.antlr.v5.runtime.atn.LookaheadEventInfo;
-import org.antlr.v5.runtime.tree.ParseTree;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.LexerInterpreter;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.info.DecisionInfo;
+import org.antlr.v5.runtime.core.info.LookaheadEventInfo;
+import org.antlr.v5.runtime.core.tree.ParseTree;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.GrammarParserInterpreter;
 import org.antlr.v5.tool.LexerGrammar;
@@ -135,11 +135,11 @@ public class TestLookaheadTrees {
 		ParseTree t = parser.parse(startRuleIndex);
 
 		DecisionInfo decisionInfo = parser.getParseInfo().getDecisionInfo()[decision];
-		LookaheadEventInfo lookaheadEventInfo = decisionInfo.SLL_MaxLookEvent;
+		LookaheadEventInfo lookaheadEventInfo = decisionInfo.getSLL_MaxLookEvent();
 
 		List<ParserRuleContext> lookaheadParseTrees =
-			GrammarParserInterpreter.getLookaheadParseTrees(g, parser, tokens, startRuleIndex, lookaheadEventInfo.decision,
-															lookaheadEventInfo.startIndex, lookaheadEventInfo.stopIndex);
+			GrammarParserInterpreter.getLookaheadParseTrees(g, parser, tokens, startRuleIndex, lookaheadEventInfo.getDecision(),
+                    lookaheadEventInfo.getStartIndex(), lookaheadEventInfo.getStopIndex());
 
 		assertEquals(expectedTrees.length, lookaheadParseTrees.size());
 		for (int i = 0; i < lookaheadParseTrees.size(); i++) {

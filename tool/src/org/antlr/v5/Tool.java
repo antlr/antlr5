@@ -25,7 +25,7 @@ import org.antlr.v5.parse.GrammarASTAdaptor;
 import org.antlr.v5.parse.GrammarTreeVisitor;
 import org.antlr.v5.parse.ToolANTLRLexer;
 import org.antlr.v5.parse.ToolANTLRParser;
-import org.antlr.v5.runtime.RuntimeMetaData;
+import org.antlr.v5.runtime.core.RuntimeMetaData;
 import org.antlr.v5.runtime.core.atn.ATNSerializer;
 import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.semantics.SemanticPipeline;
@@ -64,7 +64,7 @@ public class Tool {
 	static {
 		// Assigned in a static{} block to prevent the field from becoming a
 		// compile-time constant
-		VERSION = RuntimeMetaData.VERSION;
+		VERSION = RuntimeMetaData.runtimeVersion;
 	}
 
 	public static final String GRAMMAR_EXTENSION = ".g4";

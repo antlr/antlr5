@@ -6,7 +6,7 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.core.Token;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;

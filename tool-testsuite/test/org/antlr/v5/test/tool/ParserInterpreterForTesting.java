@@ -27,6 +27,9 @@ public class ParserInterpreterForTesting {
 			new PredictionContextCache();
 
 		public Grammar g;
+
+		ParserATNSimulator _interpreter;
+
 		public DummyParser(Grammar g, ATN atn, TokenStream input) {
 			super(input);
 			this.g = g;
@@ -35,12 +38,18 @@ public class ParserInterpreterForTesting {
 			for (int i = 0; i < decisionToDFA.length; i++) {
 				decisionToDFA[i] = new DFA(atn.getDecisionState(i), i);
 			}
+			this._interpreter = new ParserATNSimulator(this, atn, decisionToDFA, sharedContextCache);
 		}
 
 		@NotNull
 		@Override
 		public ParserATNSimulator getInterpreter() {
-			return null;
+			return _interpreter;
+		}
+
+		@Override
+		public void setInterpreter(@NotNull ParserATNSimulator interpreter) {
+			this._interpreter = interpreter;
 		}
 
 		@NotNull
@@ -63,7 +72,7 @@ public class ParserInterpreterForTesting {
 		}
 
 		@Override
-		public ATN getATN() {
+		public ATN getAtn() {
 			return atn;
 		}
 	}

@@ -6,16 +6,7 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.CommonToken;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.IntStream;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenFactory;
-import org.antlr.v5.runtime.TokenSource;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.WritableToken;
+import org.antlr.v5.runtime.core.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,15 +24,15 @@ public class TestCommonTokenStream extends TestBufferedTokenStream {
                 int i = 0;
                 @SuppressWarnings("serial")
 				WritableToken[] tokens = {
-                    new CommonToken(1," ") {{channel = Lexer.HIDDEN;}},
+                    new CommonToken(1," ", Lexer.HIDDEN),
                     new CommonToken(1,"x"),
-                    new CommonToken(1," ") {{channel = Lexer.HIDDEN;}},
+                    new CommonToken(1," ", Lexer.HIDDEN),
                     new CommonToken(1,"="),
                     new CommonToken(1,"34"),
-                    new CommonToken(1," ") {{channel = Lexer.HIDDEN;}},
-                    new CommonToken(1," ") {{channel = Lexer.HIDDEN;}},
+                    new CommonToken(1," ", Lexer.HIDDEN),
+                    new CommonToken(1," ", Lexer.HIDDEN),
                     new CommonToken(1,";"),
-                    new CommonToken(1,"\n") {{channel = Lexer.HIDDEN;}},
+                    new CommonToken(1,"\n", Lexer.HIDDEN),
                     new CommonToken(Token.EOF,"")
                 };
                 @Override
@@ -104,16 +95,16 @@ public class TestCommonTokenStream extends TestBufferedTokenStream {
 				int i = 0;
 				@SuppressWarnings("serial")
 				WritableToken[] tokens = {
-				new CommonToken(1," ") {{channel = Lexer.HIDDEN;}}, // 0
+				new CommonToken(1," ", Lexer.HIDDEN), // 0
 				new CommonToken(1,"x"),								// 1
-				new CommonToken(1," ") {{channel = Lexer.HIDDEN;}},	// 2
+				new CommonToken(1," ", Lexer.HIDDEN),	// 2
 				new CommonToken(1,"="),								// 3
 				new CommonToken(1,"34"),							// 4
-				new CommonToken(1," ") {{channel = Lexer.HIDDEN;}},	// 5
-				new CommonToken(1," ") {{channel = Lexer.HIDDEN;}}, // 6
+				new CommonToken(1," ", Lexer.HIDDEN),	// 5
+				new CommonToken(1," ", Lexer.HIDDEN), // 6
 				new CommonToken(1,";"),								// 7
-				new CommonToken(1," ")  {{channel = Lexer.HIDDEN;}},// 8
-				new CommonToken(1,"\n") {{channel = Lexer.HIDDEN;}},// 9
+				new CommonToken(1," ", Lexer.HIDDEN),// 8
+				new CommonToken(1,"\n", Lexer.HIDDEN),// 9
 				new CommonToken(Token.EOF,"")						// 10
 				};
 				@Override
@@ -147,45 +138,45 @@ public class TestCommonTokenStream extends TestBufferedTokenStream {
 
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		tokens.fill();
-		assertEquals(null, tokens.getHiddenTokensToLeft(0));
-		assertEquals(null, tokens.getHiddenTokensToRight(0));
+		assertEquals(null, tokens.getHiddenTokensToLeft(0, -1));
+		assertEquals(null, tokens.getHiddenTokensToRight(0, -1));
 
 		assertEquals("[[@0,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToLeft(1).toString());
+					 tokens.getHiddenTokensToLeft(1, -1).toString());
 		assertEquals("[[@2,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToRight(1).toString());
+					 tokens.getHiddenTokensToRight(1, -1).toString());
 
-		assertEquals(null, tokens.getHiddenTokensToLeft(2));
-		assertEquals(null, tokens.getHiddenTokensToRight(2));
+		assertEquals(null, tokens.getHiddenTokensToLeft(2, -1));
+		assertEquals(null, tokens.getHiddenTokensToRight(2, -1));
 
 		assertEquals("[[@2,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToLeft(3).toString());
-		assertEquals(null, tokens.getHiddenTokensToRight(3));
+					 tokens.getHiddenTokensToLeft(3, -1).toString());
+		assertEquals(null, tokens.getHiddenTokensToRight(3, -1));
 
-		assertEquals(null, tokens.getHiddenTokensToLeft(4));
+		assertEquals(null, tokens.getHiddenTokensToLeft(4, -1));
 		assertEquals("[[@5,0:0=' ',<1>,channel=1,0:-1], [@6,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToRight(4).toString());
+					 tokens.getHiddenTokensToRight(4, -1).toString());
 
-		assertEquals(null, tokens.getHiddenTokensToLeft(5));
+		assertEquals(null, tokens.getHiddenTokensToLeft(5, -1));
 		assertEquals("[[@6,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToRight(5).toString());
+					 tokens.getHiddenTokensToRight(5, -1).toString());
 
 		assertEquals("[[@5,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToLeft(6).toString());
-		assertEquals(null, tokens.getHiddenTokensToRight(6));
+					 tokens.getHiddenTokensToLeft(6, -1).toString());
+		assertEquals(null, tokens.getHiddenTokensToRight(6, -1));
 
 		assertEquals("[[@5,0:0=' ',<1>,channel=1,0:-1], [@6,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToLeft(7).toString());
+					 tokens.getHiddenTokensToLeft(7, -1).toString());
 		assertEquals("[[@8,0:0=' ',<1>,channel=1,0:-1], [@9,0:0='\\n',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToRight(7).toString());
+					 tokens.getHiddenTokensToRight(7, -1).toString());
 
-		assertEquals(null, tokens.getHiddenTokensToLeft(8));
+		assertEquals(null, tokens.getHiddenTokensToLeft(8, -1));
 		assertEquals("[[@9,0:0='\\n',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToRight(8).toString());
+					 tokens.getHiddenTokensToRight(8, -1).toString());
 
 		assertEquals("[[@8,0:0=' ',<1>,channel=1,0:-1]]",
-					 tokens.getHiddenTokensToLeft(9).toString());
-		assertEquals(null, tokens.getHiddenTokensToRight(9));
+					 tokens.getHiddenTokensToLeft(9, -1).toString());
+		assertEquals(null, tokens.getHiddenTokensToRight(9, -1));
 	}
 
 	@Test

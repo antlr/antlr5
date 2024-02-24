@@ -7,23 +7,23 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNConfig;
-import org.antlr.v5.runtime.atn.ATNConfigSet;
-import org.antlr.v5.runtime.atn.LexerATNSimulator;
-import org.antlr.v5.runtime.atn.ParserATNSimulator;
-import org.antlr.v5.runtime.atn.PredictionContextCache;
-import org.antlr.v5.runtime.atn.PredictionMode;
-import org.antlr.v5.runtime.dfa.DFA;
-import org.antlr.v5.runtime.dfa.DFAState;
-import org.antlr.v5.runtime.misc.Interval;
-import org.antlr.v5.runtime.misc.MurmurHash;
-import org.antlr.v5.runtime.misc.ParseCancellationException;
-import org.antlr.v5.runtime.tree.ErrorNode;
-import org.antlr.v5.runtime.tree.ParseTree;
-import org.antlr.v5.runtime.tree.ParseTreeListener;
+import org.antlr.v5.runtime.core.*;
+import org.antlr.v5.runtime.core.atn.*;
+import org.antlr.v5.runtime.core.atn.PredictionMode;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.dfa.DFAState;
+import org.antlr.v5.runtime.core.error.RecognitionException;
+import org.antlr.v5.runtime.core.misc.Interval;
+import org.antlr.v5.runtime.core.misc.MurmurHash;
+import org.antlr.v5.runtime.core.misc.ParseCancellationException;
+import org.antlr.v5.runtime.core.tree.ErrorNode;
+import org.antlr.v5.runtime.core.tree.ParseTree;
+import org.antlr.v5.runtime.core.tree.ParseTreeListener;
+import org.antlr.v5.runtime.core.tree.TerminalNode;
+import org.antlr.v5.runtime.core.error.DefaultErrorStrategy;
 import org.antlr.v5.runtime.tree.ParseTreeWalker;
-import org.antlr.v5.runtime.tree.TerminalNode;
+
 import org.antlr.v5.test.runtime.*;
 import org.antlr.v5.test.runtime.java.JavaRunner;
 import org.antlr.v5.test.runtime.states.GeneratedState;
@@ -273,7 +273,7 @@ public class TestPerformance {
 	private static final boolean REUSE_LEXER_DFA = true;
     /**
      * If {@code true}, a single {@code JavaParser} will be used, and
-     * {@link Parser#setInputStream} will be called to initialize it for each
+     * {@link Parser#setTokenStream} will be called to initialize it for each
      * source file. Otherwise, a new instance will be created for each file.
      */
     private static final boolean REUSE_PARSER = false;
@@ -434,17 +434,19 @@ public class TestPerformance {
 				public void run() {
 					if (CLEAR_DFA) {
 						int index = FILE_GRANULARITY ? 0 : ((NumberedThread)Thread.currentThread()).getThreadNumber();
+						//noinspection ConstantValue
 						if (sharedLexers.length > 0 && sharedLexers[index] != null) {
-							ATN atn = sharedLexers[index].getATN();
-							for (int j = 0; j < sharedLexers[index].getInterpreter().decisionToDFA.length; j++) {
-								sharedLexers[index].getInterpreter().decisionToDFA[j] = new DFA(atn.getDecisionState(j), j);
+							ATN atn = sharedLexers[index].getAtn();
+							for (int j = 0; j < sharedLexers[index].getInterpreter().getDecisionToDFA().length; j++) {
+								sharedLexers[index].getInterpreter().getDecisionToDFA()[j] = new DFA(atn.getDecisionState(j), j);
 							}
 						}
 
+						//noinspection ConstantValue
 						if (sharedParsers.length > 0 && sharedParsers[index] != null) {
-							ATN atn = sharedParsers[index].getATN();
-							for (int j = 0; j < sharedParsers[index].getInterpreter().decisionToDFA.length; j++) {
-								sharedParsers[index].getInterpreter().decisionToDFA[j] = new DFA(atn.getDecisionState(j), j);
+							ATN atn = sharedParsers[index].getAtn();
+							for (int j = 0; j < sharedParsers[index].getInterpreter().getDecisionToDFA().length; j++) {
+								sharedParsers[index].getInterpreter().getDecisionToDFA()[j] = new DFA(atn.getDecisionState(j), j);
 							}
 						}
 
@@ -844,7 +846,7 @@ public class TestPerformance {
 			int index = FILE_GRANULARITY ? 0 : ((NumberedThread)Thread.currentThread()).getThreadNumber();
 			Lexer lexer = sharedLexers[index];
 			final LexerATNSimulator lexerInterpreter = lexer.getInterpreter();
-			final DFA[] modeToDFA = lexerInterpreter.decisionToDFA;
+			final DFA[] modeToDFA = lexerInterpreter.getDecisionToDFA();
 			if (SHOW_DFA_STATE_STATS) {
 				int states = 0;
 				int configs = 0;
@@ -856,10 +858,10 @@ public class TestPerformance {
 						continue;
 					}
 
-					states += dfa.states.size();
-					for (DFAState state : dfa.states.values()) {
-						configs += state.configs.size();
-						uniqueConfigs.addAll(state.configs);
+					states += dfa.getStatesMap().size();
+					for (DFAState state : dfa.getStatesMap().values()) {
+						configs += state.getConfigs().size();
+						uniqueConfigs.addAll(state.getConfigs());
 					}
 				}
 
@@ -869,17 +871,17 @@ public class TestPerformance {
 					System.out.format("\tMode\tStates\tConfigs\tMode%n");
 					for (int i = 0; i < modeToDFA.length; i++) {
 						DFA dfa = modeToDFA[i];
-						if (dfa == null || dfa.states.isEmpty()) {
+						if (dfa == null || dfa.getStatesMap().isEmpty()) {
 							continue;
 						}
 
 						int modeConfigs = 0;
-						for (DFAState state : dfa.states.values()) {
-							modeConfigs += state.configs.size();
+						for (DFAState state : dfa.getStatesMap().values()) {
+							modeConfigs += state.getConfigs().size();
 						}
 
 						String modeName = lexer.getModeNames()[i];
-						System.out.format("\t%d\t%d\t%d\t%s%n", dfa.decision, dfa.states.size(), modeConfigs, modeName);
+						System.out.format("\t%d\t%d\t%d\t%s%n", dfa.getDecision(), dfa.getStatesMap().size(), modeConfigs, modeName);
 					}
 				}
 			}
@@ -890,7 +892,7 @@ public class TestPerformance {
 			Parser parser = sharedParsers[index];
             // make sure the individual DFAState objects actually have unique ATNConfig arrays
             final ParserATNSimulator interpreter = parser.getInterpreter();
-            final DFA[] decisionToDFA = interpreter.decisionToDFA;
+            final DFA[] decisionToDFA = interpreter.getDecisionToDFA();
 
             if (SHOW_DFA_STATE_STATS) {
                 int states = 0;
@@ -903,10 +905,10 @@ public class TestPerformance {
                         continue;
                     }
 
-                    states += dfa.states.size();
-					for (DFAState state : dfa.states.values()) {
-						configs += state.configs.size();
-						uniqueConfigs.addAll(state.configs);
+                    states += dfa.getStatesMap().size();
+					for (DFAState state : dfa.getStatesMap().values()) {
+						configs += state.getConfigs().size();
+						uniqueConfigs.addAll(state.getConfigs());
 					}
                 }
 
@@ -922,16 +924,16 @@ public class TestPerformance {
 
 					for (int i = 0; i < decisionToDFA.length; i++) {
 						DFA dfa = decisionToDFA[i];
-						if (dfa == null || dfa.states.isEmpty()) {
+						if (dfa == null || dfa.getStatesMap().isEmpty()) {
 							continue;
 						}
 
 						int decisionConfigs = 0;
-						for (DFAState state : dfa.states.values()) {
-							decisionConfigs += state.configs.size();
+						for (DFAState state : dfa.getStatesMap().values()) {
+							decisionConfigs += state.getConfigs().size();
 						}
 
-						String ruleName = parser.getRuleNames()[parser.getATN().decisionToState.get(dfa.decision).ruleIndex];
+						String ruleName = parser.getRuleNames()[parser.getAtn().getDecisionToState().get(dfa.getDecision()).getRuleIndex()];
 
 						long calls = 0;
 						long fullContextCalls = 0;
@@ -982,7 +984,7 @@ public class TestPerformance {
 							formatString = "\t%1$d\t%2$d\t%3$d\t%12$s%n";
 						}
 
-						System.out.format(formatString, dfa.decision, dfa.states.size(), decisionConfigs, calls, fullContextCalls, nonSllCalls, transitions, computedTransitions, fullContextTransitions, lookahead, fullContextLookahead, ruleName);
+						System.out.format(formatString, dfa.getDecision(), dfa.getStatesMap().size(), decisionConfigs, calls, fullContextCalls, nonSllCalls, transitions, computedTransitions, fullContextTransitions, lookahead, fullContextLookahead, ruleName);
 					}
 				}
             }
@@ -1000,15 +1002,15 @@ public class TestPerformance {
                 }
 
                 if (SHOW_CONFIG_STATS) {
-                    for (DFAState state : dfa.states.keySet()) {
-                        if (state.configs.size() >= contextsInDFAState.length) {
-                            contextsInDFAState = Arrays.copyOf(contextsInDFAState, state.configs.size() + 1);
+                    for (DFAState state : dfa.getStatesMap().keySet()) {
+                        if (state.getConfigs().size() >= contextsInDFAState.length) {
+                            contextsInDFAState = Arrays.copyOf(contextsInDFAState, state.getConfigs().size() + 1);
                         }
 
-                        if (state.isAcceptState) {
+                        if (state.isAcceptState()) {
                             boolean hasGlobal = false;
-                            for (ATNConfig config : state.configs) {
-                                if (config.reachesIntoOuterContext > 0) {
+                            for (ATNConfig config : state.getConfigs()) {
+                                if (config.getReachesIntoOuterContext() > 0) {
                                     globalConfigCount++;
                                     hasGlobal = true;
                                 } else {
@@ -1023,7 +1025,7 @@ public class TestPerformance {
                             }
                         }
 
-                        contextsInDFAState[state.configs.size()]++;
+                        contextsInDFAState[state.getConfigs().size()]++;
                     }
                 }
             }
@@ -1137,15 +1139,15 @@ public class TestPerformance {
                         } else {
 							Lexer previousLexer = lexer;
                             lexer = lexerCtor.newInstance(input);
-							DFA[] decisionToDFA = (FILE_GRANULARITY || previousLexer == null ? lexer : previousLexer).getInterpreter().decisionToDFA;
+							DFA[] decisionToDFA = (FILE_GRANULARITY || previousLexer == null ? lexer : previousLexer).getInterpreter().getDecisionToDFA();
 							if (!REUSE_LEXER_DFA || (!FILE_GRANULARITY && previousLexer == null)) {
 								decisionToDFA = new DFA[decisionToDFA.length];
 							}
 
 							if (COMPUTE_TRANSITION_STATS) {
-								lexer.setInterpreter(new StatisticsLexerATNSimulator(lexer, lexer.getATN(), decisionToDFA, lexer.getInterpreter().getSharedContextCache()));
+								lexer.setInterpreter(new StatisticsLexerATNSimulator(lexer, lexer.getAtn(), decisionToDFA, lexer.getInterpreter().getSharedContextCache()));
 							} else if (!REUSE_LEXER_DFA) {
-								lexer.setInterpreter(new LexerATNSimulator(lexer, lexer.getATN(), decisionToDFA, lexer.getInterpreter().getSharedContextCache()));
+								lexer.setInterpreter(new LexerATNSimulator(lexer, lexer.getAtn(), decisionToDFA, lexer.getInterpreter().getSharedContextCache()));
 							}
 
 							sharedLexers[thread] = lexer;
@@ -1154,10 +1156,10 @@ public class TestPerformance {
 						lexer.removeErrorListeners();
 						lexer.addErrorListener(DescriptiveErrorListener.INSTANCE);
 
-						if (lexer.getInterpreter().decisionToDFA[0] == null) {
-							ATN atn = lexer.getATN();
-							for (int i = 0; i < lexer.getInterpreter().decisionToDFA.length; i++) {
-								lexer.getInterpreter().decisionToDFA[i] = new DFA(atn.getDecisionState(i), i);
+						if (lexer.getInterpreter().getDecisionToDFA()[0] == null) {
+							ATN atn = lexer.getAtn();
+							for (int i = 0; i < lexer.getInterpreter().getDecisionToDFA().length; i++) {
+								lexer.getInterpreter().getDecisionToDFA()[i] = new DFA(atn.getDecisionState(i), i);
 							}
 						}
 
@@ -1178,27 +1180,27 @@ public class TestPerformance {
 						final long parseStartTime = System.nanoTime();
 						Parser parser = sharedParsers[thread];
                         if (REUSE_PARSER && parser != null) {
-                            parser.setInputStream(tokens);
+                            parser.setTokenStream(tokens);
                         } else {
 							Parser previousParser = parser;
 
 							if (USE_PARSER_INTERPRETER) {
 								Parser referenceParser = parserCtor.newInstance(tokens);
-								parser = new ParserInterpreter(referenceParser.getGrammarFileName(), referenceParser.getVocabulary(), Arrays.asList(referenceParser.getRuleNames()), referenceParser.getATN(), tokens);
+								parser = new ParserInterpreter(referenceParser.getGrammarFileName(), referenceParser.getVocabulary(), Arrays.asList(referenceParser.getRuleNames()), referenceParser.getAtn(), tokens);
 							}
 							else {
 								parser = parserCtor.newInstance(tokens);
 							}
 
-							DFA[] decisionToDFA = (FILE_GRANULARITY || previousParser == null ? parser : previousParser).getInterpreter().decisionToDFA;
+							DFA[] decisionToDFA = (FILE_GRANULARITY || previousParser == null ? parser : previousParser).getInterpreter().getDecisionToDFA();
 							if (!REUSE_PARSER_DFA || (!FILE_GRANULARITY && previousParser == null)) {
 								decisionToDFA = new DFA[decisionToDFA.length];
 							}
 
 							if (COMPUTE_TRANSITION_STATS) {
-								parser.setInterpreter(new StatisticsParserATNSimulator(parser, parser.getATN(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
+								parser.setInterpreter(new StatisticsParserATNSimulator(parser, parser.getAtn(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
 							} else if (!REUSE_PARSER_DFA) {
-								parser.setInterpreter(new ParserATNSimulator(parser, parser.getATN(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
+								parser.setInterpreter(new ParserATNSimulator(parser, parser.getAtn(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
 							}
 
 							sharedParsers[thread] = parser;
@@ -1211,10 +1213,10 @@ public class TestPerformance {
 							parser.addErrorListener(new SummarizingDiagnosticErrorListener());
 						}
 
-						if (parser.getInterpreter().decisionToDFA[0] == null) {
-							ATN atn = parser.getATN();
-							for (int i = 0; i < parser.getInterpreter().decisionToDFA.length; i++) {
-								parser.getInterpreter().decisionToDFA[i] = new DFA(atn.getDecisionState(i), i);
+						if (parser.getInterpreter().getDecisionToDFA()[0] == null) {
+							ATN atn = parser.getAtn();
+							for (int i = 0; i < parser.getInterpreter().getDecisionToDFA().length; i++) {
+								parser.getInterpreter().getDecisionToDFA()[i] = new DFA(atn.getDecisionState(i), i);
 							}
 						}
 
@@ -1259,23 +1261,23 @@ public class TestPerformance {
 
 							tokens.seek(0);
 							if (REUSE_PARSER && parser != null) {
-								parser.setInputStream(tokens);
+								parser.setTokenStream(tokens);
 							} else {
 								Parser previousParser = parser;
 
 								if (USE_PARSER_INTERPRETER) {
 									Parser referenceParser = parserCtor.newInstance(tokens);
-									parser = new ParserInterpreter(referenceParser.getGrammarFileName(), referenceParser.getVocabulary(), Arrays.asList(referenceParser.getRuleNames()), referenceParser.getATN(), tokens);
+									parser = new ParserInterpreter(referenceParser.getGrammarFileName(), referenceParser.getVocabulary(), Arrays.asList(referenceParser.getRuleNames()), referenceParser.getAtn(), tokens);
 								}
 								else {
 									parser = parserCtor.newInstance(tokens);
 								}
 
-								DFA[] decisionToDFA = previousParser.getInterpreter().decisionToDFA;
+								DFA[] decisionToDFA = previousParser.getInterpreter().getDecisionToDFA();
 								if (COMPUTE_TRANSITION_STATS) {
-									parser.setInterpreter(new StatisticsParserATNSimulator(parser, parser.getATN(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
+									parser.setInterpreter(new StatisticsParserATNSimulator(parser, parser.getAtn(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
 								} else if (!REUSE_PARSER_DFA) {
-									parser.setInterpreter(new ParserATNSimulator(parser, parser.getATN(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
+									parser.setInterpreter(new ParserATNSimulator(parser, parser.getAtn(), decisionToDFA, parser.getInterpreter().getSharedContextCache()));
 								}
 
 								sharedParsers[thread] = parser;
@@ -1369,9 +1371,9 @@ public class TestPerformance {
 				}
 
 				int dfaSize = 0;
-				for (DFA dfa : interpreter.decisionToDFA) {
+				for (DFA dfa : interpreter.getDecisionToDFA()) {
 					if (dfa != null) {
-						dfaSize += dfa.states.size();
+						dfaSize += dfa.getStatesMap().size();
 					}
 				}
 
@@ -1401,9 +1403,9 @@ public class TestPerformance {
 				}
 
 				int dfaSize = 0;
-				for (DFA dfa : interpreter.decisionToDFA) {
+				for (DFA dfa : interpreter.getDecisionToDFA()) {
 					if (dfa != null) {
-						dfaSize += dfa.states.size();
+						dfaSize += dfa.getStatesMap().size();
 					}
 				}
 
@@ -1434,13 +1436,14 @@ public class TestPerformance {
 		}
 
 		@Override
-		protected DFAState getExistingTargetState(DFAState s, int t) {
+		public DFAState getExistingTargetState(DFAState s, int t) {
 			totalTransitions++;
 			return super.getExistingTargetState(s, t);
 		}
 
+
 		@Override
-		protected DFAState computeTargetState(CharStream input, DFAState s, int t) {
+		public DFAState computeTargetState(CharStream input, DFAState s, int t) {
 			computedTransitions++;
 			return super.computeTargetState(input, s, t);
 		}
@@ -1459,22 +1462,22 @@ public class TestPerformance {
 
 		public StatisticsParserATNSimulator(ATN atn, DFA[] decisionToDFA, PredictionContextCache sharedContextCache) {
 			super(atn, decisionToDFA, sharedContextCache);
-			decisionInvocations = new long[atn.decisionToState.size()];
-			fullContextFallback = new long[atn.decisionToState.size()];
-			nonSll = new long[atn.decisionToState.size()];
-			totalTransitions = new long[atn.decisionToState.size()];
-			computedTransitions = new long[atn.decisionToState.size()];
-			fullContextTransitions = new long[atn.decisionToState.size()];
+			decisionInvocations = new long[atn.getDecisionToState().size()];
+			fullContextFallback = new long[atn.getDecisionToState().size()];
+			nonSll = new long[atn.getDecisionToState().size()];
+			totalTransitions = new long[atn.getDecisionToState().size()];
+			computedTransitions = new long[atn.getDecisionToState().size()];
+			fullContextTransitions = new long[atn.getDecisionToState().size()];
 		}
 
 		public StatisticsParserATNSimulator(Parser parser, ATN atn, DFA[] decisionToDFA, PredictionContextCache sharedContextCache) {
 			super(parser, atn, decisionToDFA, sharedContextCache);
-			decisionInvocations = new long[atn.decisionToState.size()];
-			fullContextFallback = new long[atn.decisionToState.size()];
-			nonSll = new long[atn.decisionToState.size()];
-			totalTransitions = new long[atn.decisionToState.size()];
-			computedTransitions = new long[atn.decisionToState.size()];
-			fullContextTransitions = new long[atn.decisionToState.size()];
+			decisionInvocations = new long[atn.getDecisionToState().size()];
+			fullContextFallback = new long[atn.getDecisionToState().size()];
+			nonSll = new long[atn.getDecisionToState().size()];
+			totalTransitions = new long[atn.getDecisionToState().size()];
+			computedTransitions = new long[atn.getDecisionToState().size()];
+			fullContextTransitions = new long[atn.getDecisionToState().size()];
 		}
 
 		@Override
@@ -1531,7 +1534,7 @@ public class TestPerformance {
 				return;
 			}
 
-			String sourceName = recognizer.getInputStream().getSourceName();
+			String sourceName = recognizer.getSourceName();
 			if (!sourceName.isEmpty()) {
 				sourceName = String.format("%s:%d:%d: ", sourceName, line, charPositionInLine);
 			}
@@ -1553,7 +1556,7 @@ public class TestPerformance {
 				BitSet llPredictions = getConflictingAlts(ambigAlts, configs);
 				int llPrediction = llPredictions.cardinality() == 0 ? ATN.INVALID_ALT_NUMBER : llPredictions.nextSetBit(0);
 				if (sllPrediction != llPrediction) {
-					((StatisticsParserATNSimulator)recognizer.getInterpreter()).nonSll[dfa.decision]++;
+					((StatisticsParserATNSimulator)recognizer.getInterpreter()).nonSll[dfa.getDecision()]++;
 				}
 			}
 
@@ -1563,9 +1566,9 @@ public class TestPerformance {
 
 			// show the rule name along with the decision
 			String format = "reportAmbiguity d=%d (%s): ambigAlts=%s, input='%s'";
-			int decision = dfa.decision;
-			String rule = recognizer.getRuleNames()[dfa.atnStartState.ruleIndex];
-			String input = recognizer.getTokenStream().getText(Interval.of(startIndex, stopIndex));
+			int decision = dfa.getDecision();
+			String rule = recognizer.getRuleNames()[dfa.getAtnStartState().getRuleIndex()];
+			String input = recognizer.getTokenStream().getText(Interval.Companion.of(startIndex, stopIndex));
 			recognizer.notifyErrorListeners(String.format(format, decision, rule, ambigAlts, input));
 		}
 
@@ -1579,9 +1582,9 @@ public class TestPerformance {
 
 			// show the rule name and viable configs along with the base info
 			String format = "reportAttemptingFullContext d=%d (%s), input='%s', viable=%s";
-			int decision = dfa.decision;
-			String rule = recognizer.getRuleNames()[dfa.atnStartState.ruleIndex];
-			String input = recognizer.getTokenStream().getText(Interval.of(startIndex, stopIndex));
+			int decision = dfa.getDecision();
+			String rule = recognizer.getRuleNames()[dfa.getAtnStartState().getRuleIndex()];
+			String input = recognizer.getTokenStream().getText(Interval.Companion.of(startIndex, stopIndex));
 			BitSet representedAlts = getConflictingAlts(conflictingAlts, configs);
 			recognizer.notifyErrorListeners(String.format(format, decision, rule, input, representedAlts));
 		}
@@ -1592,7 +1595,7 @@ public class TestPerformance {
 				BitSet sllPredictions = getConflictingAlts(_sllConflict, _sllConfigs);
 				int sllPrediction = sllPredictions.nextSetBit(0);
 				if (sllPrediction != prediction) {
-					((StatisticsParserATNSimulator)recognizer.getInterpreter()).nonSll[dfa.decision]++;
+					((StatisticsParserATNSimulator)recognizer.getInterpreter()).nonSll[dfa.getDecision()]++;
 				}
 			}
 
@@ -1602,9 +1605,9 @@ public class TestPerformance {
 
 			// show the rule name and viable configs along with the base info
 			String format = "reportContextSensitivity d=%d (%s), input='%s', viable={%d}";
-			int decision = dfa.decision;
-			String rule = recognizer.getRuleNames()[dfa.atnStartState.ruleIndex];
-			String input = recognizer.getTokenStream().getText(Interval.of(startIndex, stopIndex));
+			int decision = dfa.getDecision();
+			String rule = recognizer.getRuleNames()[dfa.getAtnStartState().getRuleIndex()];
+			String input = recognizer.getTokenStream().getText(Interval.Companion.of(startIndex, stopIndex));
 			recognizer.notifyErrorListeners(String.format(format, decision, rule, input, prediction));
 		}
 
@@ -1903,16 +1906,16 @@ public class TestPerformance {
 		private int count;
 
 		public MurmurHashChecksum() {
-			this.value = MurmurHash.initialize();
+			this.value = MurmurHash.INSTANCE.initialize();
 		}
 
 		public void update(int value) {
-			this.value = MurmurHash.update(this.value, value);
+			this.value = MurmurHash.INSTANCE.update(this.value, value);
 			this.count++;
 		}
 
 		public int getValue() {
-			return MurmurHash.finish(value, count);
+			return MurmurHash.INSTANCE.finish(value, count);
 		}
 	}
 

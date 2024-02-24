@@ -253,7 +253,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
         return s
     }
 
-  public val sourceName: String
+  public override val sourceName: String
     get() = _input.sourceName
 
   override val parseInfo: ParseInfo?

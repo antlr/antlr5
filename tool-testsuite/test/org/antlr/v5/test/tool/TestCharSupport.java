@@ -6,8 +6,8 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.misc.CharSupport;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.misc.CharSupport;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

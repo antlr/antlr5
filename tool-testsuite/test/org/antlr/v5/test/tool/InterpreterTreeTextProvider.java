@@ -7,9 +7,9 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.gui.TreeTextProvider;
-import org.antlr.v5.runtime.tree.ErrorNode;
-import org.antlr.v5.runtime.tree.Tree;
-import org.antlr.v5.runtime.tree.Trees;
+import org.antlr.v5.runtime.core.tree.ErrorNode;
+import org.antlr.v5.runtime.core.tree.Tree;
+import org.antlr.v5.runtime.core.tree.Trees;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,7 @@ public class InterpreterTreeTextProvider implements TreeTextProvider {
 	@Override
 	public String getText(Tree node) {
 		if ( node==null ) return "null";
-		String nodeText = Trees.getNodeText(node, ruleNames);
+		String nodeText = Trees.INSTANCE.getNodeText(node, ruleNames);
 		if ( node instanceof ErrorNode) {
 			return "<error "+nodeText+">";
 		}
