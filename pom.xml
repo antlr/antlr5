@@ -91,8 +91,9 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.outputTimestamp>1693865452</project.build.outputTimestamp>
 		<antlr.testinprocess>true</antlr.testinprocess>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 
 	<mailingLists>
