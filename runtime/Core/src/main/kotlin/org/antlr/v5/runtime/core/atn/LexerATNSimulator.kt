@@ -34,7 +34,7 @@ public open class LexerATNSimulator(
     protected val recog: Lexer?,
     atn: ATN,
     public val decisionToDFA: Array<DFA>,
-    sharedContextCache: PredictionContextCache,
+    sharedContextCache: PredictionContextCache?,
 ) : ATNSimulator(atn, sharedContextCache) {
   public companion object {
     @Suppress("ConstPropertyName")
@@ -106,7 +106,7 @@ public open class LexerATNSimulator(
   public constructor(
     atn: ATN,
     decisionToDFA: Array<DFA>,
-    sharedContextCache: PredictionContextCache,
+    sharedContextCache: PredictionContextCache?,
   ) : this(null, atn, decisionToDFA, sharedContextCache)
 
   public open fun copyState(simulator: LexerATNSimulator) {
