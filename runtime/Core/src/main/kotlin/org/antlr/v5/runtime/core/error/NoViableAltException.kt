@@ -33,11 +33,11 @@ public class NoViableAltException(
     public val startToken: Token? = recognizer.currentToken,
     offendingToken: Token? = recognizer.currentToken,
     public val deadEndConfigs: ATNConfigSet? = null,
-    ctx: ParserRuleContext = recognizer.context!!,
+    ctx: ParserRuleContext? = recognizer.context,
 ) : RecognitionException(recognizer, input, ctx) {
   init {
     this.offendingToken = offendingToken
   }
 
-    constructor(recognizer: Parser) : this(recognizer, recognizer.tokenStream, recognizer.currentToken, recognizer.currentToken, null, recognizer.context!!)
+    constructor(recognizer: Parser) : this(recognizer, recognizer.tokenStream, recognizer.currentToken, recognizer.currentToken, null, recognizer.context)
 }

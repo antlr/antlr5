@@ -13,6 +13,7 @@ import org.antlr.v5.runtime.core.LexerInterpreter;
 import org.antlr.v5.runtime.core.ParserInterpreter;
 import org.antlr.v5.runtime.core.context.ParserRuleContext;
 import org.antlr.v5.runtime.core.info.DecisionInfo;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.test.runtime.states.ExecutedState;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LexerGrammar;
@@ -229,8 +230,8 @@ public class TestParserProfiler {
 			String startRule, String... input)
 	{
 
-		LexerInterpreter lexEngine = lg.createLexerInterpreter(null);
-		ParserInterpreter parser = g.createParserInterpreter(null);
+		LexerInterpreter lexEngine = lg.createLexerInterpreter(CharStreams.fromString(""));
+		ParserInterpreter parser = g.createParserInterpreter(new MockIntTokenStream(new IntegerList()));
 		parser.setProfile(true);
 		for (String s : input) {
 			lexEngine.reset();

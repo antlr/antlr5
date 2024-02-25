@@ -14,6 +14,7 @@ import org.antlr.v5.runtime.core.atn.ParserATNSimulator;
 import org.antlr.v5.runtime.core.atn.PredictionContextCache;
 import org.antlr.v5.runtime.core.context.ParserRuleContext;
 import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.runtime.core.state.ATNState;
 import org.antlr.v5.runtime.core.state.DecisionState;
 import org.antlr.v5.tool.Grammar;
@@ -41,14 +42,13 @@ public class ParserInterpreterForTesting {
 			this._interpreter = new ParserATNSimulator(this, atn, decisionToDFA, sharedContextCache);
 		}
 
-		@NotNull
 		@Override
 		public ParserATNSimulator getInterpreter() {
 			return _interpreter;
 		}
 
 		@Override
-		public void setInterpreter(@NotNull ParserATNSimulator interpreter) {
+		public void setInterpreter(ParserATNSimulator interpreter) {
 			this._interpreter = interpreter;
 		}
 
@@ -89,7 +89,7 @@ public class ParserInterpreterForTesting {
 	public ParserInterpreterForTesting(Grammar g, TokenStream input) {
 		Tool antlr = new Tool();
 		antlr.process(g,false);
-		parser = new DummyParser(g, g.atn, input);
+		parser = new DummyParser(g, g.atn, input != null ? input : new MockIntTokenStream(new IntegerList()));
 		atnSimulator =
 			new ParserATNSimulator(parser, g.atn, parser.decisionToDFA,
 										  parser.sharedContextCache);

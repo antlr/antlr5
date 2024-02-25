@@ -7,6 +7,7 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.automata.ParserATNFactory;
+import org.antlr.v5.runtime.core.DummyTokenStream;
 import org.antlr.v5.runtime.core.Lexer;
 import org.antlr.v5.runtime.core.TokenStream;
 import org.antlr.v5.runtime.core.atn.ATN;
