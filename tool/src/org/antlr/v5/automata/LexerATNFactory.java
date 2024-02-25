@@ -9,6 +9,7 @@ package org.antlr.v5.automata;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.v5.automata.optimization.ATNOptimizer;
 import org.antlr.v5.codegen.CodeGenerator;
 import org.antlr.v5.misc.CharParseResult;
 import org.antlr.v5.misc.GrammarLiteralParser;
