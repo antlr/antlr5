@@ -6,7 +6,11 @@
 
 package org.antlr.v5.automata.optimization;
 
-import org.antlr.v5.runtime.atn.*;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.RuleStartState;
+import org.antlr.v5.runtime.core.transition.RuleTransition;
+import org.antlr.v5.runtime.core.transition.Transition;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.ast.GrammarAST;
 
@@ -62,7 +66,7 @@ public class ATNOptimizerHelper {
 
 	private void collectInTransitions() {
 		HashSet<Transition> visitedTransitions = new HashSet<>();
-		for (RuleStartState start : atn.ruleToStartState) {
+		for (RuleStartState start : atn.getRuleToStartState()) {
 			if (!inTransitions.containsKey(start)) {
 				inTransitions.put(start, new ArrayList<>());
 			}
@@ -77,17 +81,17 @@ public class ATNOptimizerHelper {
 			return;
 		}
 
-		addInTransition(inTransition, inTransition.target, prevState, false);
+		addInTransition(inTransition, inTransition.getTarget(), prevState, false);
 
 		if (inTransition instanceof RuleTransition) {
-			ATNState followState = ((RuleTransition) inTransition).followState;
+			ATNState followState = ((RuleTransition) inTransition).getFollowState();
 			addInTransition(inTransition, followState, prevState, true);
 			for (int j = 0; j < followState.getNumberOfTransitions(); j++) {
 				collectInTransitions(followState.transition(j), followState, visitedTransitions);
 			}
 		}
 
-		ATNState target = inTransition.target;
+		ATNState target = inTransition.getTarget();
 		for (int i = 0; i < target.getNumberOfTransitions(); i++) {
 			collectInTransitions(target.transition(i), target, visitedTransitions);
 		}
@@ -112,7 +116,7 @@ public class ATNOptimizerHelper {
 
 		List<InTransition> inTransitionsForState = inTransitions.get(state);
 		for (InTransition inTransition : inTransitionsForState) {
-			Transition transition = inTransition.previousState.getTransition(t -> t.target == state);
+			Transition transition = inTransition.previousState.findTransition(t -> t.getTarget() == state);
 			assert transition != null : "Transition is missing";
 			inTransition.previousState.removeTransition(transition);
 		}
@@ -126,20 +130,20 @@ public class ATNOptimizerHelper {
 	public void replaceTransition(ATNState previousState, Transition oldTransition, Transition newTransition) {
 		previousState.setTransition(previousState.getTransitionIndex(oldTransition), newTransition);
 
-		getInTransitions(newTransition.target).add(new InTransition(newTransition, previousState, false));
+		getInTransitions(newTransition.getTarget()).add(new InTransition(newTransition, previousState, false));
 		if (newTransition instanceof RuleTransition) {
 			RuleTransition newRuleTransition = (RuleTransition) newTransition;
-			getInTransitions(newRuleTransition.followState).add(new InTransition(newTransition, previousState, true));
+			getInTransitions(newRuleTransition.getFollowState()).add(new InTransition(newTransition, previousState, true));
 		}
 	}
 
 	public void removeInTransitionsForOutStates(ATNState state) {
 		for (Transition transition : state.getTransitions()) {
-			boolean isRemoved = getInTransitions(transition.target).removeIf(t -> t.previousState == state);
+			boolean isRemoved = getInTransitions(transition.getTarget()).removeIf(t -> t.previousState == state);
 			assert isRemoved : "Transition is missing";
 			if (transition instanceof RuleTransition) {
 				RuleTransition ruleTransition = (RuleTransition) transition;
-				isRemoved = getInTransitions(ruleTransition.followState).removeIf(t -> t.previousState == state);
+				isRemoved = getInTransitions(ruleTransition.getFollowState()).removeIf(t -> t.previousState == state);
 				assert isRemoved : "Transition is missing";
 			}
 		}
@@ -211,15 +215,15 @@ public class ATNOptimizerHelper {
 	}
 
 	public void compressStates() {
-		List<ATNState> compressed = new ArrayList<>(atn.states.size());
+		List<ATNState> compressed = new ArrayList<>(atn.getStates().size());
 		int newNumber = 0;
-		for (ATNState s : atn.states) {
+		for (ATNState s : atn.getStates()) {
 			if (s != null) {
 				compressed.add(s);
-				s.stateNumber = newNumber++; // reset state number as we shift to new position
+				s.setStateNumber(newNumber++); // reset state number as we shift to new position
 			}
 		}
-		atn.states.clear();
-		atn.states.addAll(compressed);
+		atn.getStates().clear();
+		atn.getStates().addAll(compressed);
 	}
 }

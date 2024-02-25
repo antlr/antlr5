@@ -99,9 +99,11 @@ public class ATN(public val grammarType: ATNType, public val maxTokenType: Int) 
     states.add(state)
   }
 
-  public fun removeState(state: ATNState) {
+  public fun removeState(state: ATNState): ATNState? {
     // Just free mem, don't shift states in list
+    var removing = states[state.stateNumber]
     states[state.stateNumber] = null
+      return removing
   }
 
   public fun defineDecisionState(s: DecisionState): Int {

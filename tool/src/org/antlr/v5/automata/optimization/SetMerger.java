@@ -6,9 +6,13 @@
 
 package org.antlr.v5.automata.optimization;
 
-import org.antlr.v5.runtime.atn.*;
-import org.antlr.v5.runtime.misc.Interval;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.Interval;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.BasicState;
+import org.antlr.v5.runtime.core.state.BlockEndState;
+import org.antlr.v5.runtime.core.state.DecisionState;
+import org.antlr.v5.runtime.core.transition.*;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Rule;
 
@@ -29,11 +33,11 @@ public class SetMerger {
 	}
 
 	private void optimize() {
-		List<DecisionState> decisions = helper.atn.decisionToState;
+		List<DecisionState> decisions = helper.atn.getDecisionToState();
 		for (DecisionState decision : decisions) {
 			Rule rule = null;
-			if (decision.ruleIndex >= 0) {
-				rule = helper.grammar.getRule(decision.ruleIndex);
+			if (decision.getRuleIndex() >= 0) {
+				rule = helper.grammar.getRule(decision.getRuleIndex());
 				if (Character.isLowerCase(rule.name.charAt(0))) {
 					// The optimizer currently doesn't support parser's ATN
 					continue;
@@ -47,7 +51,7 @@ public class SetMerger {
 					continue;
 				}
 
-				ATNState epsTarget = epsTransition.target;
+				ATNState epsTarget = ((EpsilonTransition) epsTransition).getTarget();
 
 				if (helper.getInTransitions(epsTarget).size() != 1 ||
 						!(epsTarget instanceof BasicState) ||
@@ -56,8 +60,8 @@ public class SetMerger {
 					continue;
 				}
 
-				Transition transition = epsTransition.target.transition(0);
-				if (!(transition.target instanceof BlockEndState)) {
+				Transition transition = ((EpsilonTransition) epsTransition).getTarget().transition(0);
+				if (!(transition.getTarget() instanceof BlockEndState)) {
 					continue;
 				}
 
@@ -81,10 +85,10 @@ public class SetMerger {
 					continue;
 				}
 
-				ATNState blockEndState = decision.transition(interval.a).target.transition(0).target;
+				ATNState blockEndState = decision.transition(interval.getA()).getTarget().transition(0).getTarget();
 				IntervalSet matchSet = new IntervalSet();
-				for (int j = interval.a; j <= interval.b; j++) {
-					Transition matchTransition = decision.transition(j).target.transition(0);
+				for (int j = interval.getA(); j <= interval.getB(); j++) {
+					Transition matchTransition = decision.transition(j).getTarget().transition(0);
 					if (matchTransition instanceof NotSetTransition) {
 						throw new UnsupportedOperationException("Not yet implemented.");
 					}
@@ -102,17 +106,17 @@ public class SetMerger {
 				Transition newTransition;
 				if (matchSet.getIntervals().size() == 1) {
 					Interval matchInterval = matchSet.getIntervals().get(0);
-					newTransition = CodePointTransitions.createWithCodePointRange(blockEndState, matchInterval.a, matchInterval.b);
+					newTransition = CodePointTransitions.INSTANCE.createWithCodePointRange(blockEndState, matchInterval.getA(), matchInterval.getB());
 				}
 				else {
 					newTransition = new SetTransition(blockEndState, matchSet);
 				}
 
-				ATNState newTarget = decision.transition(interval.a).target;
+				ATNState newTarget = decision.transition(interval.getA()).getTarget();
 				helper.replaceTransition(newTarget, newTarget.transition(0), newTransition);
 
-				for (int j = interval.a + 1; j <= interval.b; j++) {
-					ATNState target = decision.transition(interval.a + 1).target;
+				for (int j = interval.getA() + 1; j <= interval.getB(); j++) {
+					ATNState target = decision.transition(interval.getA() + 1).getTarget();
 					helper.removeInOutTransitions(target);
 					helper.addReplacement(target, newTarget);
 				}

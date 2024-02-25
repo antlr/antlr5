@@ -4,6 +4,7 @@ import org.antlr.v5.runtime.core.atn.ATN
 import org.antlr.v5.runtime.core.misc.IntervalSet
 import org.antlr.v5.runtime.core.transition.Transition
 
+
 /**
  * The following images show the relation of states and
  * [ATNState.transitions] for various grammar constructs.
@@ -130,13 +131,38 @@ public abstract class ATNState {
   public fun transition(i: Int): Transition =
     transitions[i]
 
-  public fun setTransition(i: Int, e: Transition) {
+    fun getTransitionIndex(transition: Transition?): Int {
+        return transitions.indexOf(transition)
+    }
+
+    fun findTransition(predicate: java.util.function.Predicate<Transition?>?): Transition? {
+        return transitions.stream().filter(predicate).findFirst().orElse(null)
+    }
+
+
+    public fun setTransition(i: Int, e: Transition) {
     transitions[i] = e
   }
 
   public fun removeTransition(index: Int): Transition =
     transitions.removeAt(index)
 
+    public fun removeTransition(transition: Transition): Boolean {
+        val result = transitions.remove(transition)
+        recalculateEpsilonOnlyTransitions()
+        return result
+    }
+    public fun clearTransitions() {
+        transitions.clear()
+    }
   public fun onlyHasEpsilonTransitions(): Boolean =
     epsilonOnlyTransitions
+
+    fun recalculateEpsilonOnlyTransitions() {
+        if (transitions.size == 0) {
+            epsilonOnlyTransitions = false
+        } else {
+            epsilonOnlyTransitions = transitions.stream().allMatch(Transition::isEpsilon)
+        }
+    }
 }

@@ -85,8 +85,8 @@ public class TestExpectedTokens extends JavaRunner {
 		assertEquals("{<EOF>, B}", tokens.toString(g.getVocabulary()));
 
 		// Now call from 'a'
-		tokens = atn.getExpectedTokens(blkStartStateNumber, new ParserRuleContext(ParserRuleContext.EMPTY, 0));
-		assertEquals("{A, B}", tokens.toString(g.getTokenNames()));
+		tokens = atn.getExpectedTokens(blkStartStateNumber, new ParserRuleContext(ParserRuleContext.getEMPTY(), 0));
+		assertEquals("{A, B}", tokens.toString(g.getVocabulary()));
 	}
 
 	// Test for https://github.com/antlr/antlr4/issues/1480
