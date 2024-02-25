@@ -41,7 +41,7 @@ public open class ParserInterpreter(
     atn: ATN,
     input: TokenStream,
 ) : Parser(input) {
-  private var _interpreter: ParserATNSimulator
+  private var _interpreter: ParserATNSimulator?
   private val _atn: ATN = atn
   private val _tokenNames: Array<String> = Array(atn.maxTokenType) { vocabulary.getDisplayName(it) }
   private val _ruleNames: Array<String> = ruleNames.toTypedArray()
@@ -84,7 +84,7 @@ public open class ParserInterpreter(
     get() = atn.states[state]
 
 
-  override var interpreter: ParserATNSimulator
+  override var interpreter: ParserATNSimulator?
     get() = _interpreter
     set(value) {
       _interpreter = value
@@ -295,7 +295,7 @@ public open class ParserInterpreter(
         predictedAlt = overrideDecisionAlt
         overrideDecisionReached = true
       } else {
-        predictedAlt = interpreter.adaptivePredict(_input, decision, context)
+        predictedAlt = interpreter!!.adaptivePredict(_input, decision, context)
       }
     }
 

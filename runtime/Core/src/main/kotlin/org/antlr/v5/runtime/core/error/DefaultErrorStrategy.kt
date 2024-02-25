@@ -210,7 +210,7 @@ public open class DefaultErrorStrategy : ANTLRErrorStrategy {
    * functionality by simply overriding this method as a blank { }.
    */
   override fun sync(recognizer: Parser) {
-    val s = recognizer.interpreter.atn.states[recognizer.state]
+    val s = recognizer.interpreter!!.atn.states[recognizer.state]
 
     // If already recovering, don't try to sync
     if (inErrorRecoveryMode(recognizer)) {
@@ -474,9 +474,9 @@ public open class DefaultErrorStrategy : ANTLRErrorStrategy {
     // If current token is consistent with what could come after current
     // ATN state, then we know we're missing a token; error recovery
     // is free to conjure up and insert the missing token
-    val currentState = recognizer.interpreter.atn.states[recognizer.state]
+    val currentState = recognizer.interpreter!!.atn.states[recognizer.state]
     val next = currentState!!.transition(0).target
-    val atn = recognizer.interpreter.atn
+    val atn = recognizer.interpreter!!.atn
     val expectingAtLL2 = atn.nextTokens(next, recognizer.context)
 
     if (expectingAtLL2.contains(currentSymbolType)) {
@@ -731,7 +731,7 @@ public open class DefaultErrorStrategy : ANTLRErrorStrategy {
    * at run-time upon error to avoid overhead during parsing.
    */
   protected open fun getErrorRecoverySet(recognizer: Parser): IntervalSet {
-    val atn = recognizer.interpreter.atn
+    val atn = recognizer.interpreter!!.atn
     var ctx: RuleContext? = recognizer.context
     val recoverSet = IntervalSet()
 

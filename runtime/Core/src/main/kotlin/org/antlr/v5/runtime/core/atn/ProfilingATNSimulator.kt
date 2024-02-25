@@ -23,9 +23,9 @@ import kotlin.time.measureTimedValue
 @Suppress("PropertyName", "MemberVisibilityCanBePrivate")
 public open class ProfilingATNSimulator(parser: Parser) : ParserATNSimulator(
   parser,
-  parser.interpreter.atn,
-  parser.interpreter.decisionToDFA,
-  parser.interpreter.sharedContextCache!!,
+  parser.interpreter!!.atn,
+  parser.interpreter!!.decisionToDFA,
+  parser.interpreter!!.sharedContextCache!!,
 ) {
   protected var numDecisions: Int = 0
   protected var _sllStopIndex: Int = 0

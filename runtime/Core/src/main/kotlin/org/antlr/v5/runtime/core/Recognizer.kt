@@ -43,7 +43,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
   /**
    * The ATN interpreter used by the recognizer for prediction.
    */
-  public abstract var interpreter: ATNInterpreter
+  public abstract var interpreter: ATNInterpreter?
 
   /**
    * Used to print out token names like ID during debugging and error reporting.

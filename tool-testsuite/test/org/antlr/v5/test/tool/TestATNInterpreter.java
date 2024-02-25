@@ -359,7 +359,7 @@ public class TestATNInterpreter {
 								int expected)
 	{
 		ATN lexatn = createATN(lg, true);
-		LexerATNSimulator lexInterp = new LexerATNSimulator(lexatn,new DFA[] { new DFA(lexatn.getModeToStartState().get(Lexer.DEFAULT_MODE), 0) },null);
+		LexerATNSimulator lexInterp = new LexerATNSimulator(lexatn, new DFA[] { new DFA(lexatn.getModeToStartState().get(Lexer.DEFAULT_MODE), 0) },null);
 		IntegerList types = getTokenTypesViaATN(inputString, lexInterp);
 //		System.out.println(types);
 
