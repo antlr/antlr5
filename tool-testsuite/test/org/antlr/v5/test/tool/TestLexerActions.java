@@ -33,7 +33,7 @@ public class TestLexerActions {
 	@Test public void testActionEvalsAtCorrectIndex() throws Exception {
 		String grammar =
 			"lexer grammar L;\n"+
-			"I : [0-9] {outStream.println(\"2nd char: \"+(char)_input.LA(1));} [0-9]+ ;\n"+
+			"I : [0-9] {outStream.println(\"2nd char: \"+(char)get_input().LA(1));} [0-9]+ ;\n"+
 			"WS : (' '|'\\n') -> skip ;";
 		ExecutedState executedState = execLexer(grammar, "123 45");
 		String expecting =
@@ -62,11 +62,11 @@ public class TestLexerActions {
 			"\n" +
 			"   public String getText ()\n" +
 			"   {\n" +
-			"      return lexer._input.getText (new Interval (start_index, stop_index));\n" +
+			"      return lexer.getInputStream().getText (new Interval (start_index, stop_index));\n" +
 			"   }\n" +
 			"\n" +
-			"   public void start ()  { start_index = lexer._input.index (); outStream.println (\"Start:\" + start_index);}\n" +
-			"   public void stop () { stop_index = lexer._input.index (); outStream.println (\"Stop:\" + stop_index);}\n" +
+			"   public void start ()  { start_index = lexer.getInputStream().index (); outStream.println (\"Start:\" + start_index);}\n" +
+			"   public void stop () { stop_index = lexer.getInputStream().index (); outStream.println (\"Stop:\" + stop_index);}\n" +
 			"\n" +
 			"   private int start_index = 0;\n" +
 			"   private int stop_index = 0;\n" +
