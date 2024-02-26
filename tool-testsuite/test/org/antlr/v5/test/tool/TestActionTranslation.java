@@ -153,7 +153,7 @@ public class TestActionTranslation {
 
     @Test public void testRuleRefs() throws Exception {
         String action = "$lab.start; $c.text;";
-		String expected = "(((AContext)_localctx).lab!=null?(((AContext)_localctx).lab.start):null); (((AContext)_localctx).c!=null?_input.getText(((AContext)_localctx).c.start,((AContext)_localctx).c.stop):null);";
+		String expected = "(((AContext)_localctx).lab!=null?(((AContext)_localctx).lab.start):null); (((AContext)_localctx).c!=null?get_input().getText(((AContext)_localctx).c.start,((AContext)_localctx).c.stop):null);";
 		testActions(attributeTemplate, "inline", action, expected);
     }
 
@@ -198,7 +198,7 @@ public class TestActionTranslation {
 		testActions(leftRecursiveTemplate, "inline", action, expected);
         // ref to predefined attribute obtained from recursive call to rule
         action = "$v = $e.text.length();";
-        expected = "((EContext)_localctx).v =  (((EContext)_localctx).e!=null?_input.getText(((EContext)_localctx).e.start,((EContext)_localctx).e.stop):null).length();";
+        expected = "((EContext)_localctx).v =  (((EContext)_localctx).e!=null?get_input().getText(((EContext)_localctx).e.start,((EContext)_localctx).e.stop):null).length();";
 		testActions(recursiveTemplate, "inline", action, expected);
 		testActions(leftRecursiveTemplate, "inline", action, expected);
 	}
@@ -208,7 +208,7 @@ public class TestActionTranslation {
 
 		// this is the expected translation for all cases
 		String expected =
-			"_localctx.text; _input.getText(_localctx.start, _input.LT(-1))";
+			"_localctx.text; get_input().getText(_localctx.start, get_input().LT(-1))";
 
 		testActions(attributeTemplate, "init", action, expected);
 		testActions(attributeTemplate, "inline", action, expected);

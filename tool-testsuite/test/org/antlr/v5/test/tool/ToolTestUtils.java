@@ -101,13 +101,13 @@ public class ToolTestUtils {
 				buf.append(st.render());
 				buf.append("\n");
 			}
-
+			String actual = buf.toString();
 			String msg = grammarStr;
 			msg = msg.replace("\n", "\\n");
 			msg = msg.replace("\r", "\\r");
 			msg = msg.replace("\t", "\\t");
 
-			assertEquals(expect, buf.toString(), "error in: " + msg);
+			assertEquals(expect, actual, "error in: " + msg);
 		}
 	}
 
