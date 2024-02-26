@@ -6,6 +6,7 @@
 
 package org.antlr.v5.misc;
 
+import org.antlr.v5.runtime.core.misc.CharSupport;
 import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.unicode.UnicodeData;
 
@@ -146,7 +147,7 @@ public final class GrammarLiteralParser {
 			return new CharParseResult.Property(propertyIntervalSet, startIndex, offset);
 		}
 		else {
-			Character codePoint = CharSupport.EscapedCharValue.get((char) escaped);
+			Character codePoint = CharSupport.INSTANCE.getEscapedCharValue().get((char) escaped);
 			if (codePoint == null) {
 				boolean isEscapedChar;
 				if (isStringLiteral) {

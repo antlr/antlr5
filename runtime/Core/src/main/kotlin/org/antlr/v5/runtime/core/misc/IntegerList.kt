@@ -156,7 +156,7 @@ public open class IntegerList {
     if (_size == 0) {
       EMPTY_DATA
     } else {
-      _data.copyOf()
+      _data.copyOf(_size)
     }
 
   public fun sort() {

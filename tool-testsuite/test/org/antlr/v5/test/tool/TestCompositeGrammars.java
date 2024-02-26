@@ -23,6 +23,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.antlr.v5.test.runtime.FileUtils.writeFile;
@@ -39,9 +40,9 @@ public class TestCompositeGrammars {
 		FileUtils.mkdir(tempDirPath);
 		String subdir = tempDirPath + FileSeparator + "sub";
 		FileUtils.mkdir(subdir);
-		writeFile(subdir, "S.g4",
+		writeFile(Paths.get(subdir, "S.g4").toString(),
 				"parser grammar S;\n" +
-				"a : B {System.out.println(\"S.a\");} ;\n");
+				"a : B {System.out.println(\"S.a\");} ;\n", null);
 
 		checkGeneration(
 				"grammar M;\n" +
@@ -196,8 +197,8 @@ public class TestCompositeGrammars {
 			"y : A ;\n";
 
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "S.g4", slaveS);
-		writeFile(tempDirPath, "T.g4", slaveT);
+		writeFile(Paths.get(tempDirPath, "S.g4").toString(), slaveS, null);
+		writeFile(Paths.get(tempDirPath, "T.g4").toString(), slaveT, null);
 
 		String master =
 			"// The lexer will create rules to match letters a, b, c.\n"+
@@ -217,7 +218,7 @@ public class TestCompositeGrammars {
 			"A : 'a' ;\n"+
 			"C : 'c' ;\n"+
 			"WS : (' '|'\\n') -> skip ;\n";
-		writeFile(tempDirPath, "M.g4", master);
+		writeFile(Paths.get(tempDirPath, "M.g4").toString(), master, null);
 		ErrorQueue equeue = new ErrorQueue();
 		Grammar g = new Grammar(tempDirPath+"/M.g4", master, equeue);
 		String expectedTokenIDToTypeMap = "{EOF=-1, B=1, A=2, C=3, WS=4}";
@@ -250,9 +251,9 @@ public class TestCompositeGrammars {
 		FileUtils.mkdir(tempDirPath);
 		String outdir = tempDirPath + "/out";
 		FileUtils.mkdir(outdir);
-		writeFile(outdir, "S.g4",
+		writeFile(Paths.get(outdir, "S.g4").toString(),
 				"parser grammar S;\n" +
-				"a : B {System.out.println(\"S.a\");} ;\n"
+				"a : B {System.out.println(\"S.a\");} ;\n", null
 		);
 
 		GeneratedState state = generate(
@@ -275,9 +276,9 @@ public class TestCompositeGrammars {
 
 		String subdir = tempDirPath + "/sub";
 		FileUtils.mkdir(subdir);
-		writeFile(subdir, "S.g4",
+		writeFile(Paths.get(subdir, "S.g4").toString(),
 				"parser grammar S;\n" +
-				"a : B {System.out.println(\"S.a\");} ;\n"
+				"a : B {System.out.println(\"S.a\");} ;\n", null
 		);
 
 		String outdir = tempDirPath + "/out";
@@ -299,9 +300,9 @@ public class TestCompositeGrammars {
 		FileUtils.mkdir(tempDirPath);
 		String subdir = tempDirPath + "/sub";
 		FileUtils.mkdir(subdir);
-		writeFile(subdir, "S.g4",
+		writeFile(Paths.get(subdir, "S.g4").toString(),
 				"parser grammar S;\n" +
-				"a : B {System.out.println(\"S.a\");} ;\n");
+				"a : B {System.out.println(\"S.a\");} ;\n", null);
 		String outdir = tempDirPath + "/out";
 		FileUtils.mkdir(outdir);
 
@@ -334,14 +335,14 @@ public class TestCompositeGrammars {
 			"tokens { A }\n" +
 			"x : A {System.out.println(\"S.x\");} ;\n";
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "S.g4", slave);
+		writeFile(Paths.get(tempDirPath, "S.g4").toString(), slave, null);
 
 		String master =
 			"grammar M;\n" +
 			"import S;\n" +
 			"s : x ;\n" +
 			"WS : (' '|'\\n') -> skip ;\n" ;
-		writeFile(tempDirPath, "M.g4", master);
+		writeFile(Paths.get(tempDirPath, "M.g4").toString(), master, null);
 		Grammar g = new Grammar(tempDirPath+"/M.g4", master, equeue);
 
 		Object expectedArg = "S";
@@ -361,14 +362,14 @@ public class TestCompositeGrammars {
 			"parser grammar S;\n" +
 			"options {toke\n";
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "S.g4", slave);
+		writeFile(Paths.get(tempDirPath, "S.g4").toString(), slave, null);
 
 		String master =
 			"grammar M;\n" +
 			"import S;\n" +
 			"s : x ;\n" +
 			"WS : (' '|'\\n') -> skip ;\n" ;
-		writeFile(tempDirPath, "M.g4", master);
+		writeFile(Paths.get(tempDirPath, "M.g4").toString(), master, null);
 		/*Grammar g =*/ new Grammar(tempDirPath+"/M.g4", master, equeue);
 
 		assertEquals(ErrorType.SYNTAX_ERROR, equeue.errors.get(0).getErrorType());
@@ -382,19 +383,19 @@ public class TestCompositeGrammars {
 			"parser grammar T;\n" +
 			"a : T ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "T.g4", slave);
+		writeFile(Paths.get(tempDirPath, "T.g4").toString(), slave, null);
 		String slave2 =
 			"parser grammar S;\n" +
 			"import T;\n" +
 			"a : S ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "S.g4", slave2);
+		writeFile(Paths.get(tempDirPath, "S.g4").toString(), slave2, null);
 
 		String master =
 			"grammar M;\n" +
 			"import S;\n" +
 			"a : M ;\n" ;
-		writeFile(tempDirPath, "M.g4", master);
+		writeFile(Paths.get(tempDirPath, "M.g4").toString(), master, null);
 		Grammar g = new Grammar(tempDirPath+"/M.g4", master, equeue);
 
 		String expectedTokenIDToTypeMap = "{EOF=-1, M=1}"; // S and T aren't imported; overridden
@@ -419,41 +420,41 @@ public class TestCompositeGrammars {
 			"tokens{T}\n" +
 			"x : T ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "T.g4", slave);
+		writeFile(Paths.get(tempDirPath, "T.g4").toString(), slave, null);
 		slave =
 			"parser grammar S;\n" +
 			"import T;\n" +
 			"tokens{S}\n" +
 			"y : S ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "S.g4", slave);
+		writeFile(Paths.get(tempDirPath, "S.g4").toString(), slave, null);
 
 		slave =
 			"parser grammar C;\n" +
 			"tokens{C}\n" +
 			"i : C ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "C.g4", slave);
+		writeFile(Paths.get(tempDirPath, "C.g4").toString(), slave, null);
 		slave =
 			"parser grammar B;\n" +
 			"tokens{B}\n" +
 			"j : B ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "B.g4", slave);
+		writeFile(Paths.get(tempDirPath, "B.g4").toString(), slave, null);
 		slave =
 			"parser grammar A;\n" +
 			"import B,C;\n" +
 			"tokens{A}\n" +
 			"k : A ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "A.g4", slave);
+		writeFile(Paths.get(tempDirPath, "A.g4").toString(), slave, null);
 
 		String master =
 			"grammar M;\n" +
 			"import S,A;\n" +
 			"tokens{M}\n" +
 			"a : M ;\n" ;
-		writeFile(tempDirPath, "M.g4", master);
+		writeFile(Paths.get(tempDirPath, "M.g4").toString(), master, null);
 		Grammar g = new Grammar(tempDirPath+"/M.g4", master, equeue);
 
 		assertEquals("[]", equeue.errors.toString());
@@ -477,19 +478,19 @@ public class TestCompositeGrammars {
 			"parser grammar T;\n" +
 			"x : T ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "T.g4", slave);
+		writeFile(Paths.get(tempDirPath, "T.g4").toString(), slave, null);
 		String slave2 =
 			"parser grammar S;\n" + // A, B, C token type order
 			"import T;\n" +
 			"a : S ;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "S.g4", slave2);
+		writeFile(Paths.get(tempDirPath, "S.g4").toString(), slave2, null);
 
 		String master =
 			"grammar M;\n" +
 			"import S;\n" +
 			"a : M x ;\n" ; // x MUST BE VISIBLE TO M
-		writeFile(tempDirPath, "M.g4", master);
+		writeFile(Paths.get(tempDirPath, "M.g4").toString(), master, null);
 		Grammar g = new Grammar(tempDirPath+"/M.g4", master, equeue);
 
 		String expectedTokenIDToTypeMap = "{EOF=-1, M=1, T=2}";
@@ -516,27 +517,27 @@ public class TestCompositeGrammars {
 			"T3: '3';\n" +
 			"T4: '4';\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "L.g4", gstr);
+		writeFile(Paths.get(tempDirPath, "L.g4").toString(), gstr, null);
 		gstr =
 			"parser grammar G1;\n" +
 			"s: a | b;\n" +
 			"a: T1;\n" +
 			"b: T2;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "G1.g4", gstr);
+		writeFile(Paths.get(tempDirPath, "G1.g4").toString(), gstr, null);
 
 		gstr =
 			"parser grammar G2;\n" +
 			"import G1;\n" +
 			"a: T3;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "G2.g4", gstr);
+		writeFile(Paths.get(tempDirPath, "G2.g4").toString(), gstr, null);
 		String G3str =
 			"grammar G3;\n" +
 			"import G2;\n" +
 			"b: T4;\n" ;
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "G3.g4", G3str);
+		writeFile(Paths.get(tempDirPath, "G3.g4").toString(), G3str, null);
 
 		Grammar g = new Grammar(tempDirPath+"/G3.g4", G3str, equeue);
 
@@ -585,7 +586,7 @@ public class TestCompositeGrammars {
 			"import Java;\n";
 
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "Java.g4", slave);
+		writeFile(Paths.get(tempDirPath, "Java.g4").toString(), slave, null);
 		ExecutedState executedState = execParser(master, "compilationUnit", "package Foo;", debug, tempDir, false);
 		assertEquals("", executedState.output);
 		assertEquals("", executedState.errors);
@@ -613,7 +614,7 @@ public class TestCompositeGrammars {
 			"s : e ;\n";
 
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "Java.g4", slave);
+		writeFile(Paths.get(tempDirPath, "Java.g4").toString(), slave, null);
 		ExecutedState executedState = execParser(master, "s", "a=b", debug, tempDir, false);
 		assertEquals("", executedState.output);
 		assertEquals("", executedState.errors);
@@ -634,7 +635,7 @@ public class TestCompositeGrammars {
 				"r : 'R2';";
 
 		FileUtils.mkdir(tempDirPath);
-		writeFile(tempDirPath, "G1.g4", g1);
+		writeFile(Paths.get(tempDirPath, "G1.g4").toString(), g1, null);
 		ExecutedState executedState = execParser(g2, "r", "R2", debug, tempDir, false);
 		assertEquals("", executedState.errors);
 	}

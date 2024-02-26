@@ -10,7 +10,7 @@ import kotlin.Pair;
 import org.antlr.v5.Tool;
 import org.antlr.v5.analysis.LeftRecursiveRuleTransformer;
 import org.antlr.v5.automata.ParserATNFactory;
-import org.antlr.v5.misc.CharSupport;
+import org.antlr.v5.runtime.core.misc.CharSupport;
 import org.antlr.v5.misc.OrderedHashMap;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.ANTLRParser;
@@ -652,7 +652,7 @@ public class Grammar implements AttributeResolver {
 		if ( isLexer() &&
 			 ttype >= Lexer.MIN_CHAR_VALUE && ttype <= Lexer.MAX_CHAR_VALUE )
 		{
-			return CharSupport.getPrintable(ttype);
+			return CharSupport.INSTANCE.getPrintable(ttype);
 		}
 
 		if ( ttype==Token.EOF ) {
@@ -693,7 +693,7 @@ public class Grammar implements AttributeResolver {
 		if ( isLexer() &&
 			 ttype >= Lexer.MIN_CHAR_VALUE && ttype <= Lexer.MAX_CHAR_VALUE )
 		{
-			return CharSupport.getPrintable(ttype);
+			return CharSupport.INSTANCE.getPrintable(ttype);
 		}
 
 		if ( ttype==Token.EOF ) {

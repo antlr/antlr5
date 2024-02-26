@@ -32,7 +32,7 @@ import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 import org.antlr.v5.tool.ast.RangeAST;
 import org.antlr.v5.tool.ast.TerminalAST;
-import org.antlr.v5.misc.CharSupport;
+import org.antlr.v5.runtime.core.misc.CharSupport;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 
@@ -435,7 +435,7 @@ public class LexerATNFactory extends ParserATNFactory {
 						ErrorType.EMPTY_STRINGS_AND_SETS_NOT_ALLOWED,
 						g.fileName,
 						charSetAST.getToken(),
-						CharSupport.getPrintable(state.prevCodePoint) + ".." + CharSupport.getPrintable(codePoint));
+						CharSupport.INSTANCE.getPrintable(state.prevCodePoint) + ".." + CharSupport.INSTANCE.getPrintable(codePoint));
 			}
 			checkRangeAndAddToSet(charSetAST, set, state.prevCodePoint, codePoint);
 			state = CharSetParseState.NONE;
