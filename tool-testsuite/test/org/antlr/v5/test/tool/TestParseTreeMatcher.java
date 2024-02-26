@@ -18,6 +18,8 @@ import org.antlr.v5.runtime.core.error.InputMismatchException;
 import org.antlr.v5.runtime.core.error.NoViableAltException;
 import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.java.JavaRunner;
+import org.antlr.v5.test.runtime.states.CompiledState;
+import org.antlr.v5.test.runtime.states.State;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
 import org.antlr.v5.test.runtime.states.jvm.JavaExecutedState;
 import org.junit.jupiter.api.Test;
@@ -387,15 +389,18 @@ public class TestParseTreeMatcher {
 		RunOptions runOptions = createExecOptionsForJavaToolTests(grammar,
 				false, false, startRule, input, false, false);
 		try (JavaRunner runner = new JavaRunner()) {
-			JavaExecutedState executedState = (JavaExecutedState)runner.run(runOptions);
-			JavaCompiledState compiledState = (JavaCompiledState)executedState.previousState;
+			State state = runner.run(runOptions);
+			if(!(state instanceof JavaExecutedState))
+				throw new Exception("Something went wrong!");
+			JavaExecutedState executedState = (JavaExecutedState) state;
+			if (!(executedState.previousState instanceof JavaCompiledState))
+				throw new Exception("Something went wrong!");
+			JavaCompiledState compiledState = (JavaCompiledState) executedState.previousState;
 			Parser parser = compiledState.initializeDummyLexerAndParser().getSecond();
-
 			ParseTreePattern p = ParseTreePatternCompiler.compile(parser, pattern, parser.getRuleIndex(startRule));
-
 			ParseTreeMatch match = p.match(executedState.parseTree);
 			boolean matched = match.succeeded();
-			if ( invertMatch ) assertFalse(matched);
+			if (invertMatch) assertFalse(matched);
 			else assertTrue(matched);
 			return match;
 		}
@@ -405,10 +410,10 @@ public class TestParseTreeMatcher {
 		RunOptions runOptions = RunOptions.createCompilationOptions(new String[] {grammar}, null,
 				false, false, null, null);
 		try (JavaRunner runner = new JavaRunner()) {
-			JavaCompiledState compiledState = (JavaCompiledState) runner.run(runOptions);
-
-			Pair<Lexer, Parser> lexerParserPair = compiledState.initializeDummyLexerAndParser();
-
+			State state = runner.run(runOptions);
+			if(!(state instanceof JavaCompiledState))
+				throw new Exception("Something went wrong!");
+			Pair<Lexer, Parser> lexerParserPair = ((JavaCompiledState)state).initializeDummyLexerAndParser();
 			return new ParseTreePatternMatcher(lexerParserPair.getFirst(), lexerParserPair.getSecond());
 		}
 	}
