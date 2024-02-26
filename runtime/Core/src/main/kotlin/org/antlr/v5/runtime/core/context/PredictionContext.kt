@@ -519,9 +519,7 @@ public abstract class PredictionContext protected constructor(
         return b
       }
 
-      // Note(Edoardo): we should be sure there are no null elements inside this array
-      @Suppress("UNCHECKED_CAST")
-      combineCommonParents(mergedParents as Array<PredictionContext>)
+       combineCommonParents(mergedParents)
       mergeCache?.put(a, b, M)
 
       if (ParserATNSimulator.trace_atn_sim) {
@@ -536,8 +534,8 @@ public abstract class PredictionContext protected constructor(
      *
      * Merge any `equals()` ones.
      */
-    protected fun combineCommonParents(parents: Array<PredictionContext>) {
-      val uniqueParents = HashMap<PredictionContext, PredictionContext>()
+    protected fun combineCommonParents(parents: Array<PredictionContext?>) {
+      val uniqueParents = HashMap<PredictionContext?, PredictionContext?>()
 
       for (p in parents.indices) {
         val parent = parents[p]
@@ -549,7 +547,7 @@ public abstract class PredictionContext protected constructor(
       }
 
       for (p in parents.indices) {
-        parents[p] = uniqueParents[parents[p]]!!
+        parents[p] = uniqueParents[parents[p]]
       }
     }
 

@@ -67,7 +67,7 @@ public open class ParserInterpreter(
    * Those values are used to create new recursive rule invocation contexts
    * associated with left operand of an alt like `"expr '*' expr"`.
    */
-  protected val _parentContextStack: ArrayDeque<Pair<ParserRuleContext, Int>> = ArrayDeque()
+  protected val _parentContextStack: ArrayDeque<Pair<ParserRuleContext?, Int>> = ArrayDeque()
 
   /**
    * We need a map from (decision, inputIndex) -> forced alt for computing ambiguous
@@ -188,7 +188,7 @@ public open class ParserInterpreter(
   }
 
   override fun enterRecursionRule(localctx: ParserRuleContext, state: Int, ruleIndex: Int, precedence: Int) {
-    val pair = Pair(context!!, localctx.invokingState)
+    val pair = Pair(context, localctx.invokingState)
     _parentContextStack.addFirst(pair)
     super.enterRecursionRule(localctx, state, ruleIndex, precedence)
   }
