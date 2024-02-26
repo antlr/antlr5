@@ -697,7 +697,7 @@ UNICODE_ESC
     	{
     		if (hCount < 4) {
 				Interval badRange = Interval.Companion.of(getCharIndex()-2-hCount, getCharIndex());
-				String lastChar = input.substring(badRange.getA(), badRange.getB());
+				String lastChar = input.substring(badRange.getB(), badRange.getB());
 				if ( lastChar.codePointAt(0)=='\'' ) {
 					badRange.setB(badRange.getB() -1);
 				}
