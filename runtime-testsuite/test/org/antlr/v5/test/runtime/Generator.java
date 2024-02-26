@@ -29,7 +29,8 @@ public class Generator {
 		if (runOptions.slaveGrammars != null) {
 			for (String grammar : runOptions.slaveGrammars) {
 				GrammarFile slaveGrammarFile = parseGrammarFile(grammar);
-				writeFile(workingDirectory, slaveGrammarFile.grammarName + ".g4", slaveGrammarFile.content);
+				Path fullPath = Paths.get(workingDirectory, slaveGrammarFile.grammarName + ".g4");
+				writeFile(fullPath.toString() , slaveGrammarFile.content, null);
 			}
 		}
 
@@ -45,7 +46,7 @@ public class Generator {
 
 		for (GrammarFile grammarFile : grammarFiles) {
 			Path fullPath = Paths.get(workingDirectory, grammarFile.grammarName + ".g4");
-			writeFile(fullPath.toString(), grammarFile.content, "utf-8");
+			writeFile(fullPath.toString(), grammarFile.content, null);
 
 			if (grammarFile == mainFile) continue;
 
