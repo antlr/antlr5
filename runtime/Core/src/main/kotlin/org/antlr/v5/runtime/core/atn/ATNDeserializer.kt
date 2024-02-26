@@ -13,6 +13,7 @@ import org.antlr.v5.runtime.core.misc.decodeIntsEncodedAs16BitWords
 import org.antlr.v5.runtime.core.state.*
 import org.antlr.v5.runtime.core.transition.*
 
+
 /**
  * @author Sam Harwell
  */
@@ -265,8 +266,8 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
 
         var endState: ATNState?
         var excludeTransition: Transition? = null
-
-        if (atn.ruleToStartState!![i].isLeftRecursiveRule) {
+        val ruleStartState = atn.ruleToStartState!![i]
+        if (ruleStartState.isLeftRecursiveRule) {
           // Wrap from the beginning of the rule to the StarLoopEntryState
           endState = null
 
@@ -285,7 +286,7 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
               continue
             }
 
-            if (maybeLoopEndState.epsilonOnlyTransitions && maybeLoopEndState.transition(0).target is RuleStopState) {
+            if (maybeLoopEndState.onlyHasEpsilonTransitions() && maybeLoopEndState.transition(0).target is RuleStopState) {
               endState = state
               break
             }
@@ -314,19 +315,30 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
         }
 
         // All transitions leaving the rule start state need to leave blockStart instead
-        while (atn.ruleToStartState!![i].numberOfTransitions > 0) {
-          val transition = atn.ruleToStartState!![i].removeTransition(atn.ruleToStartState!![i].numberOfTransitions - 1)
+        while (ruleStartState.numberOfTransitions > 0) {
+          val transition = ruleStartState.removeTransition(ruleStartState.numberOfTransitions - 1)
           bypassStart.addTransition(transition)
         }
 
         // Link the new states
-        atn.ruleToStartState!![i].addTransition(EpsilonTransition(bypassStart))
+        ruleStartState.addTransition(EpsilonTransition(bypassStart))
         bypassStop.addTransition(EpsilonTransition(endState!!))
 
         val matchState = BasicState()
         atn.addState(matchState)
         matchState.addTransition(AtomTransition(bypassStop, atn.ruleToTokenType!![i]))
-        bypassStart.addTransition(EpsilonTransition(matchState))
+
+        if (bypassStart.onlyHasEpsilonTransitions()) {
+              bypassStart.addTransition(EpsilonTransition(matchState))
+        } else {
+              val matchState2: ATNState = BasicState()
+              atn.addState(matchState2)
+              matchState2.addTransition(bypassStart.transition(0))
+
+              bypassStart.removeTransition(0)
+              bypassStart.addTransition(EpsilonTransition(matchState))
+              bypassStart.addTransition(EpsilonTransition(matchState2))
+        }
       }
 
       if (deserializationOptions.isVerifyATN) {
@@ -384,7 +396,7 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
         val maybeLoopEndState = state.transition(state.numberOfTransitions - 1).target
 
         if (maybeLoopEndState is LoopEndState) {
-          if (maybeLoopEndState.epsilonOnlyTransitions && maybeLoopEndState.transition(0).target is RuleStopState) {
+          if (maybeLoopEndState.onlyHasEpsilonTransitions() && maybeLoopEndState.transition(0).target is RuleStopState) {
             state.isPrecedenceDecision = true
           }
         }

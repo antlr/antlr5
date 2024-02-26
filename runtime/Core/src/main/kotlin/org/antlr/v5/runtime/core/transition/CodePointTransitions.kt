@@ -19,13 +19,8 @@ import org.antlr.v5.runtime.core.state.ATNState
  */
 @Suppress("MemberVisibilityCanBePrivate")
 public object CodePointTransitions {
-  /**
-   * Return new [AtomTransition].
-   */
-  public fun createWithCodePoint(target: ATNState, codePoint: Int): Transition =
-    createWithCodePointRange(target, codePoint, codePoint)
 
-  /**
+   /**
    * Return new [AtomTransition] if range represents one atom, else [SetTransition].
    */
   public fun createWithCodePointRange(target: ATNState, codePointFrom: Int, codePointTo: Int): Transition =
