@@ -42,7 +42,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
-			<artifactId>antlr5-runtime</artifactId>
+			<artifactId>antlr5-java-runtime</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
