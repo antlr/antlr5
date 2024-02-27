@@ -6,17 +6,13 @@
 
 package org.antlr.v5.analysis;
 
+import kotlin.Pair;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.v5.Tool;
 import org.antlr.v5.codegen.CodeGenerator;
-import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.parse.GrammarASTAdaptor;
-import org.antlr.v5.parse.LeftRecursiveRuleWalker;
 import org.antlr.v5.runtime.core.misc.IntervalSet;
-import kotlin.Pair;
-import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.LeftRecursiveRule;
 import org.antlr.v5.tool.ast.AltAST;
 import org.antlr.v5.tool.ast.GrammarAST;
@@ -234,9 +230,9 @@ public class LeftRecursiveRuleAnalyzer {
 				RuleRefAST ruleRefNode = node instanceof RuleRefAST ? (RuleRefAST) node : null;
 				if (ruleAltInfo.leftRecursiveRightmostRuleRefs.contains(ruleRefNode)) {
 					buffer.append(',')
-							.append(LeftRecursiveRuleTransformer.PRECEDENCE_OPTION_NAME)
-							.append('=')
-							.append(nextPrecedence);
+						.append(LeftRecursiveRuleTransformer.PRECEDENCE_OPTION_NAME)
+						.append('=')
+						.append(nextPrecedence);
 				}
 				buffer.append('>');
 			}

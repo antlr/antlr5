@@ -6,6 +6,7 @@
 
 package org.antlr.v5.analysis;
 
+import kotlin.Pair;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.ParserRuleReturnScope;
@@ -17,7 +18,6 @@ import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.GrammarASTAdaptor;
 import org.antlr.v5.parse.ScopeParser;
 import org.antlr.v5.parse.ToolANTLRParser;
-import kotlin.Pair;
 import org.antlr.v5.semantics.BasicSemanticChecks;
 import org.antlr.v5.semantics.RuleCollector;
 import org.antlr.v5.tool.AttributeDict;
@@ -92,13 +92,13 @@ public class LeftRecursiveRuleTransformer {
 	}
 
 	public void translateLeftRecursiveRule(GrammarRootAST ast,
-											  LeftRecursiveRule r,
-											  String language)
+										   LeftRecursiveRule r,
+										   String language)
 	{
 		GrammarAST prevRuleAST = r.ast;
 
 		LeftRecursiveRuleAnalyzer leftRecursiveRuleAnalyzer =
-				new LeftRecursiveRuleAnalyzer(tool, r, prevRuleAST.g.tokenStream, language);
+			new LeftRecursiveRuleAnalyzer(tool, r, prevRuleAST.g.tokenStream, language);
 		leftRecursiveRuleAnalyzer.analyze();
 
 		// replace old rule's AST; first create text of altered rule
@@ -157,7 +157,7 @@ public class LeftRecursiveRuleTransformer {
 
 		// define labels on recursive rule refs we delete; they don't point to nodes of course
 		// these are so $label in action translation works
-		for (Pair<GrammarAST,String> pair : leftRecursiveRuleWalker.leftRecursiveRuleRefLabels) {
+		for (Pair<GrammarAST,String> pair : leftRecursiveRuleAnalyzer.leftRecursiveRuleRefLabels) {
 			GrammarAST labelNode = pair.getFirst();
 			GrammarAST labelOpNode = (GrammarAST)labelNode.getParent();
 			GrammarAST elementNode = (GrammarAST)labelOpNode.getChild(1);
@@ -188,9 +188,9 @@ public class LeftRecursiveRuleTransformer {
 		}
 		catch (Exception e) {
 			tool.errMgr.toolError(ErrorType.INTERNAL_ERROR,
-								  e,
-								  ruleStart,
-								  "error parsing rule created during left-recursion detection: "+ruleText);
+				e,
+				ruleStart,
+				"error parsing rule created during left-recursion detection: "+ruleText);
 		}
 		return null;
 	}
