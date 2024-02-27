@@ -9,7 +9,6 @@ package org.antlr.v5.analysis;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.ParserRuleReturnScope;
-import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 import org.antlr.v5.Tool;
 import org.antlr.v5.misc.OrderedHashMap;
@@ -64,16 +63,18 @@ public class LeftRecursiveRuleTransformer {
 	public void translateLeftRecursiveRules() {
 		String language = g.getLanguage();
 		// translate all recursive rules
-		List<String> leftRecursiveRuleNames = new ArrayList<String>();
+		List<String> leftRecursiveRuleNames = new ArrayList<>();
 		for (Rule r : rules) {
-			if ( !Grammar.isTokenName(r.name) ) {
-				if ( LeftRecursiveRuleAnalyzer.hasImmediateRecursiveRuleRefs(r.ast, r.name) ) {
-					boolean fitsPattern = translateLeftRecursiveRule(ast, (LeftRecursiveRule)r, language);
-					if ( fitsPattern ) {
+			if (!Grammar.isTokenName(r.name)) {
+				if (r instanceof LeftRecursiveRule) {
+					LeftRecursiveRule leftRecursiveRule = (LeftRecursiveRule) r;
+					if (!leftRecursiveRule.ruleInfo.nonConformingLeftRecursion) {
+						translateLeftRecursiveRule(ast, leftRecursiveRule, language);
 						leftRecursiveRuleNames.add(r.name);
 					}
-					else { // better given an error that non-conforming left-recursion exists
-						tool.errMgr.grammarError(ErrorType.NONCONFORMING_LR_RULE, g.fileName, ((GrammarAST)r.ast.getChild(0)).token, r.name);
+					else {
+						// TODO: better given an error that non-conforming left-recursion exists
+						tool.errMgr.grammarError(ErrorType.NONCONFORMING_LR_RULE, g.fileName, ((GrammarAST) r.ast.getChild(0)).token, r.name);
 					}
 				}
 			}
@@ -90,31 +91,19 @@ public class LeftRecursiveRuleTransformer {
 		}
 	}
 
-	/** Return true if successful */
-	public boolean translateLeftRecursiveRule(GrammarRootAST ast,
+	public void translateLeftRecursiveRule(GrammarRootAST ast,
 											  LeftRecursiveRule r,
 											  String language)
 	{
-		//tool.log("grammar", ruleAST.toStringTree());
 		GrammarAST prevRuleAST = r.ast;
-		String ruleName = prevRuleAST.getChild(0).getText();
-		LeftRecursiveRuleAnalyzer leftRecursiveRuleWalker =
-			new LeftRecursiveRuleAnalyzer(prevRuleAST, tool, ruleName, language);
-		boolean isLeftRec;
-		try {
-//			System.out.println("TESTING ---------------\n"+
-//							   leftRecursiveRuleWalker.text(ruleAST));
-			isLeftRec = leftRecursiveRuleWalker.rec_rule();
-		}
-		catch (RecognitionException re) {
-			isLeftRec = false; // didn't match; oh well
-		}
-		if ( !isLeftRec ) return false;
+
+		LeftRecursiveRuleAnalyzer leftRecursiveRuleAnalyzer =
+				new LeftRecursiveRuleAnalyzer(tool, r, prevRuleAST.g.tokenStream, language);
+		leftRecursiveRuleAnalyzer.analyze();
 
 		// replace old rule's AST; first create text of altered rule
 		GrammarAST RULES = (GrammarAST)ast.getFirstChildWithType(ANTLRParser.RULES);
-		String newRuleText = leftRecursiveRuleWalker.getArtificialOpPrecRule();
-//		System.out.println("created: "+newRuleText);
+		String newRuleText = leftRecursiveRuleAnalyzer.getArtificialOpPrecRule();
 		// now parse within the context of the grammar that originally created
 		// the AST we are transforming. This could be an imported grammar so
 		// we cannot just reference this.g because the role might come from
@@ -143,16 +132,15 @@ public class LeftRecursiveRuleTransformer {
 		basics.visit(t, "rule");
 
 		// track recursive alt info for codegen
-		r.recPrimaryAlts = new ArrayList<LeftRecursiveRuleAltInfo>();
-		r.recPrimaryAlts.addAll(leftRecursiveRuleWalker.prefixAndOtherAlts);
+		r.recPrimaryAlts = new ArrayList<>();
+		r.recPrimaryAlts.addAll(leftRecursiveRuleAnalyzer.prefixAndOtherAlts);
 		if (r.recPrimaryAlts.isEmpty()) {
 			tool.errMgr.grammarError(ErrorType.NO_NON_LR_ALTS, g.fileName, ((GrammarAST)r.ast.getChild(0)).getToken(), r.name);
 		}
 
-		r.recOpAlts = new OrderedHashMap<Integer, LeftRecursiveRuleAltInfo>();
-		r.recOpAlts.putAll(leftRecursiveRuleWalker.binaryAlts);
-		r.recOpAlts.putAll(leftRecursiveRuleWalker.ternaryAlts);
-		r.recOpAlts.putAll(leftRecursiveRuleWalker.suffixAlts);
+		r.recOpAlts = new OrderedHashMap<>();
+		r.recOpAlts.putAll(leftRecursiveRuleAnalyzer.binaryAlts);
+		r.recOpAlts.putAll(leftRecursiveRuleAnalyzer.suffixAlts);
 
 		// walk alt info records and set their altAST to point to appropriate ALT subtree
 		// from freshly created AST
@@ -177,10 +165,9 @@ public class LeftRecursiveRuleTransformer {
 			r.alt[1].labelDefs.map(labelNode.getText(), lp);
 		}
 		// copy to rule from walker
-		r.leftRecursiveRuleRefLabels = leftRecursiveRuleWalker.leftRecursiveRuleRefLabels;
+		r.leftRecursiveRuleRefLabels = leftRecursiveRuleAnalyzer.leftRecursiveRuleRefLabels;
 
 		tool.log("grammar", "added: "+t.toStringTree());
-		return true;
 	}
 
 	public RuleAST parseArtificialRule(final Grammar g, String ruleText) {
