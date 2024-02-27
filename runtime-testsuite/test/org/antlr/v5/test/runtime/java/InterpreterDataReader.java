@@ -56,8 +56,8 @@ public class InterpreterDataReader {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 		    String line;
-		  	List<String> literalNames = new ArrayList<String>();
-		  	List<String> symbolicNames = new ArrayList<String>();
+		  	List<String> literalNames = new ArrayList<>();
+		  	List<String> symbolicNames = new ArrayList<>();
 
 			line = br.readLine();
 			if ( !line.equals("token literal names:") )

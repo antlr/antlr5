@@ -739,7 +739,9 @@ public class Tool {
 		//Utils.writeSerializedATNIntegerHistogram(g.name+"-histo.csv", serializedATN);
 
 		content.append("atn:\n");
-		content.append(serializedATN.toString());
+		content.append('"');
+		content.append(serializedATN);
+		content.append('"');
 
 		return content.toString();
 	}

@@ -80,7 +80,7 @@ public class TestExpectedTokens extends JavaRunner {
 		ATN atn = g.getATN();
 
 		// From the start of 'b' with empty stack, can only see B and EOF
-		int blkStartStateNumber = 9;
+		int blkStartStateNumber = 6;
 		IntervalSet tokens = atn.getExpectedTokens(blkStartStateNumber, ParserRuleContext.getEMPTY());
 		assertEquals("{<EOF>, B}", tokens.toString(g.getVocabulary()));
 

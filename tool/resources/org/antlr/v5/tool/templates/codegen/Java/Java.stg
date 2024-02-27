@@ -56,6 +56,8 @@ import org.antlr.v5.runtime.core.error.*;
 import org.antlr.v5.runtime.core.dfa.*;
 import org.antlr.v5.runtime.core.misc.*;
 import org.antlr.v5.runtime.core.tree.*;
+import org.antlr.v5.runtime.*;
+import org.antlr.v5.runtime.tree.*;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -268,7 +270,6 @@ public class <parser.name> extends <superClass; null="Parser"> {
 	<namedActions.members>
 
 	ParserATNSimulator _interpreter;
-	TokenFactory\<? extends Token> _tokenFactory = null;
 
 	<parser:(ctor)()>
 
@@ -278,14 +279,6 @@ public class <parser.name> extends <superClass; null="Parser"> {
 
 	public ParserATNSimulator getInterpreter() {
 		return _interpreter;
-	}
-
-	public void setTokenFactory(TokenFactory\<? extends Token> tokenFactory) {
-		this._tokenFactory = tokenFactory;
-	}
-
-	public TokenFactory\<? extends Token> getTokenFactory() {
-		return this._tokenFactory;
 	}
 
 	<funcs; separator="\n">
@@ -1015,11 +1008,8 @@ SerializedJavaATN(model) ::= <<
 <! requires segmented representation !>
 <model.segments:{segment|private static final String _serializedATNSegment<i0> =
 	"<segment; wrap={"+<\n><\t>"}>";}; separator="\n">
-public static final String _serializedATN = Utils.join(
-	new String[] {
+public static final String _serializedATN = String.join("",
 		<model.segments:{segment | _serializedATNSegment<i0>}; separator=",\n">
-	},
-	""
 );
 <else>
 <! only one segment, can be inlined !>
