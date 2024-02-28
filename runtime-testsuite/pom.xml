@@ -22,11 +22,6 @@
 
 	<inceptionYear>2009</inceptionYear>
 
-	<properties>
-		<jUnitVersion>5.9.0</jUnitVersion>
-		<kotlin.version>2.0.0-Beta3</kotlin.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.antlr</groupId>
@@ -55,13 +50,13 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>${jUnitVersion}</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>${jUnitVersion}</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -89,7 +84,7 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-compiler</artifactId>
-            <version>2.0.0-Beta3</version>
+            <version>${kotlin.version}</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

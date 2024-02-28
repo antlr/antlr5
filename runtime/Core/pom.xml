@@ -16,11 +16,6 @@
 	<name>ANTLR 5 Core Runtime</name>
 	<description>ANTLR 5 Core Runtime</description>
 
-    <properties>
-        <kotlin.version>2.0.0-Beta3</kotlin.version>
-        <junit.version>5.9.0</junit.version>
-    </properties>
-
     <prerequisites>
         <maven>3.8</maven>
     </prerequisites>

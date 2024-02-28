@@ -94,6 +94,8 @@
         <maven.compiler.release>17</maven.compiler.release>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
+	    <kotlin.version>2.0.0-Beta4</kotlin.version>
+        <junit.version>5.9.0</junit.version>
 	</properties>
 
 	<mailingLists>
