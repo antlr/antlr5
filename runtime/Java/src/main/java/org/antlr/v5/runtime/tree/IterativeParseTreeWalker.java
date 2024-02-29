@@ -6,7 +6,8 @@
 
 package org.antlr.v5.runtime.tree;
 
-import org.antlr.v5.runtime.misc.IntegerStack;
+import org.antlr.v5.runtime.core.misc.IntegerStack;
+import org.antlr.v5.runtime.core.tree.*;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

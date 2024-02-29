@@ -4,6 +4,7 @@ import org.antlr.v5.runtime.core.atn.ATN
 import org.antlr.v5.runtime.core.misc.IntervalSet
 import org.antlr.v5.runtime.core.transition.Transition
 
+
 /**
  * The following images show the relation of states and
  * [ATNState.transitions] for various grammar constructs.
@@ -64,7 +65,7 @@ public abstract class ATNState {
   public var atn: ATN? = null
   public var stateNumber: Int = INVALID_STATE_NUMBER
   public var ruleIndex: Int = 0 // at runtime, we don't have Rule objects
-  public var epsilonOnlyTransitions: Boolean = false
+  public var epsilonOnlyTransitions: Boolean? = null
 
   /**
    * Track the transitions emanating from this ATN state.
@@ -94,21 +95,17 @@ public abstract class ATNState {
   override fun toString(): String =
     stateNumber.toString()
 
-  public fun getTransitions(): Array<Transition> =
+  public fun getTransitionsArray(): Array<Transition> =
     transitions.toTypedArray()
 
   public fun addTransition(e: Transition): Unit =
     addTransition(transitions.size, e)
 
   public fun addTransition(index: Int, e: Transition) {
-    if (transitions.isEmpty()) {
-      epsilonOnlyTransitions = e.isEpsilon
-    } else if (epsilonOnlyTransitions != e.isEpsilon) {
-      System.err.println("ATN state $stateNumber has both epsilon and non-epsilon transitions.")
-      epsilonOnlyTransitions = false
-    }
-
-    var alreadyPresent = false
+      if(epsilonOnlyTransitions != null && epsilonOnlyTransitions != e.isEpsilon) {
+          System.err.println("ATN state $stateNumber has both epsilon and non-epsilon transitions.")
+      }
+      var alreadyPresent = false
 
     for (t in transitions) {
       if (t.target.stateNumber == e.target.stateNumber) {
@@ -124,19 +121,57 @@ public abstract class ATNState {
 
     if (!alreadyPresent) {
       transitions.add(index, e)
+        recalculateEpsilonOnlyTransitions();
     }
   }
 
   public fun transition(i: Int): Transition =
     transitions[i]
 
-  public fun setTransition(i: Int, e: Transition) {
-    transitions[i] = e
+    fun getTransitionIndex(transition: Transition?): Int {
+        return transitions.indexOf(transition)
+    }
+
+     public fun setTransition(i: Int, e: Transition) {
+        transitions.removeAt(i);
+        recalculateEpsilonOnlyTransitions();
+        if (epsilonOnlyTransitions != null && epsilonOnlyTransitions != e.isEpsilon) {
+            System.err.println("ATN state $stateNumber has both epsilon and non-epsilon transitions.\n");
+        }
+        transitions.add(i, e);
+        recalculateEpsilonOnlyTransitions();
   }
 
-  public fun removeTransition(index: Int): Transition =
-    transitions.removeAt(index)
+  public fun removeTransition(index: Int): Transition  {
+      val result = transitions.removeAt(index)
+      recalculateEpsilonOnlyTransitions()
+      return result
 
+  }
+
+    public fun removeTransition(transition: Transition): Boolean {
+        val result = transitions.remove(transition)
+        recalculateEpsilonOnlyTransitions()
+        return result
+    }
+
+    fun findTransition(predicate: java.util.function.Predicate<Transition?>?): Transition? {
+        return transitions.stream().filter(predicate).findFirst().orElse(null)
+    }
+
+
+
+    public fun clearTransitions() {
+        transitions.clear()
+    }
   public fun onlyHasEpsilonTransitions(): Boolean =
-    epsilonOnlyTransitions
+      epsilonOnlyTransitions != null && epsilonOnlyTransitions!!
+
+    fun recalculateEpsilonOnlyTransitions() {
+        if (transitions.size == 0) {
+            epsilonOnlyTransitions = null
+        } else {
+            epsilonOnlyTransitions = transitions.stream().allMatch(Transition::isEpsilon)
+        }
+    }
 }

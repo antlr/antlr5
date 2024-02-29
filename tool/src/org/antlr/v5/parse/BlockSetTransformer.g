@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 }
 
 @members {

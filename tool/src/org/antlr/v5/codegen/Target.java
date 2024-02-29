@@ -13,8 +13,8 @@ import org.antlr.v5.misc.CharParseResult;
 import org.antlr.v5.misc.GrammarLiteralParser;
 import org.antlr.v5.misc.Utils;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.RuntimeMetaData;
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.core.RuntimeMetaData;
+import org.antlr.v5.runtime.core.Token;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;
@@ -95,7 +95,7 @@ public abstract class Target {
 		if (templates == null) {
 			String version = getVersion();
 			if (version == null ||
-					!RuntimeMetaData.getMajorMinorVersion(version).equals(RuntimeMetaData.getMajorMinorVersion(Tool.VERSION))) {
+					!RuntimeMetaData.INSTANCE.getMajorMinorVersion(version).equals(RuntimeMetaData.INSTANCE.getMajorMinorVersion(Tool.VERSION))) {
 				gen.tool.errMgr.toolError(ErrorType.INCOMPATIBLE_TOOL_AND_TEMPLATES, version, Tool.VERSION, language);
 			}
 			templates = loadTemplates();

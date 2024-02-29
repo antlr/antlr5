@@ -6,13 +6,20 @@
 
 package org.antlr.v5.runtime;
 
-import org.antlr.v5.runtime.misc.ParseCancellationException;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.error.ANTLRErrorStrategy;
+import org.antlr.v5.runtime.core.error.DefaultErrorStrategy;
+import org.antlr.v5.runtime.core.error.InputMismatchException;
+import org.antlr.v5.runtime.core.error.RecognitionException;
+import org.antlr.v5.runtime.core.misc.ParseCancellationException;
 
 /**
  * This implementation of {@link ANTLRErrorStrategy} responds to syntax errors
  * by immediately canceling the parse operation with a
  * {@link ParseCancellationException}. The implementation ensures that the
- * {@link ParserRuleContext#exception} field is set for all parse tree nodes
+ * {@link ParserRuleContext#getException} field is set for all parse tree nodes
  * that were not completed prior to encountering the error.
  *
  * <p>
@@ -44,8 +51,8 @@ public class BailErrorStrategy extends DefaultErrorStrategy {
      */
     @Override
     public void recover(Parser recognizer, RecognitionException e) {
-		for (ParserRuleContext context = recognizer.getContext(); context != null; context = context.getParent()) {
-			context.exception = e;
+		for (ParserRuleContext context = recognizer.getContext(); context != null; context = (ParserRuleContext) context.getParent()) {
+			context.setException(e);
 		}
 
         throw new ParseCancellationException(e);
@@ -59,8 +66,8 @@ public class BailErrorStrategy extends DefaultErrorStrategy {
         throws RecognitionException
     {
 		InputMismatchException e = new InputMismatchException(recognizer);
-		for (ParserRuleContext context = recognizer.getContext(); context != null; context = context.getParent()) {
-			context.exception = e;
+		for (ParserRuleContext context = recognizer.getContext(); context != null; context = (ParserRuleContext) context.getParent()) {
+			context.setException(e);
 		}
 
         throw new ParseCancellationException(e);

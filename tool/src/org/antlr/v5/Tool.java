@@ -19,15 +19,15 @@ import org.antlr.v5.automata.ParserATNFactory;
 import org.antlr.v5.codegen.CodeGenPipeline;
 import org.antlr.v5.codegen.CodeGenerator;
 import org.antlr.v5.misc.Graph;
+import org.antlr.v5.misc.LogManager;
 import org.antlr.v5.parse.ANTLRParser;
 import org.antlr.v5.parse.GrammarASTAdaptor;
 import org.antlr.v5.parse.GrammarTreeVisitor;
 import org.antlr.v5.parse.ToolANTLRLexer;
 import org.antlr.v5.parse.ToolANTLRParser;
-import org.antlr.v5.runtime.RuntimeMetaData;
-import org.antlr.v5.runtime.misc.LogManager;
-import org.antlr.v5.runtime.misc.IntegerList;
-import org.antlr.v5.runtime.atn.ATNSerializer;
+import org.antlr.v5.runtime.core.RuntimeMetaData;
+import org.antlr.v5.runtime.core.atn.ATNSerializer;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.semantics.SemanticPipeline;
 import org.antlr.v5.tool.ANTLRMessage;
 import org.antlr.v5.tool.ANTLRToolListener;
@@ -64,7 +64,7 @@ public class Tool {
 	static {
 		// Assigned in a static{} block to prevent the field from becoming a
 		// compile-time constant
-		VERSION = RuntimeMetaData.VERSION;
+		VERSION = RuntimeMetaData.runtimeVersion;
 	}
 
 	public static final String GRAMMAR_EXTENSION = ".g4";
@@ -681,7 +681,7 @@ public class Tool {
 		for (Grammar ig : grammars) {
 			for (Rule r : ig.rules.values()) {
 				try {
-					String dot = dotGenerator.getDOT(g.atn.ruleToStartState[r.index], g.isLexer());
+					String dot = dotGenerator.getDOT(g.atn.getRuleToStartState()[r.index], g.isLexer());
 					if (dot != null) {
 						writeDOTFile(g, r, dot);
 					}
@@ -733,13 +733,15 @@ public class Tool {
 		}
 		content.append("\n");
 
-		IntegerList serializedATN = ATNSerializer.getSerialized(g.atn);
+		IntegerList serializedATN = ATNSerializer.Companion.getSerialized(g.atn);
 		// Uncomment if you'd like to write out histogram info on the numbers of
 		// each integer value:
 		//Utils.writeSerializedATNIntegerHistogram(g.name+"-histo.csv", serializedATN);
 
 		content.append("atn:\n");
-		content.append(serializedATN.toString());
+		content.append('"');
+		content.append(serializedATN);
+		content.append('"');
 
 		return content.toString();
 	}

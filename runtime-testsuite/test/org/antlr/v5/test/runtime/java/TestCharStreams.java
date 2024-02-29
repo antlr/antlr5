@@ -6,7 +6,7 @@
 
 package org.antlr.v5.test.runtime.java;
 
-import org.antlr.v5.runtime.CharStream;
+import org.antlr.v5.runtime.core.CharStream;
 import org.antlr.v5.runtime.CharStreams;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

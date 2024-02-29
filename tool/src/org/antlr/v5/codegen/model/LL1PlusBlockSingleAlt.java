@@ -7,8 +7,8 @@
 package org.antlr.v5.codegen.model;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.atn.PlusBlockStartState;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.state.PlusBlockStartState;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.ast.BlockAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 
@@ -22,10 +22,10 @@ public class LL1PlusBlockSingleAlt extends LL1Loop {
 		BlockAST blkAST = (BlockAST)plusRoot.getChild(0);
 		PlusBlockStartState blkStart = (PlusBlockStartState)blkAST.atnState;
 
-		stateNumber = blkStart.loopBackState.stateNumber;
-		blockStartStateNumber = blkStart.stateNumber;
+		stateNumber = blkStart.getLoopBackState().getStateNumber();
+		blockStartStateNumber = blkStart.getStateNumber();
 		PlusBlockStartState plus = (PlusBlockStartState)blkAST.atnState;
-		this.decision = plus.loopBackState.decision;
+		this.decision = plus.getLoopBackState().getDecision();
 		IntervalSet[] altLookSets = factory.getGrammar().decisionLOOK.get(decision);
 
 		IntervalSet loopBackLook = altLookSets[0];

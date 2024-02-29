@@ -12,13 +12,21 @@ package org.antlr.v5.runtime.core.misc
 public object MurmurHash {
   private const val DEFAULT_SEED = 0
 
+    /**
+     * Initialize the hash using the default [seed].
+     *
+     * @return The intermediate hash value
+     */
+    public fun initialize(): Int =
+        DEFAULT_SEED
+
   /**
    * Initialize the hash using the specified [seed].
    *
    * @param seed The seed
    * @return The intermediate hash value
    */
-  public fun initialize(seed: Int = DEFAULT_SEED): Int =
+  public fun initialize(seed: Int): Int =
     seed
 
   /**

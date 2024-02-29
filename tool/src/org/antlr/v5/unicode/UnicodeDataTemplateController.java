@@ -10,8 +10,8 @@ import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.lang.UProperty;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.RangeValueIterator;
-import org.antlr.v5.runtime.misc.Interval;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.Interval;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 
 import java.util.*;
 
@@ -103,8 +103,8 @@ public abstract class UnicodeDataTemplateController {
 		int intervalSetSize = intervals.size();
 		List<Integer> rawArray = new ArrayList<>(intervalSetSize * 2);
 		for (Interval interval : intervals) {
-			rawArray.add(interval.a);
-			rawArray.add(interval.b);
+			rawArray.add(interval.getA());
+			rawArray.add(interval.getB());
 		}
 		return rawArray;
 	}

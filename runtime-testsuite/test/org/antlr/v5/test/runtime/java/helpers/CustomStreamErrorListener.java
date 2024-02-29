@@ -1,8 +1,8 @@
 package org.antlr.v5.test.runtime.java.helpers;
 
 import org.antlr.v5.runtime.BaseErrorListener;
-import org.antlr.v5.runtime.RecognitionException;
-import org.antlr.v5.runtime.Recognizer;
+import org.antlr.v5.runtime.core.error.RecognitionException;
+import org.antlr.v5.runtime.core.Recognizer;
 
 import java.io.PrintStream;
 

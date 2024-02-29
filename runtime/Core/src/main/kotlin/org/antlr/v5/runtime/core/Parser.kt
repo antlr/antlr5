@@ -163,7 +163,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
   public val parseListeners: List<ParseTreeListener>
     get() = _parseListeners
 
-  override var tokenFactory: TokenFactory<*>
+  override var tokenFactory: TokenFactory<out Token>
     get() = _input.tokenSource.tokenFactory
     set(value) {
       _input.tokenSource.tokenFactory = value
@@ -233,7 +233,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
 
   public val expectedTokensWithinCurrentRule: IntervalSet
     get() {
-      val atn = interpreter.atn
+      val atn = interpreter!!.atn
       val s = atn.states[state]
       return atn.nextTokens(s!!)
     }
@@ -242,18 +242,18 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
    * For debugging and other purposes.
    */
   public val dfaStrings: List<String>
-    get() = org.antlr.v5.runtime.core.jvm.synchronized(interpreter.decisionToDFA) {
+    get() = org.antlr.v5.runtime.core.jvm.synchronized(interpreter!!.decisionToDFA) {
         val s = ArrayList<String>()
 
-        for (d in 0..<interpreter.decisionToDFA.size) {
-            val dfa = interpreter.decisionToDFA[d]
+        for (d in 0..<interpreter!!.decisionToDFA.size) {
+            val dfa = interpreter!!.decisionToDFA[d]
             s.add(dfa.toString(vocabulary))
         }
 
         return s
     }
 
-  public val sourceName: String
+  public override val sourceName: String
     get() = _input.sourceName
 
   override val parseInfo: ParseInfo?
@@ -308,16 +308,8 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
     isMatchedEOF = false
     _precedenceStack.clear()
     _precedenceStack.push(0)
-
-    // TODO(Edoardo): 'interpreter' is abstract and might be initialized
-    //  only after this method has been called for the first time
-    //  (at instance construction time), so here we explicitly 'reset()'
-    //  it only if it's not null.
-    //  We might want to find a better way to initialize 'interpreter',
-    //  or a better way to initialize the Parser instance to avoid calling
-    //  this method during construction
-    @Suppress("UNNECESSARY_SAFE_CALL")
-    interpreter?.reset()
+    if(interpreter != null)
+        interpreter!!.reset()
   }
 
   /**
@@ -557,7 +549,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
     ErrorNodeImpl(t)
 
   protected open fun addContextToParseTree() {
-    val parent = context!!.readParent()
+    val parent = context!!.getParent()
 
     // Add current context to parent if we have a parent
     parent?.addChild(context!!)
@@ -593,7 +585,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
     // Trigger event on context, before it reverts to parent
     triggerExitRuleEvent()
     state = context!!.invokingState
-    context = context!!.readParent()
+    context = context!!.getParent()
   }
 
   public fun enterOuterAlt(localctx: ParserRuleContext, altNum: Int) {
@@ -602,7 +594,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
     // If we have new localctx, make sure we replace existing ctx
     // that is previous child of parse tree
     if (buildParseTree && context !== localctx) {
-      val parent = context!!.readParent()
+      val parent = context!!.getParent()
 
       if (parent != null) {
         parent.removeLastChild()
@@ -630,7 +622,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
    */
   public open fun pushNewRecursionContext(localctx: ParserRuleContext, state: Int, ruleIndex: Int) {
     val previous = context
-    previous!!.assignParent(localctx)
+    previous!!.setParent(localctx)
     previous.invokingState = state
     previous.stop = _input.LT(-1)
 
@@ -656,14 +648,14 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
     if (parseListeners.isNotEmpty()) {
       while (context !== _parentctx) {
         triggerExitRuleEvent()
-        context = context!!.readParent()
+        context = context!!.getParent()
       }
     } else {
       context = _parentctx
     }
 
     // Hook into tree
-    retCtx!!.assignParent(_parentctx)
+    retCtx!!.setParent(_parentctx)
 
     if (buildParseTree && _parentctx != null) {
       // Add return ctx into invoking rule's tree
@@ -679,7 +671,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
         return p
       }
 
-      p = p.readParent()
+      p = p.getParent()
     }
 
     return null
@@ -708,7 +700,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
    * @return `true` if [symbol] can follow the current state in the ATN, otherwise `false`
    */
   public open fun isExpectedToken(symbol: Int): Boolean {
-    val atn = interpreter.atn
+    val atn = interpreter!!.atn
     var ctx = context
     val s = atn.states[state]
     var following = atn.nextTokens(s!!)
@@ -730,7 +722,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
         return true
       }
 
-      ctx = ctx.readParent()
+      ctx = ctx.getParent()
     }
 
     return following.contains(Token.EPSILON) && symbol == Token.EOF
@@ -768,7 +760,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
         stack.add(ruleNames[ruleIndex])
       }
 
-      p = p.readParent()
+      p = p.getParent()
     }
 
     return stack
@@ -778,13 +770,13 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
    * For debugging and other purposes.
    */
   public fun dumpDFA(dumpStream: IPrintStream) {
-      org.antlr.v5.runtime.core.jvm.synchronized(interpreter.decisionToDFA) {
+      org.antlr.v5.runtime.core.jvm.synchronized(interpreter!!.decisionToDFA) {
           var seenOne = false
 
-          for (d in 0..<interpreter.decisionToDFA.size) {
-              val dfa = interpreter.decisionToDFA[d]
+          for (d in 0..<interpreter!!.decisionToDFA.size) {
+              val dfa = interpreter!!.decisionToDFA[d]
 
-              if (dfa.states.isNotEmpty()) {
+              if (dfa.getStatesMap().isNotEmpty()) {
                   if (seenOne) {
                       dumpStream.printLine(null)
                   }
@@ -802,7 +794,7 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
    */
   public fun setProfile(profile: Boolean) {
     val interp = interpreter
-    val saveMode = interp.predictionMode
+    val saveMode = interp!!.predictionMode
 
     if (profile) {
       if (interp !is ProfilingATNSimulator) {
@@ -813,6 +805,6 @@ public abstract class Parser(input: TokenStream) : Recognizer<Token, ParserATNSi
       interpreter = sim
     }
 
-    interpreter.predictionMode = saveMode
+    interpreter!!.predictionMode = saveMode
   }
 }

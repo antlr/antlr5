@@ -119,15 +119,15 @@ public abstract class Lexer(input: CharStream) : Recognizer<Int, LexerATNSimulat
     get() = _input.sourceName
 
   override var line: Int
-    get() = interpreter.line
+    get() = interpreter!!.line
     set(line) {
-      interpreter.line = line
+      interpreter!!.line = line
     }
 
   override var charPositionInLine: Int
-    get() = interpreter.charPositionInLine
+    get() = interpreter!!.charPositionInLine
     set(charPositionInLine) {
-      interpreter.charPositionInLine = charPositionInLine
+      interpreter!!.charPositionInLine = charPositionInLine
     }
 
   /**
@@ -140,7 +140,7 @@ public abstract class Lexer(input: CharStream) : Recognizer<Int, LexerATNSimulat
    * The text matched so far for the current token or any text override.
    */
   public var text: String
-    get() = _text ?: interpreter.getText(_input)
+    get() = _text ?: interpreter!!.getText(_input)
     set(text) {
       this._text = text
     }
@@ -223,8 +223,8 @@ public abstract class Lexer(input: CharStream) : Recognizer<Int, LexerATNSimulat
         token = null
         channel = Token.DEFAULT_CHANNEL
         _tokenStartCharIndex = _input.index()
-        _tokenStartCharPositionInLine = interpreter.charPositionInLine
-        _tokenStartLine = interpreter.line
+        _tokenStartCharPositionInLine = interpreter!!.charPositionInLine
+        _tokenStartLine = interpreter!!.line
         _text = null
 
         do {
@@ -232,7 +232,7 @@ public abstract class Lexer(input: CharStream) : Recognizer<Int, LexerATNSimulat
           var ttype: Int
 
           try {
-            ttype = interpreter.match(_input, _mode)
+            ttype = interpreter!!.match(_input, _mode)
           } catch (e: LexerNoViableAltException) {
             // Report error
             notifyListeners(e)
@@ -368,7 +368,7 @@ public abstract class Lexer(input: CharStream) : Recognizer<Int, LexerATNSimulat
   public open fun recover(e: LexerNoViableAltException) {
     if (_input.LA(1) != IntStream.EOF) {
       // Skip a char and try again
-      interpreter.consume(_input)
+      interpreter!!.consume(_input)
     }
   }
 

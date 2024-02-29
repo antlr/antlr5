@@ -6,7 +6,7 @@
 package org.antlr.v5.tool;
 
 import org.antlr.v5.Tool;
-import org.antlr.v5.runtime.Lexer;
+import org.antlr.v5.runtime.core.Lexer;
 
 /**
  * A complex enumeration of all the error messages that the tool can issue.

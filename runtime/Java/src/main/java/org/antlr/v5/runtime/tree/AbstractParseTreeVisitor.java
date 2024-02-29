@@ -6,6 +6,8 @@
 
 package org.antlr.v5.runtime.tree;
 
+import org.antlr.v5.runtime.core.tree.*;
+
 public abstract class AbstractParseTreeVisitor<T> implements ParseTreeVisitor<T> {
 	/**
 	 * {@inheritDoc}

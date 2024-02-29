@@ -9,12 +9,15 @@ package org.antlr.v5.test.tool;
 import org.antlr.v5.Tool;
 import org.antlr.v5.automata.LexerATNFactory;
 import org.antlr.v5.automata.ParserATNFactory;
-import org.antlr.v5.runtime.CharStream;
 import org.antlr.v5.runtime.CharStreams;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.atn.*;
-import org.antlr.v5.runtime.misc.IntegerList;
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ATNDeserializer;
+import org.antlr.v5.runtime.core.atn.ATNSerializer;
+import org.antlr.v5.runtime.core.atn.LexerATNSimulator;
+import org.antlr.v5.runtime.core.misc.IntegerList;
 import org.antlr.v5.semantics.SemanticPipeline;
 import org.antlr.v5.test.runtime.*;
 import org.antlr.v5.test.runtime.PredictionMode;
@@ -98,13 +101,13 @@ public class ToolTestUtils {
 				buf.append(st.render());
 				buf.append("\n");
 			}
-
+			String actual = buf.toString();
 			String msg = grammarStr;
 			msg = msg.replace("\n", "\\n");
 			msg = msg.replace("\r", "\\r");
 			msg = msg.replace("\t", "\\t");
 
-			assertEquals(expect, buf.toString(), "error in: " + msg);
+			assertEquals(expect, actual, "error in: " + msg);
 		}
 	}
 
@@ -155,7 +158,7 @@ public class ToolTestUtils {
 		ATN atn = g.atn;
 		if ( useSerializer ) {
 			// sets some flags in ATN
-			IntegerList serialized = ATNSerializer.getSerialized(atn);
+			IntegerList serialized = ATNSerializer.Companion.getSerialized(atn);
 			return new ATNDeserializer().deserialize(serialized.toArray());
 		}
 

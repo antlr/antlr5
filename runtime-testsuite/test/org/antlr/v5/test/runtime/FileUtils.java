@@ -6,11 +6,7 @@
 
 package org.antlr.v5.test.runtime;
 
-import org.antlr.v5.runtime.misc.Utils;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -18,28 +14,19 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.DosFileAttributes;
 
-import static org.antlr.v5.test.runtime.RuntimeTestUtils.FileSeparator;
-
 public class FileUtils {
-	public static void writeFile(String dir, String fileName, String content) {
+
+	public static void writeFile(String fileName, String content, String encoding) {
 		try {
-			Utils.writeFile(dir + FileSeparator + fileName, content, "UTF-8");
-		}
-		catch (IOException ioe) {
+			File f = new File(fileName);
+			FileOutputStream fos = new FileOutputStream(f);
+			try(OutputStreamWriter osw = encoding != null ? new OutputStreamWriter(fos, encoding) : new OutputStreamWriter(fos)) {
+				osw.write(content);
+			}
+		} catch (IOException ioe) {
 			System.err.println("can't write file");
 			ioe.printStackTrace(System.err);
 		}
-	}
-
-	public static String readFile(String dir, String fileName) {
-		try {
-			return String.copyValueOf(Utils.readFile(dir+"/"+fileName, "UTF-8"));
-		}
-		catch (IOException ioe) {
-			System.err.println("can't read file");
-			ioe.printStackTrace(System.err);
-		}
-		return null;
 	}
 
 	public static void replaceInFile(Path sourcePath, String target, String replacement) throws IOException {
@@ -72,7 +59,7 @@ public class FileUtils {
 			throw new IOException("Failed to delete file: " + f);
 	}
 
-	public static boolean isLink(Path path) throws IOException {
+	public static boolean isLink(Path path) {
 		try {
 			BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
 			return attrs.isSymbolicLink() || (attrs instanceof DosFileAttributes && attrs.isOther());

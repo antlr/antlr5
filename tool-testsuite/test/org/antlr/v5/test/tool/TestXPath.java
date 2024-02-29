@@ -6,12 +6,12 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.RuleContext;
-import org.antlr.v5.runtime.misc.Pair;
-import org.antlr.v5.runtime.tree.ParseTree;
-import org.antlr.v5.runtime.tree.TerminalNode;
-import org.antlr.v5.runtime.tree.xpath.XPath;
+import kotlin.Pair;
+import org.antlr.v5.runtime._unused.tree.xpath.XPath;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.context.RuleContext;
+import org.antlr.v5.runtime.core.tree.ParseTree;
+import org.antlr.v5.runtime.core.tree.TerminalNode;
 import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.java.JavaRunner;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
@@ -180,10 +180,10 @@ public class TestXPath {
 		Pair<String[], Collection<ParseTree>> result = compileAndExtract(grammar, input, xpath, startRuleName);
 
 		List<String> nodes = new ArrayList<>();
-		for (ParseTree t : result.b) {
+		for (ParseTree t : result.getSecond()) {
 			if ( t instanceof RuleContext) {
 				RuleContext r = (RuleContext)t;
-				nodes.add(result.a[r.getRuleIndex()]);
+				nodes.add(result.getFirst()[r.getRuleIndex()]);
 			}
 			else {
 				TerminalNode token = (TerminalNode)t;
@@ -201,7 +201,7 @@ public class TestXPath {
 		try (JavaRunner runner = new JavaRunner()) {
 			JavaExecutedState executedState = (JavaExecutedState)runner.run(runOptions);
 			JavaCompiledState compiledState = (JavaCompiledState)executedState.previousState;
-			Parser parser = compiledState.initializeLexerAndParser(input).b;
+			Parser parser = compiledState.initializeLexerAndParser(input).getSecond();
 			Collection<ParseTree> found = XPath.findAll(executedState.parseTree, xpath, parser);
 
 			return new Pair<>(parser.getRuleNames(), found);

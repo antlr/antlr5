@@ -1,7 +1,7 @@
 package org.antlr.v5.test.runtime.java.helpers;
 
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.Lexer;
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.Lexer;
 
 public abstract class RuntimeTestLexer extends Lexer {
 	protected java.io.PrintStream outStream = System.out;

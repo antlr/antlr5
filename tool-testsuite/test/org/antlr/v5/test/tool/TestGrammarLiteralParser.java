@@ -8,7 +8,7 @@ package org.antlr.v5.test.tool;
 
 import org.antlr.v5.misc.GrammarLiteralParser;
 import org.antlr.v5.misc.CharParseResult;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -134,7 +134,7 @@ public class TestGrammarLiteralParser {
 	@Test
 	public void testParseUnicodeProperty() {
 		assertEquals(
-				new CharParseResult.Property(IntervalSet.of(66560, 66639), 0, 11),
+				new CharParseResult.Property(IntervalSet.Companion.of(66560, 66639), 0, 11),
 				parseCharInSetLiteral("\\p{Deseret}"));
 	}
 
@@ -150,7 +150,7 @@ public class TestGrammarLiteralParser {
 
 	@Test
 	public void testParseUnicodePropertyInverted() {
-		IntervalSet expected = IntervalSet.of(0, 66559);
+		IntervalSet expected = IntervalSet.Companion.of(0, 66559);
 		expected.add(66640, Character.MAX_CODE_POINT);
 		assertEquals(new CharParseResult.Property(expected, 0, 11), parseCharInSetLiteral("\\P{Deseret}"));
 	}

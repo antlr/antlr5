@@ -7,10 +7,10 @@
 package org.antlr.v5.analysis;
 
 import org.antlr.v5.misc.Utils;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.atn.DecisionState;
-import org.antlr.v5.runtime.atn.LL1Analyzer;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.state.DecisionState;
+import org.antlr.v5.runtime.core.atn.LL1Analyzer;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;
@@ -49,7 +49,7 @@ public class AnalysisPipeline {
 			}
 
 			LL1Analyzer analyzer = new LL1Analyzer(g.atn);
-			IntervalSet look = analyzer.LOOK(g.atn.ruleToStartState[rule.index], null);
+			IntervalSet look = analyzer.LOOK(g.atn.getRuleToStartState()[rule.index], null);
 			if (look.contains(Token.EPSILON)) {
 				g.tool.errMgr.grammarError(ErrorType.EPSILON_TOKEN, g.fileName, ((GrammarAST)rule.ast.getChild(0)).getToken(), rule.name);
 			}
@@ -58,11 +58,11 @@ public class AnalysisPipeline {
 
 	protected void processParser() {
 		g.decisionLOOK = new ArrayList<IntervalSet[]>(g.atn.getNumberOfDecisions()+1);
-		for (DecisionState s : g.atn.decisionToState) {
-            g.tool.log("LL1", "\nDECISION "+s.decision+" in rule "+g.getRule(s.ruleIndex).name);
+		for (DecisionState s : g.atn.getDecisionToState()) {
+            g.tool.log("LL1", "\nDECISION "+ s.getDecision() +" in rule "+g.getRule(s.getRuleIndex()).name);
 			IntervalSet[] look;
-			if ( s.nonGreedy ) { // nongreedy decisions can't be LL(1)
-				look = new IntervalSet[s.getNumberOfTransitions()+1];
+			if ( s.getNonGreedy() ) { // nongreedy decisions can't be LL(1)
+				look = new IntervalSet[s.getNumberOfTransitions() + 1];
 			}
 			else {
 				LL1Analyzer anal = new LL1Analyzer(g.atn);
@@ -70,9 +70,9 @@ public class AnalysisPipeline {
 				g.tool.log("LL1", "look=" + Arrays.toString(look));
 			}
 
-			assert s.decision + 1 >= g.decisionLOOK.size();
-			Utils.setSize(g.decisionLOOK, s.decision+1);
-			g.decisionLOOK.set(s.decision, look);
+			assert s.getDecision() + 1 >= g.decisionLOOK.size();
+			Utils.setSize(g.decisionLOOK, s.getDecision() + 1);
+			g.decisionLOOK.set(s.getDecision(), look);
 			g.tool.log("LL1", "LL(1)? " + disjoint(look));
 		}
 	}

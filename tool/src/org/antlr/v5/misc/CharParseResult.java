@@ -6,7 +6,7 @@
 
 package org.antlr.v5.misc;
 
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 
 import java.util.Objects;
 

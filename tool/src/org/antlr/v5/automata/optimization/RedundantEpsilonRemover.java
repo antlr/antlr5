@@ -6,7 +6,11 @@
 
 package org.antlr.v5.automata.optimization;
 
-import org.antlr.v5.runtime.atn.*;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.BasicState;
+import org.antlr.v5.runtime.core.state.RuleStartState;
+import org.antlr.v5.runtime.core.transition.*;
 
 import java.util.*;
 
@@ -29,7 +33,7 @@ public class RedundantEpsilonRemover {
 
 	private void traverseATN() {
 		Set<ATNState> visitedStates = new HashSet<>();
-		for (RuleStartState start : atn.ruleToStartState) {
+		for (RuleStartState start : atn.getRuleToStartState()) {
 			traverseState(start, visitedStates);
 		}
 	}
@@ -43,9 +47,9 @@ public class RedundantEpsilonRemover {
 
 		for (int i = 0; i < state.getNumberOfTransitions(); i++) {
 			Transition transition = state.transition(i);
-			traverseState(transition.target, visitedStates);
+			traverseState(transition.getTarget(), visitedStates);
 			if (transition instanceof RuleTransition) {
-				traverseState(((RuleTransition) transition).followState, visitedStates);
+				traverseState(((RuleTransition) transition).getFollowState(), visitedStates);
 			}
 		}
 	}
@@ -91,7 +95,7 @@ public class RedundantEpsilonRemover {
 				// I3
 				helper.removeInTransitionsForOutStates(state);
 				for (InTransition inTransition : inTransitions) {
-					Transition newTransition = cloneTransition(inTransition, outTransition.target);
+					Transition newTransition = cloneTransition(inTransition, outTransition.getTarget());
 					helper.replaceTransition(inTransition, newTransition);
 				}
 				removeInTransition = false;
@@ -102,7 +106,7 @@ public class RedundantEpsilonRemover {
 				if (removeInTransition) {
 					newState = inTransition0.previousState;
 				} else {
-					newState = outTransition.target;
+					newState = outTransition.getTarget();
 				}
 
 				helper.addReplacement(state, newState);
@@ -111,7 +115,7 @@ public class RedundantEpsilonRemover {
 	}
 
 	private static boolean isSafeForRemovingEpsilon(Transition transition) {
-		return transition instanceof EpsilonTransition && ((EpsilonTransition) transition).outermostPrecedenceReturn() == -1;
+		return transition instanceof EpsilonTransition && ((EpsilonTransition) transition).getOutermostPrecedenceReturn() == -1;
 	}
 
 	private static boolean validateInTransitionForRemoving(InTransition inTransition, Transition outTransition) {
@@ -141,39 +145,39 @@ public class RedundantEpsilonRemover {
 		Transition transition = inTransition.transition;
 		switch (transition.getSerializationType()) {
 			case Transition.EPSILON:
-				return new EpsilonTransition(newTarget, ((EpsilonTransition) transition).outermostPrecedenceReturn());
+				return new EpsilonTransition(newTarget, ((EpsilonTransition) transition).getOutermostPrecedenceReturn());
 			case Transition.RANGE:
 				RangeTransition rangeTransition = (RangeTransition) transition;
-				return new RangeTransition(newTarget, rangeTransition.from, rangeTransition.to);
+				return new RangeTransition(newTarget, rangeTransition.getFrom(), rangeTransition.getTo());
 			case Transition.RULE:
 				RuleTransition ruleTransition = (RuleTransition) transition;
 				RuleStartState ruleStart;
 				ATNState followState;
 				if (inTransition.isFollowState) {
-					ruleStart = (RuleStartState) ruleTransition.target;
+					ruleStart = (RuleStartState) ruleTransition.getTarget();
 					followState = newTarget;
 				}
 				else {
 					ruleStart = (RuleStartState) newTarget;
-					followState = ruleTransition.followState;
+					followState = ruleTransition.getFollowState();
 				}
-				return new RuleTransition(ruleStart, ruleTransition.ruleIndex, ruleTransition.precedence, followState);
+				return new RuleTransition(ruleStart, ruleTransition.getRuleIndex(), ruleTransition.getPrecedence(), followState);
 			case Transition.PREDICATE:
 				PredicateTransition predicateTransition = (PredicateTransition) transition;
-				return new PredicateTransition(newTarget, predicateTransition.ruleIndex,
-						predicateTransition.predIndex, predicateTransition.isCtxDependent);
+				return new PredicateTransition(newTarget, predicateTransition.getRuleIndex(),
+                        predicateTransition.getPredIndex(), predicateTransition.isCtxDependent());
 			case Transition.PRECEDENCE:
-				return new PrecedencePredicateTransition(newTarget, ((PrecedencePredicateTransition) transition).precedence);
+				return new PrecedencePredicateTransition(newTarget, ((PrecedencePredicateTransition) transition).getPrecedence());
 			case Transition.ATOM:
-				return new AtomTransition(newTarget, ((AtomTransition) transition).label);
+				return new AtomTransition(newTarget, ((AtomTransition) transition).getLabel());
 			case Transition.ACTION:
 				ActionTransition actionTransition = (ActionTransition) transition;
-				return new ActionTransition(newTarget, actionTransition.ruleIndex, actionTransition.actionIndex,
-						actionTransition.isCtxDependent);
+				return new ActionTransition(newTarget, actionTransition.getRuleIndex(), actionTransition.getActionIndex(),
+                        actionTransition.isCtxDependent());
 			case Transition.SET:
-				return new SetTransition(newTarget, ((SetTransition) transition).set);
+				return new SetTransition(newTarget, ((SetTransition) transition).getSet());
 			case Transition.NOT_SET:
-				return new NotSetTransition(newTarget, ((NotSetTransition) transition).set);
+				return new NotSetTransition(newTarget, ((NotSetTransition) transition).getSet());
 			case Transition.WILDCARD:
 				return new WildcardTransition(newTarget);
 		}

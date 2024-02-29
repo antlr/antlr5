@@ -6,9 +6,9 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.CharStream;
-import org.antlr.v5.runtime.misc.IntegerList;
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.misc.IntegerList;
+import org.antlr.v5.runtime.core.misc.Interval;
 
 /**
  *

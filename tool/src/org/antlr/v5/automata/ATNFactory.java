@@ -6,8 +6,8 @@
 
 package org.antlr.v5.automata;
 
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.state.ATNState;
 import org.antlr.v5.tool.ast.ActionAST;
 import org.antlr.v5.tool.ast.BlockAST;
 import org.antlr.v5.tool.ast.GrammarAST;

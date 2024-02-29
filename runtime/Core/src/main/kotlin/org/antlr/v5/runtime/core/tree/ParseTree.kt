@@ -41,7 +41,7 @@ public interface ParseTree : SyntaxTree {
    *
    * @since 4.7
    */
-  public fun assignParent(value: RuleContext?)
+  public fun setParent(value: RuleContext?)
 
   /**
    * The [ParseTreeVisitor] needs a double dispatch method.
@@ -55,7 +55,7 @@ public interface ParseTree : SyntaxTree {
   public fun toStringTree(parser: Parser): String
 
   // Narrows down the return type to ParseTree
-  override fun readParent(): ParseTree?
+  override fun getParent(): ParseTree?
 
   // Narrows down the return type to ParseTree
   override fun getChild(i: Int): ParseTree?

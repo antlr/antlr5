@@ -172,6 +172,6 @@ public open class ParseInfo(protected val atnSimulator: ProfilingATNSimulator) {
    */
   public fun getDFASize(decision: Int): Int {
     val decisionToDFA = atnSimulator.decisionToDFA[decision]
-    return decisionToDFA.states.size
+    return decisionToDFA.getStatesMap().size
   }
 }

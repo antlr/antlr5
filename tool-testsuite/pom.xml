@@ -62,13 +62,19 @@
     </dependency>
       <dependency>
           <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-stdlib-jdk8</artifactId>
+          <artifactId>kotlin-stdlib</artifactId>
           <version>${kotlin.version}</version>
       </dependency>
       <dependency>
           <groupId>org.jetbrains.kotlin</groupId>
           <artifactId>kotlin-test</artifactId>
           <version>${kotlin.version}</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.antlr</groupId>
+          <artifactId>antlr5-kotlin-runtime</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
           <scope>test</scope>
       </dependency>
   </dependencies>

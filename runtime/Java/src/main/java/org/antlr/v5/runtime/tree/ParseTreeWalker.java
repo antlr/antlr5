@@ -6,7 +6,8 @@
 
 package org.antlr.v5.runtime.tree;
 
-import org.antlr.v5.runtime.ParserRuleContext;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.tree.*;
 
 public class ParseTreeWalker {
     public static final ParseTreeWalker DEFAULT = new ParseTreeWalker();

@@ -36,7 +36,7 @@ public class FailedPredicateException(
   public var predIndex: Int = -1
 
   init {
-    val s = recognizer.interpreter.atn.states[recognizer.state]
+    val s = recognizer.interpreter!!.atn.states[recognizer.state]
     val trans = s!!.transition(0) as AbstractPredicateTransition
 
     if (trans is PredicateTransition) {

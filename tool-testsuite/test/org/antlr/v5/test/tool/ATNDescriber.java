@@ -1,7 +1,13 @@
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.atn.*;
+
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.action.LexerActionType;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ATNDeserializer;
+import org.antlr.v5.runtime.core.atn.ATNType;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.transition.Transition;
 
 import java.io.InvalidClassException;
 import java.util.List;
@@ -28,7 +34,7 @@ public class ATNDescriber {
 	private List<String> tokenNames;
 
 	public ATNDescriber(ATN atn, List<String> tokenNames) {
-		assert atn.grammarType != null;
+		assert atn.getGrammarType() != null;
 		this.atn = atn;
 		this.tokenNames = tokenNames;
 	}
@@ -65,7 +71,7 @@ public class ATNDescriber {
 				arg = " "+endStateNumber;
 			}
 			buf.append(i).append(":")
-					.append(ATNState.serializationNames.get(stype)).append(" ")
+					.append(ATNState.Companion.getSerializationNames().get(stype)).append(" ")
 					.append(ruleIndex).append(arg).append("\n");
 		}
 		// this code is meant to model the form of ATNDeserializer.deserialize,
@@ -86,7 +92,7 @@ public class ATNDescriber {
 		int nrules = data[p++];
 		for (int i=0; i<nrules; i++) {
 			int s = data[p++];
-			if (atn.grammarType == ATNType.LEXER) {
+			if (atn.getGrammarType() == ATNType.LEXER) {
 				int arg1 = data[p++];
 				buf.append("rule ").append(i).append(":").append(s).append(" ").append(arg1).append('\n');
 			}
@@ -110,7 +116,7 @@ public class ATNDescriber {
 			int arg2 = data[p + 4];
 			int arg3 = data[p + 5];
 			buf.append(src).append("->").append(trg)
-					.append(" ").append(Transition.serializationNames.get(ttype))
+					.append(" ").append(Transition.Companion.getSerializationNames().get(ttype))
 					.append(" ").append(arg1).append(",").append(arg2).append(",").append(arg3)
 					.append("\n");
 			p += 6;
@@ -120,7 +126,7 @@ public class ATNDescriber {
 			int s = data[p++];
 			buf.append(i).append(":").append(s).append("\n");
 		}
-		if (atn.grammarType == ATNType.LEXER) {
+		if (atn.getGrammarType() == ATNType.LEXER) {
 			// this code is meant to model the form of ATNDeserializer.deserialize,
 			// since both need to be updated together whenever a change is made to
 			// the serialization format. The "dead" code is only used in debugging
@@ -162,7 +168,7 @@ public class ATNDescriber {
 	public String getTokenName(int t) {
 		if ( t==-1 ) return "EOF";
 
-		if ( atn.grammarType == ATNType.LEXER &&
+		if ( atn.getGrammarType() == ATNType.LEXER &&
 				t >= Character.MIN_VALUE && t <= Character.MAX_VALUE )
 		{
 			switch (t) {

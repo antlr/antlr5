@@ -272,7 +272,7 @@ public open class <parser.name>(input: TokenStream) : <superClass; null="Parser"
     }
 
     <endif>
-    override var interpreter: ParserATNSimulator =
+    override var interpreter: ParserATNSimulator? =
         @Suppress("LeakingThis")
         ParserATNSimulator(this, ATN, DECISION_TO_DFA, SHARED_CONTEXT_CACHE)
 
@@ -547,7 +547,7 @@ errorHandler.sync(this)
 <if(choice.label)><labelref(choice.label)> = _input.LT(1)<endif>
 <preamble; separator="\n">
 
-when (interpreter.adaptivePredict(_input, <choice.decision>, context)) {
+when (interpreter!!.adaptivePredict(_input, <choice.decision>, context)) {
 <alts:{alt|
     <i> -> {
         <alt>
@@ -559,7 +559,7 @@ OptionalBlock(choice, alts, error) ::= <<
 this.state = <choice.stateNumber>
 errorHandler.sync(this)
 
-when (interpreter.adaptivePredict(_input, <choice.decision>, context)) {
+when (interpreter!!.adaptivePredict(_input, <choice.decision>, context)) {
 <alts:{alt|
     <i><if(!choice.ast.greedy)> + 1<endif> -> {
         <alt>
@@ -570,7 +570,7 @@ when (interpreter.adaptivePredict(_input, <choice.decision>, context)) {
 StarBlock(choice, alts, sync, iteration) ::= <<
 this.state = <choice.stateNumber>
 errorHandler.sync(this)
-_alt = interpreter.adaptivePredict(_input, <choice.decision>, context)
+_alt = interpreter!!.adaptivePredict(_input, <choice.decision>, context)
 
 while (_alt != <choice.exitAlt> && _alt != INVALID_ALT_NUMBER) {
     if (_alt == 1 <if(!choice.ast.greedy)> + 1<endif>) {
@@ -580,7 +580,7 @@ while (_alt != <choice.exitAlt> && _alt != INVALID_ALT_NUMBER) {
 
     this.state = <choice.loopBackStateNumber>
     errorHandler.sync(this)
-    _alt = interpreter.adaptivePredict(_input, <choice.decision>, context)
+    _alt = interpreter!!.adaptivePredict(_input, <choice.decision>, context)
 }
 >>
 
@@ -600,7 +600,7 @@ do {
 
     this.state = <choice.loopBackStateNumber> <! loopback/exit decision !>
     errorHandler.sync(this)
-    _alt = interpreter.adaptivePredict(_input, <choice.decision>, context)
+    _alt = interpreter!!.adaptivePredict(_input, <choice.decision>, context)
 } while (_alt != <choice.exitAlt> && _alt != INVALID_ALT_NUMBER)
 >>
 
@@ -982,7 +982,7 @@ public open class <lexer.name>(input: CharStream) : <superClass; null="Lexer">(i
         <endif>
     }
 
-    override var interpreter: LexerATNSimulator =
+    override var interpreter: LexerATNSimulator? =
         @Suppress("LeakingThis")
         LexerATNSimulator(this, ATN, DECISION_TO_DFA, SHARED_CONTEXT_CACHE)
 

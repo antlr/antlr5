@@ -6,24 +6,20 @@
 package org.antlr.v5.tool;
 
 import org.antlr.v5.runtime.BailErrorStrategy;
-import org.antlr.v5.runtime.DefaultErrorStrategy;
-import org.antlr.v5.runtime.InputMismatchException;
-import org.antlr.v5.runtime.InterpreterRuleContext;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.ParserInterpreter;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.RecognitionException;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.Vocabulary;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.DecisionState;
-import org.antlr.v5.runtime.atn.PredictionMode;
-import org.antlr.v5.runtime.atn.RuleStartState;
-import org.antlr.v5.runtime.atn.StarLoopEntryState;
-import org.antlr.v5.runtime.misc.Interval;
-import org.antlr.v5.runtime.tree.Trees;
+import org.antlr.v5.runtime.core.*;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.PredictionMode;
+import org.antlr.v5.runtime.core.context.InterpreterRuleContext;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.error.DefaultErrorStrategy;
+import org.antlr.v5.runtime.core.error.InputMismatchException;
+import org.antlr.v5.runtime.core.error.RecognitionException;
+import org.antlr.v5.runtime.core.misc.Interval;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.DecisionState;
+import org.antlr.v5.runtime.core.state.RuleStartState;
+import org.antlr.v5.runtime.core.state.StarLoopEntryState;
+import org.antlr.v5.runtime.core.tree.Trees;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -72,7 +68,7 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 			  input);
 		this.g = g;
 		decisionStatesThatSetOuterAltNumInContext = findOuterMostDecisionStates();
-		stateToAltsMap = new int[g.atn.states.size()][];
+		stateToAltsMap = new int[g.atn.getStates().size()][];
 	}
 
 	@Override
@@ -86,7 +82,7 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 	@Override
 	public void reset() {
 		super.reset();
-		overrideDecisionRoot = null;
+		setOverrideDecisionRoot(null);
 	}
 
 	/** identify the ATN states where we need to set the outer alt number.
@@ -96,26 +92,26 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 	 *  there even if 1 alt).
 	 */
 	public BitSet findOuterMostDecisionStates() {
-		BitSet track = new BitSet(atn.states.size());
-		int numberOfDecisions = atn.getNumberOfDecisions();
+		BitSet track = new BitSet(getAtn().getStates().size());
+		int numberOfDecisions = getAtn().getNumberOfDecisions();
 		for (int i = 0; i < numberOfDecisions; i++) {
-			DecisionState decisionState = atn.getDecisionState(i);
-			RuleStartState startState = atn.ruleToStartState[decisionState.ruleIndex];
+			DecisionState decisionState = getAtn().getDecisionState(i);
+			RuleStartState startState = getAtn().getRuleToStartState()[decisionState.getRuleIndex()];
 			// Look for StarLoopEntryState that is in any left recursive rule
 			if ( decisionState instanceof StarLoopEntryState) {
 				StarLoopEntryState loopEntry = (StarLoopEntryState)decisionState;
-				if ( loopEntry.isPrecedenceDecision ) {
+				if (loopEntry.isPrecedenceDecision()) {
 					// Recursive alts always result in a (...)* in the transformed
 					// left recursive rule and that always has a BasicBlockStartState
 					// even if just 1 recursive alt exists.
-					ATNState blockStart = loopEntry.transition(0).target;
+					ATNState blockStart = loopEntry.transition(0).getTarget();
 					// track the StarBlockStartState associated with the recursive alternatives
-					track.set(blockStart.stateNumber);
+					track.set(blockStart.getStateNumber());
 				}
 			}
-			else if ( startState.transition(0).target == decisionState ) {
+			else if ( startState.transition(0).getTarget() == decisionState ) {
 				// always track outermost block for any rule if it exists
-				track.set(decisionState.stateNumber);
+				track.set(decisionState.getStateNumber());
 			}
 		}
 		return track;
@@ -161,30 +157,30 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 		int predictedAlt = super.visitDecisionState(p);
 		if( p.getNumberOfTransitions() > 1) {
 //			System.out.println("decision "+p.decision+": "+predictedAlt);
-			if( p.decision == this.overrideDecision &&
-				this._input.index() == this.overrideDecisionInputIndex )
+			if( p.getDecision() == this.getOverrideDecision() &&
+				this.get_input().index() == this.getOverrideDecisionInputIndex())
 			{
-				overrideDecisionRoot = (GrammarInterpreterRuleContext)getContext();
+				setOverrideDecisionRoot((GrammarInterpreterRuleContext)getContext());
 			}
 		}
 
-		GrammarInterpreterRuleContext ctx = (GrammarInterpreterRuleContext)_ctx;
-		if ( decisionStatesThatSetOuterAltNumInContext.get(p.stateNumber) ) {
+		GrammarInterpreterRuleContext ctx = (GrammarInterpreterRuleContext)getContext();
+		if ( decisionStatesThatSetOuterAltNumInContext.get(p.getStateNumber()) ) {
 			ctx.outerAltNum = predictedAlt;
-			Rule r = g.getRule(p.ruleIndex);
-			if ( atn.ruleToStartState[r.index].isLeftRecursiveRule ) {
-				int[] alts = stateToAltsMap[p.stateNumber];
-				LeftRecursiveRule lr = (LeftRecursiveRule) g.getRule(p.ruleIndex);
+			Rule r = g.getRule(p.getRuleIndex());
+			if (getAtn().getRuleToStartState()[r.index].isLeftRecursiveRule()) {
+				int[] alts = stateToAltsMap[p.getStateNumber()];
+				LeftRecursiveRule lr = (LeftRecursiveRule) g.getRule(p.getRuleIndex());
 				if (p.getStateType() == ATNState.BLOCK_START) {
 					if ( alts==null ) {
 						alts = lr.getPrimaryAlts();
-						stateToAltsMap[p.stateNumber] = alts; // cache it
+						stateToAltsMap[p.getStateNumber()] = alts; // cache it
 					}
 				}
 				else if ( p.getStateType() == ATNState.STAR_BLOCK_START ) {
 					if ( alts==null ) {
 						alts = lr.getRecursiveOpAlts();
-						stateToAltsMap[p.stateNumber] = alts; // cache it
+						stateToAltsMap[p.getStateNumber()] = alts; // cache it
 					}
 				}
 				ctx.outerAltNum = alts[predictedAlt];
@@ -294,9 +290,9 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 			parser.addDecisionOverride(decision, startIndex, alt);
 			ParserRuleContext t = parser.parse(startRuleIndex);
 			GrammarInterpreterRuleContext ambigSubTree =
-				(GrammarInterpreterRuleContext) Trees.getRootOfSubtreeEnclosingRegion(t, startIndex, stopIndex);
+				(GrammarInterpreterRuleContext) Trees.INSTANCE.getRootOfSubtreeEnclosingRegion(t, startIndex, stopIndex);
 			// Use higher of overridden decision tree or tree enclosing all tokens
-			if ( Trees.isAncestorOf(parser.getOverrideDecisionRoot(), ambigSubTree) ) {
+			if ( Trees.INSTANCE.isAncestorOf(parser.getOverrideDecisionRoot(), ambigSubTree) ) {
 				ambigSubTree = (GrammarInterpreterRuleContext) parser.getOverrideDecisionRoot();
 			}
 			trees.add(ambigSubTree);
@@ -343,9 +339,9 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 		// Create a new parser interpreter to parse the ambiguous subphrase
 		ParserInterpreter parser = deriveTempParserInterpreter(g, originalParser, tokens);
 
-		DecisionState decisionState = originalParser.getATN().decisionToState.get(decision);
+		DecisionState decisionState = originalParser.getAtn().getDecisionToState().get(decision);
 
-		for (int alt = 1; alt<=decisionState.getTransitions().length; alt++) {
+		for (int alt = 1; alt <= decisionState.getTransitionsArray().length; alt++) {
 			// re-parse entire input for all ambiguous alternatives
 			// (don't have to do first as it's been parsed, but do again for simplicity
 			//  using this temp parser.)
@@ -360,21 +356,21 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 				stopTreeAt = errorHandler.firstErrorTokenIndex; // cut off rest at first error
 			}
 			Interval overallRange = tt.getSourceInterval();
-			if ( stopTreeAt>overallRange.b ) {
+			if ( stopTreeAt> overallRange.getB()) {
 				// If we try to look beyond range of tree, stopTreeAt must be EOF
 				// for which there is no EOF ref in grammar. That means tree
 				// will not have node for stopTreeAt; limit to overallRange.b
-				stopTreeAt = overallRange.b;
+				stopTreeAt = overallRange.getB();
 			}
 			ParserRuleContext subtree =
-				Trees.getRootOfSubtreeEnclosingRegion(tt,
+				Trees.INSTANCE.getRootOfSubtreeEnclosingRegion(tt,
 				                                      startIndex,
 				                                      stopTreeAt);
 			// Use higher of overridden decision tree or tree enclosing all tokens
-			if ( Trees.isAncestorOf(parser.getOverrideDecisionRoot(), subtree) ) {
+			if ( Trees.INSTANCE.isAncestorOf(parser.getOverrideDecisionRoot(), subtree) ) {
 				subtree = parser.getOverrideDecisionRoot();
 			}
-			Trees.stripChildrenOutOfRange(subtree, parser.getOverrideDecisionRoot(), startIndex, stopTreeAt);
+			Trees.INSTANCE.stripChildrenOutOfRange(subtree, parser.getOverrideDecisionRoot(), startIndex, stopTreeAt);
 			trees.add(subtree);
 		}
 
@@ -392,7 +388,7 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 			Class<? extends ParserInterpreter> c = originalParser.getClass().asSubclass(ParserInterpreter.class);
 			try {
 				Constructor<? extends ParserInterpreter> ctor = c.getConstructor(Grammar.class, ATN.class, TokenStream.class);
-				parser = ctor.newInstance(g, originalParser.getATN(), originalParser.getTokenStream());
+				parser = ctor.newInstance(g, originalParser.getAtn(), originalParser.getTokenStream());
 			}
 			catch (Exception e) {
 				throw new IllegalArgumentException("can't create parser to match incoming "+originalParser.getClass().getSimpleName(), e);
@@ -404,11 +400,11 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 			parser = new ParserInterpreter(originalParser.getGrammarFileName(),
 										   originalParser.getVocabulary(),
 										   Arrays.asList(originalParser.getRuleNames()),
-					                       originalParser.getATN(),
+					                       originalParser.getAtn(),
 										   tokens);
 		}
 
-		parser.setInputStream(tokens);
+		parser.setTokenStream(tokens);
 
 		// Make sure that we don't get any error messages from using this temporary parser
 		parser.setErrorHandler(new BailErrorStrategy());
@@ -429,12 +425,12 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 		public int firstErrorTokenIndex = -1;
 		@Override
 		public void recover(Parser recognizer, RecognitionException e) {
-			int errIndex = recognizer.getInputStream().index();
+			int errIndex = recognizer.getTokenStream().index();
 			if ( firstErrorTokenIndex == -1 ) {
 				firstErrorTokenIndex = errIndex; // latch
 			}
 //			System.err.println("recover: error at " + errIndex);
-			TokenStream input = recognizer.getInputStream();
+			TokenStream input = recognizer.getTokenStream();
 			if ( input.index()<input.size()-1 ) { // don't consume() eof
 				recognizer.consume(); // just kill this bad token and let it continue.
 			}
@@ -442,7 +438,7 @@ public class GrammarParserInterpreter extends ParserInterpreter {
 
 		@Override
 		public Token recoverInline(Parser recognizer) throws RecognitionException {
-			int errIndex = recognizer.getInputStream().index();
+			int errIndex = recognizer.getTokenStream().index();
 			if ( firstErrorTokenIndex == -1 ) {
 				firstErrorTokenIndex = errIndex; // latch
 			}

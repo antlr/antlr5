@@ -1,8 +1,12 @@
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.misc.IntegerList;
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.CommonToken;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.TokenSource;
+import org.antlr.v5.runtime.core.TokenStream;
+import org.antlr.v5.runtime.core.context.RuleContext;
+import org.antlr.v5.runtime.core.misc.IntegerList;
+import org.antlr.v5.runtime.core.misc.Interval;
 
 public class MockIntTokenStream implements TokenStream {
 
@@ -57,7 +61,7 @@ public class MockIntTokenStream implements TokenStream {
 
 	@Override
 	public Token get(int i) {
-		return new org.antlr.v5.runtime.CommonToken(types.get(i));
+		return new org.antlr.v5.runtime.core.CommonToken(types.get(i));
 	}
 
 	@Override

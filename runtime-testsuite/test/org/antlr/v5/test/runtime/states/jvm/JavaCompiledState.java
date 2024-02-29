@@ -1,7 +1,12 @@
 package org.antlr.v5.test.runtime.states.jvm;
 
-import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
+import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.TokenStream;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.Parser;
 import org.antlr.v5.test.runtime.RuntimeRunner;
 import org.antlr.v5.test.runtime.states.GeneratedState;
 

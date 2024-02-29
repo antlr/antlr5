@@ -6,18 +6,20 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.InputMismatchException;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.NoViableAltException;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.misc.Pair;
-import org.antlr.v5.runtime.tree.pattern.ParseTreeMatch;
-import org.antlr.v5.runtime.tree.pattern.ParseTreePattern;
-import org.antlr.v5.runtime.tree.pattern.ParseTreePatternMatcher;
+import kotlin.Pair;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreeMatch;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePattern;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePatternCompiler;
+import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePatternMatcher;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.error.InputMismatchException;
+import org.antlr.v5.runtime.core.error.NoViableAltException;
 import org.antlr.v5.test.runtime.RunOptions;
-import org.antlr.v5.test.runtime.Stage;
 import org.antlr.v5.test.runtime.java.JavaRunner;
+import org.antlr.v5.test.runtime.states.CompiledState;
+import org.antlr.v5.test.runtime.states.State;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
 import org.antlr.v5.test.runtime.states.jvm.JavaExecutedState;
 import org.junit.jupiter.api.Test;
@@ -387,15 +389,18 @@ public class TestParseTreeMatcher {
 		RunOptions runOptions = createExecOptionsForJavaToolTests(grammar,
 				false, false, startRule, input, false, false);
 		try (JavaRunner runner = new JavaRunner()) {
-			JavaExecutedState executedState = (JavaExecutedState)runner.run(runOptions);
-			JavaCompiledState compiledState = (JavaCompiledState)executedState.previousState;
-			Parser parser = compiledState.initializeDummyLexerAndParser().b;
-
-			ParseTreePattern p = parser.compileParseTreePattern(pattern, parser.getRuleIndex(startRule));
-
+			State state = runner.run(runOptions);
+			if(!(state instanceof JavaExecutedState))
+				throw new Exception("Something went wrong!");
+			JavaExecutedState executedState = (JavaExecutedState) state;
+			if (!(executedState.previousState instanceof JavaCompiledState))
+				throw new Exception("Something went wrong!");
+			JavaCompiledState compiledState = (JavaCompiledState) executedState.previousState;
+			Parser parser = compiledState.initializeDummyLexerAndParser().getSecond();
+			ParseTreePattern p = ParseTreePatternCompiler.compile(parser, pattern, parser.getRuleIndex(startRule));
 			ParseTreeMatch match = p.match(executedState.parseTree);
 			boolean matched = match.succeeded();
-			if ( invertMatch ) assertFalse(matched);
+			if (invertMatch) assertFalse(matched);
 			else assertTrue(matched);
 			return match;
 		}
@@ -405,11 +410,11 @@ public class TestParseTreeMatcher {
 		RunOptions runOptions = RunOptions.createCompilationOptions(new String[] {grammar}, null,
 				false, false, null, null);
 		try (JavaRunner runner = new JavaRunner()) {
-			JavaCompiledState compiledState = (JavaCompiledState) runner.run(runOptions);
-
-			Pair<Lexer, Parser> lexerParserPair = compiledState.initializeDummyLexerAndParser();
-
-			return new ParseTreePatternMatcher(lexerParserPair.a, lexerParserPair.b);
+			State state = runner.run(runOptions);
+			if(!(state instanceof JavaCompiledState))
+				throw new Exception("Something went wrong!");
+			Pair<Lexer, Parser> lexerParserPair = ((JavaCompiledState)state).initializeDummyLexerAndParser();
+			return new ParseTreePatternMatcher(lexerParserPair.getFirst(), lexerParserPair.getSecond());
 		}
 	}
 }

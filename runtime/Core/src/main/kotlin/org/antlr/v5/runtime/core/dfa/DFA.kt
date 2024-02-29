@@ -24,7 +24,11 @@ public open class DFA(
    *
    * Use [Map] so we can get old state back ([Set] only allows you to see if it's there).
    */
-  public val states: MutableMap<DFAState, DFAState> = HashMap()
+  private val states: MutableMap<DFAState, DFAState> = HashMap()
+
+  public fun getStatesMap(): MutableMap<DFAState, DFAState> {
+      return states;
+  }
 
   @Volatile
   public var s0: DFAState? = null
@@ -117,7 +121,7 @@ public open class DFA(
   /**
    * Return a list of all states in this DFA, ordered by state number.
    */
-  public fun getStates(): List<DFAState> {
+  public fun getStatesList(): List<DFAState> {
     val result = ArrayList(states.keys)
     result.sortBy(DFAState::stateNumber)
     return result

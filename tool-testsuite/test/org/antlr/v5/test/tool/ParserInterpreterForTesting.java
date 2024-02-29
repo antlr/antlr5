@@ -7,16 +7,18 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.Tool;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.DecisionState;
-import org.antlr.v5.runtime.atn.ParserATNSimulator;
-import org.antlr.v5.runtime.atn.PredictionContextCache;
-import org.antlr.v5.runtime.dfa.DFA;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.TokenStream;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ParserATNSimulator;
+import org.antlr.v5.runtime.core.atn.PredictionContextCache;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.misc.IntegerList;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.DecisionState;
 import org.antlr.v5.tool.Grammar;
+import org.jetbrains.annotations.NotNull;
 
 public class ParserInterpreterForTesting {
 	public static class DummyParser extends Parser {
@@ -26,6 +28,9 @@ public class ParserInterpreterForTesting {
 			new PredictionContextCache();
 
 		public Grammar g;
+
+		ParserATNSimulator _interpreter;
+
 		public DummyParser(Grammar g, ATN atn, TokenStream input) {
 			super(input);
 			this.g = g;
@@ -34,18 +39,32 @@ public class ParserInterpreterForTesting {
 			for (int i = 0; i < decisionToDFA.length; i++) {
 				decisionToDFA[i] = new DFA(atn.getDecisionState(i), i);
 			}
+			this._interpreter = new ParserATNSimulator(this, atn, decisionToDFA, sharedContextCache);
 		}
 
+		@Override
+		public ParserATNSimulator getInterpreter() {
+			return _interpreter;
+		}
+
+		@Override
+		public void setInterpreter(ParserATNSimulator interpreter) {
+			this._interpreter = interpreter;
+		}
+
+		@NotNull
 		@Override
 		public String getGrammarFileName() {
 			throw new UnsupportedOperationException("not implemented");
 		}
 
+		@NotNull
 		@Override
 		public String[] getRuleNames() {
 			return g.rules.keySet().toArray(new String[0]);
 		}
 
+		@NotNull
 		@Override
 		@Deprecated
 		public String[] getTokenNames() {
@@ -53,7 +72,7 @@ public class ParserInterpreterForTesting {
 		}
 
 		@Override
-		public ATN getATN() {
+		public ATN getAtn() {
 			return atn;
 		}
 	}
@@ -70,7 +89,7 @@ public class ParserInterpreterForTesting {
 	public ParserInterpreterForTesting(Grammar g, TokenStream input) {
 		Tool antlr = new Tool();
 		antlr.process(g,false);
-		parser = new DummyParser(g, g.atn, input);
+		parser = new DummyParser(g, g.atn, input != null ? input : new MockIntTokenStream(new IntegerList()));
 		atnSimulator =
 			new ParserATNSimulator(parser, g.atn, parser.decisionToDFA,
 										  parser.sharedContextCache);
@@ -89,7 +108,7 @@ public class ParserInterpreterForTesting {
 			return 1;
 		}
 		else if (startState instanceof DecisionState) {
-			return atnSimulator.adaptivePredict(input, ((DecisionState)startState).decision, null);
+			return atnSimulator.adaptivePredict(input, ((DecisionState) startState).getDecision(), null);
 		}
 		else if (startState.getNumberOfTransitions() > 0) {
 			return 1;

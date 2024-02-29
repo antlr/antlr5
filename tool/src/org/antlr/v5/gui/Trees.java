@@ -6,9 +6,9 @@
 
 package org.antlr.v5.gui;
 
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.misc.Utils;
-import org.antlr.v5.runtime.tree.Tree;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.misc.Utils;
+import org.antlr.v5.runtime.core.tree.Tree;
 
 import javax.print.PrintException;
 import javax.swing.*;
@@ -106,11 +106,11 @@ public class Trees {
 	 */
 	public static String toStringTree(Tree t, TreeTextProvider nodeTextProvider) {
 		if ( t==null ) return "null";
-		String s = Utils.escapeWhitespace(nodeTextProvider.getText(t), false);
+		String s = Utils.INSTANCE.escapeWhitespace(nodeTextProvider.getText(t), false);
 		if ( t.getChildCount()==0 ) return s;
 		StringBuilder buf = new StringBuilder();
 		buf.append("(");
-		s = Utils.escapeWhitespace(nodeTextProvider.getText(t), false);
+		s = Utils.INSTANCE.escapeWhitespace(nodeTextProvider.getText(t), false);
 		buf.append(s);
 		buf.append(' ');
 		for (int i = 0; i<t.getChildCount(); i++) {

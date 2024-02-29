@@ -7,10 +7,10 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.runtime.CharStreams;
-import org.antlr.v5.runtime.CommonTokenStream;
-import org.antlr.v5.runtime.LexerInterpreter;
-import org.antlr.v5.runtime.ParserInterpreter;
-import org.antlr.v5.runtime.tree.ParseTree;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.LexerInterpreter;
+import org.antlr.v5.runtime.core.ParserInterpreter;
+import org.antlr.v5.runtime.core.tree.ParseTree;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;

@@ -63,7 +63,7 @@ public interface TokenSource {
    * The [TokenFactory] this token source is currently using for
    * creating [Token] objects from the input.
    */
-  public var tokenFactory: TokenFactory<*>
+  public var tokenFactory: TokenFactory<out Token>
 
   /**
    * Return a [Token] object from your input stream (usually a [CharStream]).

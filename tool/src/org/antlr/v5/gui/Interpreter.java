@@ -3,9 +3,10 @@ package org.antlr.v5.gui;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.v5.Tool;
 import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.atn.DecisionInfo;
-import org.antlr.v5.runtime.atn.ParseInfo;
-import org.antlr.v5.runtime.tree.ParseTree;
+import org.antlr.v5.runtime.core.*;
+import org.antlr.v5.runtime.core.info.DecisionInfo;
+import org.antlr.v5.runtime.core.info.ParseInfo;
+import org.antlr.v5.runtime.core.tree.ParseTree;
 import org.antlr.v5.tool.*;
 
 import java.io.FileWriter;
@@ -172,7 +173,7 @@ public class Interpreter {
 
 		if ( showTokens ) {
 			for (Token tok : tokens.getTokens()) {
-				if ( tok instanceof CommonToken ) {
+				if ( tok instanceof CommonToken) {
 					System.out.println(((CommonToken)tok).toString(lexEngine));
 				}
 				else {
@@ -209,9 +210,9 @@ public class Interpreter {
 	}
 
 	private void dumpProfilerCSV(GrammarParserInterpreter parser, ParseInfo parseInfo) {
-		String[] ruleNamesByDecision = new String[parser.getATN().decisionToState.size()];
+		String[] ruleNamesByDecision = new String[parser.getAtn().getDecisionToState().size()];
 		for(int i = 0; i < ruleNamesByDecision .length; i++) {
-			ruleNamesByDecision [i] = parser.getRuleNames()[parser.getATN().getDecisionState(i).ruleIndex];
+			ruleNamesByDecision [i] = parser.getRuleNames()[parser.getAtn().getDecisionState(i).getRuleIndex()];
 		}
 
 		DecisionInfo[] decisionInfo = parseInfo.getDecisionInfo();
@@ -256,18 +257,18 @@ public class Interpreter {
 			case 0:
 				return  String.format("%s:%d",ruleNamesByDecision[decision],decision);
 			case 1:
-				return decisionInfo.invocations;
+				return decisionInfo.getInvocations();
 			case 2:
-				return decisionInfo.timeInPrediction/(1000.0 * 1000.0);
+				return decisionInfo.getTimeInPrediction() /(1000.0 * 1000.0);
 			case 3:
-				return decisionInfo.LL_TotalLook+decisionInfo.SLL_TotalLook;
+				return decisionInfo.getLL_TotalLook() + decisionInfo.getSLL_TotalLook();
 			case 4:
-				return Math.max(decisionInfo.LL_MaxLook, decisionInfo.SLL_MaxLook);
+				return Math.max(decisionInfo.getLL_MaxLook(), decisionInfo.getSLL_MaxLook());
 			case 5:
-				return decisionInfo.ambiguities.size();
+				return decisionInfo.getAmbiguities().size();
 			case 6:
-				return decisionInfo.SLL_ATNTransitions+
-						decisionInfo.LL_ATNTransitions;
+				return decisionInfo.getSLL_ATNTransitions() +
+                        decisionInfo.getLL_ATNTransitions();
 		}
 		return "n/a";
 	}

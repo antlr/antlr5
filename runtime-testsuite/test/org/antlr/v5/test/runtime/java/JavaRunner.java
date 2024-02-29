@@ -6,10 +6,14 @@
 package org.antlr.v5.test.runtime.java;
 
 import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.atn.PredictionMode;
-import org.antlr.v5.runtime.atn.ParserATNSimulator;
-import org.antlr.v5.runtime.atn.ProfilingATNSimulator;
-import org.antlr.v5.runtime.tree.ParseTree;
+import org.antlr.v5.runtime.core.CommonTokenStream;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.atn.PredictionMode;
+import org.antlr.v5.runtime.core.atn.ParserATNSimulator;
+import org.antlr.v5.runtime.core.atn.ProfilingATNSimulator;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
+import org.antlr.v5.runtime.core.tree.ParseTree;
 import org.antlr.v5.runtime.tree.ParseTreeWalker;
 import org.antlr.v5.test.runtime.*;
 import org.antlr.v5.test.runtime.java.helpers.CustomStreamErrorListener;
@@ -129,7 +133,7 @@ public class JavaRunner extends JvmRunner<Lexer, Parser> {
 				if (runOptions.traceATN) {
 					// Setting trace_atn_sim isn't thread-safe,
 					// But it's used only in helper TraceATN that is not integrated into tests infrastructure
-					ParserATNSimulator.trace_atn_sim = true;
+					ParserATNSimulator.Companion.setTrace_atn_sim(true);
 				}
 
 				ProfilingATNSimulator profiler = null;

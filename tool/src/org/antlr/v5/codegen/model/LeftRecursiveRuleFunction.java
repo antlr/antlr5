@@ -12,7 +12,7 @@ import org.antlr.v5.codegen.model.decl.RuleContextDecl;
 import org.antlr.v5.codegen.model.decl.RuleContextListDecl;
 import org.antlr.v5.codegen.model.decl.StructDecl;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 import org.antlr.v5.tool.LeftRecursiveRule;
 import org.antlr.v5.tool.Rule;
 import org.antlr.v5.tool.ast.GrammarAST;
@@ -25,8 +25,8 @@ public class LeftRecursiveRuleFunction extends RuleFunction {
 		// Since we delete x=lr, we have to manually add decls for all labels
 		// on left-recur refs to proper structs
 		for (Pair<GrammarAST,String> pair : r.leftRecursiveRuleRefLabels) {
-			GrammarAST idAST = pair.a;
-			String altLabel = pair.b;
+			GrammarAST idAST = pair.getFirst();
+			String altLabel = pair.getSecond();
 			String label = idAST.getText();
 			GrammarAST rrefAST = (GrammarAST)idAST.getParent().getChild(1);
 			if ( rrefAST.getType() == ANTLRParser.RULE_REF ) {

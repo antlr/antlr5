@@ -11,7 +11,7 @@ import org.antlr.runtime.tree.Tree;
 import org.antlr.v5.automata.LexerATNFactory;
 import org.antlr.v5.parse.ANTLRLexer;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.core.Token;
 import org.antlr.v5.tool.Alternative;
 import org.antlr.v5.tool.Attribute;
 import org.antlr.v5.tool.AttributeDict;

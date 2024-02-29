@@ -43,7 +43,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
   /**
    * The ATN interpreter used by the recognizer for prediction.
    */
-  public abstract var interpreter: ATNInterpreter
+  public abstract var interpreter: ATNInterpreter?
 
   /**
    * Used to print out token names like ID during debugging and error reporting.
@@ -159,7 +159,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
   public val errorListenerDispatch: ANTLRErrorListener
     get() = ProxyErrorListener(errorListeners)
 
-  public abstract var tokenFactory: TokenFactory<*>
+  public abstract var tokenFactory: TokenFactory<out Token>
 
   public fun getTokenType(tokenName: String): Int {
     val ttype = tokenTypeMap[tokenName]
@@ -245,4 +245,7 @@ public abstract class Recognizer<Symbol, ATNInterpreter : ATNSimulator> {
   ) {
     // Noop
   }
+
+    public abstract val sourceName: String
+        get
 }

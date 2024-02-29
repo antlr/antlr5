@@ -11,8 +11,8 @@ import org.antlr.v5.codegen.Target;
 import org.antlr.v5.codegen.model.decl.Decl;
 import org.antlr.v5.codegen.model.decl.TokenTypeDecl;
 import org.antlr.v5.misc.Utils;
-import org.antlr.v5.runtime.misc.IntegerList;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntegerList;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.ast.GrammarAST;
 

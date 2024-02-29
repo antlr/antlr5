@@ -82,7 +82,7 @@ ImportRuleInvocationStack() ::= ""
 
 RuleInvocationStack() ::= "getRuleInvocationStack()"
 
-LL_EXACT_AMBIG_DETECTION() ::= <<interpreter.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION>>
+LL_EXACT_AMBIG_DETECTION() ::= <<interpreter!!.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION>>
 
 ParserToken(parser, token) ::= <%<parser>.Tokens.<token>%>
 

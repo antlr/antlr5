@@ -4,7 +4,7 @@ grammar Psl;
 {
 	public void printPosition(String name, Token tok)
 	{
-		System.out.printf("%s: pos %d, len %d%n",
+		java.lang.System.out.printf("%s: pos %d, len %d%n",
 				name, tok.getCharPositionInLine(), tok.getText().length());
 	}
 

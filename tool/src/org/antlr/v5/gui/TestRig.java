@@ -6,17 +6,11 @@
 
 package org.antlr.v5.gui;
 
-import org.antlr.v5.runtime.CharStream;
 import org.antlr.v5.runtime.CharStreams;
-import org.antlr.v5.runtime.CommonToken;
-import org.antlr.v5.runtime.CommonTokenStream;
 import org.antlr.v5.runtime.DiagnosticErrorListener;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.Parser;
-import org.antlr.v5.runtime.ParserRuleContext;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.atn.PredictionMode;
+import org.antlr.v5.runtime.core.*;
+import org.antlr.v5.runtime.core.atn.PredictionMode;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
 
 import javax.print.PrintException;
 import java.io.IOException;
@@ -153,7 +147,7 @@ public class TestRig {
 		}
 
 		Charset charset = ( encoding == null ? Charset.defaultCharset () : Charset.forName(encoding) );
-		if ( inputFiles.size()==0 ) {
+		if (inputFiles.isEmpty()) {
 			CharStream charStream = CharStreams.fromStream(System.in, charset);
 			process(lexer, parserClass, parser, charStream);
 			return;

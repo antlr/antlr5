@@ -5,8 +5,8 @@
  */
 package org.antlr.v5.tool;
 
-import org.antlr.v5.runtime.InterpreterRuleContext;
-import org.antlr.v5.runtime.ParserRuleContext;
+import org.antlr.v5.runtime.core.context.InterpreterRuleContext;
+import org.antlr.v5.runtime.core.context.ParserRuleContext;
 
 /** An {@link InterpreterRuleContext} that knows which alternative
  *  for a rule was matched.

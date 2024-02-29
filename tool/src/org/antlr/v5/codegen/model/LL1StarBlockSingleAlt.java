@@ -7,8 +7,8 @@
 package org.antlr.v5.codegen.model;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.atn.StarLoopEntryState;
-import org.antlr.v5.runtime.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
+import org.antlr.v5.runtime.core.state.StarLoopEntryState;
 import org.antlr.v5.tool.ast.GrammarAST;
 
 import java.util.List;
@@ -19,8 +19,8 @@ public class LL1StarBlockSingleAlt extends LL1Loop {
 		super(factory, starRoot, alts);
 
 		StarLoopEntryState star = (StarLoopEntryState)starRoot.atnState;
-		loopBackStateNumber = star.loopBackState.stateNumber;
-		this.decision = star.decision;
+		loopBackStateNumber = star.getLoopBackState().getStateNumber();
+		this.decision = star.getDecision();
 		IntervalSet[] altLookSets = factory.getGrammar().decisionLOOK.get(decision);
 		assert altLookSets.length == 2;
 		IntervalSet enterLook = altLookSets[0];

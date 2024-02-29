@@ -9,8 +9,10 @@ package org.antlr.v5.runtime.core.atn
 import org.antlr.v5.runtime.core.Token
 import org.antlr.v5.runtime.core.action.*
 import org.antlr.v5.runtime.core.misc.IntervalSet
+import org.antlr.v5.runtime.core.misc.decodeIntsEncodedAs16BitWords
 import org.antlr.v5.runtime.core.state.*
 import org.antlr.v5.runtime.core.transition.*
+
 
 /**
  * @author Sam Harwell
@@ -264,8 +266,8 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
 
         var endState: ATNState?
         var excludeTransition: Transition? = null
-
-        if (atn.ruleToStartState!![i].isLeftRecursiveRule) {
+        val ruleStartState = atn.ruleToStartState!![i]
+        if (ruleStartState.isLeftRecursiveRule) {
           // Wrap from the beginning of the rule to the StarLoopEntryState
           endState = null
 
@@ -284,7 +286,7 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
               continue
             }
 
-            if (maybeLoopEndState.epsilonOnlyTransitions && maybeLoopEndState.transition(0).target is RuleStopState) {
+            if (maybeLoopEndState.onlyHasEpsilonTransitions() && maybeLoopEndState.transition(0).target is RuleStopState) {
               endState = state
               break
             }
@@ -313,19 +315,30 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
         }
 
         // All transitions leaving the rule start state need to leave blockStart instead
-        while (atn.ruleToStartState!![i].numberOfTransitions > 0) {
-          val transition = atn.ruleToStartState!![i].removeTransition(atn.ruleToStartState!![i].numberOfTransitions - 1)
+        while (ruleStartState.numberOfTransitions > 0) {
+          val transition = ruleStartState.removeTransition(ruleStartState.numberOfTransitions - 1)
           bypassStart.addTransition(transition)
         }
 
         // Link the new states
-        atn.ruleToStartState!![i].addTransition(EpsilonTransition(bypassStart))
+        ruleStartState.addTransition(EpsilonTransition(bypassStart))
         bypassStop.addTransition(EpsilonTransition(endState!!))
 
         val matchState = BasicState()
         atn.addState(matchState)
         matchState.addTransition(AtomTransition(bypassStop, atn.ruleToTokenType!![i]))
-        bypassStart.addTransition(EpsilonTransition(matchState))
+
+        if (bypassStart.onlyHasEpsilonTransitions()) {
+              bypassStart.addTransition(EpsilonTransition(matchState))
+        } else {
+              val matchState2: ATNState = BasicState()
+              atn.addState(matchState2)
+              matchState2.addTransition(bypassStart.transition(0))
+
+              bypassStart.removeTransition(0)
+              bypassStart.addTransition(EpsilonTransition(matchState))
+              bypassStart.addTransition(EpsilonTransition(matchState2))
+        }
       }
 
       if (deserializationOptions.isVerifyATN) {
@@ -383,7 +396,7 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
         val maybeLoopEndState = state.transition(state.numberOfTransitions - 1).target
 
         if (maybeLoopEndState is LoopEndState) {
-          if (maybeLoopEndState.epsilonOnlyTransitions && maybeLoopEndState.transition(0).target is RuleStopState) {
+          if (maybeLoopEndState.onlyHasEpsilonTransitions() && maybeLoopEndState.transition(0).target is RuleStopState) {
             state.isPrecedenceDecision = true
           }
         }
@@ -544,42 +557,5 @@ public open class ATNDeserializer(deserializationOptions: ATNDeserializationOpti
       LexerActionType.TYPE -> LexerTypeAction(data1)
     }
 
-  public open fun decodeIntsEncodedAs16BitWords(data16: CharArray): IntArray =
-    decodeIntsEncodedAs16BitWords(data16, false)
 
-  /**
-   * Convert a list of chars (16 uint) that represent a serialized and compressed list of ints for an ATN.
-   */
-  public open fun decodeIntsEncodedAs16BitWords(data16: CharArray, trimToSize: Boolean): IntArray {
-    // Will be strictly smaller, but we waste bit of space to avoid copying during initialization of parsers
-    val data = IntArray(data16.size)
-    var i = 0
-    var i2 = 0
-
-    while (i < data16.size) {
-      val v = data16[i++]
-
-      if (v.code and 0x8000 == 0) {
-        // Hi-bit not set? Implies 1-word value
-        // 7 bit int
-        data[i2++] = v.code
-      } else {
-        // Hi.bit set. Implies 2-word value
-        val vnext = data16[i++]
-
-        if (v.code == 0xFFFF && vnext.code == 0xFFFF) { // Is it -1?
-          data[i2++] = -1
-        } else {
-          // 31-bit int
-          data[i2++] = (v.code and 0x7FFF) shl 16 or (vnext.code and 0xFFFF)
-        }
-      }
-    }
-
-    if (trimToSize) {
-      return data.copyOf(i2)
-    }
-
-    return data
-  }
 }

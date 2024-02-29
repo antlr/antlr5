@@ -44,7 +44,7 @@ ModMemberEquals(n,m,v) ::= <%this.<n> % <m> == <v>%>
 
 ModMemberNotEquals(n,m,v) ::= <%this.<n> % <m> != <v>%>
 
-DumpDFA() ::= "this.dumpDFA(outStream);"
+DumpDFA() ::= "this.dumpDFA(new IPrintStream() { public void print(String value) { outStream.print(value); } public void printLine(String value) { outStream.println(value); } });"
 
 Pass() ::= ""
 
@@ -66,23 +66,23 @@ TextEquals(a) ::= <%this.getText().equals("<a>")%>
 
 PlusText(a) ::= <%"<a>" + this.getText()%>
 
-InputText() ::= "this._input.getText()"
+InputText() ::= "this.get_input().getText()"
 
-LTEquals(i, v) ::= <%this._input.LT(<i>).getText().equals(<v>)%>
+LTEquals(i, v) ::= <%this.get_input().LT(<i>).getText().equals(<v>)%>
 
-LANotEquals(i, v) ::= <%this._input.LA(<i>)!=<v>%>
+LANotEquals(i, v) ::= <%this.get_input().LA(<i>)!=<v>%>
 
-TokenStartColumnEquals(i) ::= <%this._tokenStartCharPositionInLine==<i>%>
+TokenStartColumnEquals(i) ::= <%this.get_tokenStartCharPositionInLine()==<i>%>
 
 ImportListener(X) ::= ""
 
-GetExpectedTokenNames() ::= "this.getExpectedTokens().toString(this.tokenNames)"
+GetExpectedTokenNames() ::= "this.getExpectedTokens().toString(this.getVocabulary())"
 
 ImportRuleInvocationStack() ::= ""
 
-RuleInvocationStack() ::= "getRuleInvocationStack()"
+RuleInvocationStack() ::= "getRuleInvocationStack(getContext())"
 
-LL_EXACT_AMBIG_DETECTION() ::= <<_interp.setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);>>
+LL_EXACT_AMBIG_DETECTION() ::= <<getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);>>
 
 ParserToken(parser, token) ::= <%<parser>.<token>%>
 
@@ -106,8 +106,8 @@ PositionAdjustingLexer() ::= <<
 
 @Override
 public Token nextToken() {
-	if (!(_interp instanceof PositionAdjustingLexerATNSimulator)) {
-		_interp = new PositionAdjustingLexerATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
+	if (!(getInterpreter() instanceof PositionAdjustingLexerATNSimulator)) {
+		setInterpreter(new PositionAdjustingLexerATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache));
 	}
 
 	return super.nextToken();
@@ -115,7 +115,7 @@ public Token nextToken() {
 
 @Override
 public Token emit() {
-	switch (_type) {
+	switch (getType()) {
 	case TOKENS:
 		handleAcceptPositionForKeyword("tokens");
 		break;
@@ -138,9 +138,10 @@ private boolean handleAcceptPositionForIdentifier() {
 		identifierLength++;
 	}
 
-	if (getInputStream().index() > _tokenStartCharIndex + identifierLength) {
+	if (getInputStream().index() > get_tokenStartCharIndex() + identifierLength) {
 		int offset = identifierLength - 1;
-		getInterpreter().resetAcceptPosition(getInputStream(), _tokenStartCharIndex + offset, _tokenStartLine, _tokenStartCharPositionInLine + offset);
+		PositionAdjustingLexerATNSimulator simulator = (PositionAdjustingLexerATNSimulator)getInterpreter();
+		simulator.resetAcceptPosition(getInputStream(), get_tokenStartCharIndex() + offset, get_tokenStartLine(), get_tokenStartCharPositionInLine() + offset);
 		return true;
 	}
 
@@ -148,18 +149,14 @@ private boolean handleAcceptPositionForIdentifier() {
 }
 
 private boolean handleAcceptPositionForKeyword(String keyword) {
-	if (getInputStream().index() > _tokenStartCharIndex + keyword.length()) {
+	if (getInputStream().index() > get_tokenStartCharIndex() + keyword.length()) {
 		int offset = keyword.length() - 1;
-		getInterpreter().resetAcceptPosition(getInputStream(), _tokenStartCharIndex + offset, _tokenStartLine, _tokenStartCharPositionInLine + offset);
+		PositionAdjustingLexerATNSimulator simulator = (PositionAdjustingLexerATNSimulator)getInterpreter();
+		simulator.resetAcceptPosition(getInputStream(), get_tokenStartCharIndex() + offset, get_tokenStartLine(), get_tokenStartCharPositionInLine() + offset);
 		return true;
 	}
 
 	return false;
-}
-
-@Override
-public PositionAdjustingLexerATNSimulator getInterpreter() {
-	return (PositionAdjustingLexerATNSimulator)super.getInterpreter();
 }
 
 private static boolean isIdentifierChar(char c) {
@@ -177,8 +174,8 @@ protected static class PositionAdjustingLexerATNSimulator extends LexerATNSimula
 
 	protected void resetAcceptPosition(CharStream input, int index, int line, int charPositionInLine) {
 		input.seek(index);
-		this.line = line;
-		this.charPositionInLine = charPositionInLine;
+		this.setLine(line);
+		this.setCharPositionInLine(charPositionInLine);
 		consume(input);
 	}
 
@@ -233,10 +230,10 @@ RuleGetterListener(X) ::= <<
 public class LeafListener extends TBaseListener {
 	public void exitA(TParser.AContext ctx) {
 		if (ctx.getChildCount()==2) {
-			outStream.printf("%s %s %s\n",ctx.b(0).start.getText(),
-				ctx.b(1).start.getText(),ctx.b().get(0).start.getText());
+			outStream.printf("%s %s %s\n",ctx.b(0).getStart().getText(),
+				ctx.b(1).getStart().getText(),ctx.b().get(0).getStart().getText());
 		} else
-			outStream.println(ctx.b(0).start.getText());
+			outStream.println(ctx.b(0).getStart().getText());
 	}
 }
 }
@@ -248,8 +245,8 @@ LRListener(X) ::= <<
 public class LeafListener extends TBaseListener {
 	public void exitE(TParser.EContext ctx) {
 		if (ctx.getChildCount()==3) {
-			outStream.printf("%s %s %s\n",ctx.e(0).start.getText(),
-				ctx.e(1).start.getText(), ctx.e().get(0).start.getText());
+			outStream.printf("%s %s %s\n",ctx.e(0).getStart().getText(),
+				ctx.e(1).getStart().getText(), ctx.e().get(0).getStart().getText());
 		} else
 			outStream.println(ctx.INT().getSymbol().getText());
 	}
@@ -261,7 +258,7 @@ LRWithLabelsListener(X) ::= <<
 @parser::members {
 public class LeafListener extends TBaseListener {
 	public void exitCall(TParser.CallContext ctx) {
-		outStream.printf("%s %s\n",ctx.e().start.getText(),ctx.eList());
+		outStream.printf("%s %s\n",ctx.e().getStart().getText(),ctx.eList());
 	}
 	public void exitInt(TParser.IntContext ctx) {
 		outStream.println(ctx.INT().getSymbol().getText());

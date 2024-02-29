@@ -8,8 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ArrayList;
 
-import org.antlr.v5.runtime.misc.IntervalSet;
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.misc.IntervalSet;
+import org.antlr.v5.runtime.core.misc.Interval;
 
 /**
  * Code-generated utility class mapping Unicode properties to Unicode code point ranges.

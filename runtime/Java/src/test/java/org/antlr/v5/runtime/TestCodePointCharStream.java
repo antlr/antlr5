@@ -6,7 +6,8 @@
 
 package org.antlr.v5.runtime;
 
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.IntStream;
+import org.antlr.v5.runtime.core.misc.Interval;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -167,13 +168,13 @@ public class TestCodePointCharStream {
 	@Test
 	public void getTextWithLatin() {
 		CodePointCharStream s = CharStreams.fromString("0123456789");
-		assertEquals("34567", s.getText(Interval.of(3, 7)));
+		assertEquals("34567", s.getText(Interval.Companion.of(3, 7)));
 	}
 
 	@Test
 	public void getTextWithCJK() {
 		CodePointCharStream s = CharStreams.fromString("01234\u40946789");
-		assertEquals("34\u409467", s.getText(Interval.of(3, 7)));
+		assertEquals("34\u409467", s.getText(Interval.Companion.of(3, 7)));
 	}
 
 	@Test
@@ -183,7 +184,7 @@ public class TestCodePointCharStream {
 					.appendCodePoint(0x1F522)
 					.append("6789")
 					.toString());
-		assertEquals("34\uD83D\uDD2267", s.getText(Interval.of(3, 7)));
+		assertEquals("34\uD83D\uDD2267", s.getText(Interval.Companion.of(3, 7)));
 	}
 
 	@Test

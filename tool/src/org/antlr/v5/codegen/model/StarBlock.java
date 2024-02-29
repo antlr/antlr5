@@ -7,7 +7,7 @@
 package org.antlr.v5.codegen.model;
 
 import org.antlr.v5.codegen.OutputModelFactory;
-import org.antlr.v5.runtime.atn.StarLoopEntryState;
+import org.antlr.v5.runtime.core.state.StarLoopEntryState;
 import org.antlr.v5.tool.ast.GrammarAST;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class StarBlock extends Loop {
 		super(factory, blkOrEbnfRootAST, alts);
 		loopLabel = factory.getGenerator().getTarget().getLoopLabel(blkOrEbnfRootAST);
 		StarLoopEntryState star = (StarLoopEntryState)blkOrEbnfRootAST.atnState;
-		loopBackStateNumber = star.loopBackState.stateNumber;
-		decision = star.decision;
+		loopBackStateNumber = star.getLoopBackState().getStateNumber();
+		decision = star.getDecision();
 	}
 }

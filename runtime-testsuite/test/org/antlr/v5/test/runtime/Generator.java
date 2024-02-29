@@ -11,6 +11,8 @@ import org.antlr.v5.test.runtime.states.GeneratedState;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +29,8 @@ public class Generator {
 		if (runOptions.slaveGrammars != null) {
 			for (String grammar : runOptions.slaveGrammars) {
 				GrammarFile slaveGrammarFile = parseGrammarFile(grammar);
-				writeFile(workingDirectory, slaveGrammarFile.grammarName + ".g4", slaveGrammarFile.content);
+				Path fullPath = Paths.get(workingDirectory, slaveGrammarFile.grammarName + ".g4");
+				writeFile(fullPath.toString() , slaveGrammarFile.content, null);
 			}
 		}
 
@@ -42,7 +45,8 @@ public class Generator {
 		final List<String> options = new ArrayList<>();
 
 		for (GrammarFile grammarFile : grammarFiles) {
-			writeFile(workingDirectory, grammarFile.grammarName + ".g4", grammarFile.content);
+			Path fullPath = Paths.get(workingDirectory, grammarFile.grammarName + ".g4");
+			writeFile(fullPath.toString(), grammarFile.content, null);
 
 			if (grammarFile == mainFile) continue;
 

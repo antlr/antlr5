@@ -17,8 +17,8 @@ package org.antlr.v5.runtime.core.context
  * parser, this class (with slightly more memory overhead per node) is used to
  * provide equivalent functionality.
  */
-public class InterpreterRuleContext : ParserRuleContext {
-  override val ruleIndex: Int
+open class InterpreterRuleContext : ParserRuleContext {
+  final override val ruleIndex: Int
 
   public constructor() {
     ruleIndex = -1

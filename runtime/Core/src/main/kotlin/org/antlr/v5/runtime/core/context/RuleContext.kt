@@ -73,7 +73,7 @@ public open class RuleContext : RuleNode {
   /**
    * What context invoked this rule?
    */
-  public var parent: RuleContext? = null
+  private var _parent: RuleContext? = null
 
   /**
    * What state invoked the rule associated with this context?
@@ -152,15 +152,15 @@ public open class RuleContext : RuleNode {
 
   public constructor() : super()
   public constructor(parent: RuleContext?, invokingState: Int) : super() {
-    this.parent = parent
+    this._parent = parent
     this.invokingState = invokingState
   }
 
-  override fun readParent(): RuleContext? =
-    parent
+  override fun getParent(): RuleContext? =
+      _parent
 
-  override fun assignParent(value: RuleContext?) {
-    parent = value
+  override fun setParent(value: RuleContext?) {
+      _parent = value
   }
 
   public fun depth(): Int {
@@ -168,7 +168,7 @@ public open class RuleContext : RuleNode {
     var p: RuleContext? = this
 
     while (p != null) {
-      p = p.parent
+      p = p.getParent()
       n++
     }
 
@@ -238,11 +238,11 @@ public open class RuleContext : RuleNode {
         buf.append(ruleName)
       }
 
-      if (p.parent != null && (ruleNames != null || !p.parent!!.isEmpty)) {
+      if (p.getParent() != null && (ruleNames != null || !p.getParent()!!.isEmpty)) {
         buf.append(" ")
       }
 
-      p = p.parent
+      p = p.getParent()
     }
 
     buf.append("]")

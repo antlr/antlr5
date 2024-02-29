@@ -6,7 +6,7 @@
 
 package org.antlr.v5.tool;
 
-import org.antlr.v5.runtime.Token;
+import org.antlr.v5.runtime.core.Token;
 import org.antlr.v5.tool.ast.GrammarAST;
 
 import java.util.Collections;

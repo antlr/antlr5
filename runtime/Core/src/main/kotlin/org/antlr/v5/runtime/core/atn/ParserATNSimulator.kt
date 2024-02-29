@@ -369,7 +369,7 @@ public open class ParserATNSimulator(
         }
       }
 
-      val alt = execATN(dfa, s0, input, index, tempOuterContext!!)
+      val alt = execATN(dfa, s0, input, index, tempOuterContext)
 
       if (debug) {
         System.out.println("DFA after predictATN: ${dfa.toString(parser!!.vocabulary)}")
@@ -424,7 +424,7 @@ public open class ParserATNSimulator(
     s0: DFAState,
     input: TokenStream,
     startIndex: Int,
-    outerContext: ParserRuleContext,
+    outerContext: ParserRuleContext?,
   ): Int {
     if (debug || trace_atn_sim) {
       System.out.println(
@@ -656,7 +656,7 @@ public open class ParserATNSimulator(
     s0: ATNConfigSet,
     input: TokenStream,
     startIndex: Int,
-    outerContext: ParserRuleContext,
+    outerContext: ParserRuleContext?,
   ): Int {
     if (debug || trace_atn_sim) {
       System.out.println("execATNWithFullContext $s0")
@@ -971,7 +971,7 @@ public open class ParserATNSimulator(
     return result
   }
 
-  protected open fun computeStartState(p: ATNState, ctx: RuleContext, fullCtx: Boolean): ATNConfigSet {
+  protected open fun computeStartState(p: ATNState, ctx: RuleContext?, fullCtx: Boolean): ATNConfigSet {
     // Always at least the implicit call to start rule
     val initialContext = PredictionContext.fromRuleContext(atn, ctx)
     val configs = ATNConfigSet(fullCtx)
@@ -1318,7 +1318,7 @@ public open class ParserATNSimulator(
    */
   protected open fun getSynValidOrSemInvalidAltThatFinishedDecisionEntryRule(
     configs: ATNConfigSet,
-    outerContext: ParserRuleContext,
+    outerContext: ParserRuleContext?,
   ): Int {
     val sets = splitAccordingToSemanticValidity(configs, outerContext)
     val semValidConfigs = sets.first
@@ -1373,7 +1373,7 @@ public open class ParserATNSimulator(
    */
   protected fun splitAccordingToSemanticValidity(
     configs: ATNConfigSet,
-    outerContext: ParserRuleContext,
+    outerContext: ParserRuleContext?,
   ): Pair<ATNConfigSet, ATNConfigSet> {
     val succeeded = ATNConfigSet(configs.fullCtx)
     val failed = ATNConfigSet(configs.fullCtx)
@@ -1407,7 +1407,7 @@ public open class ParserATNSimulator(
    */
   public open fun evalSemanticContext(
     predPredictions: Array<DFAState.PredPrediction>,
-    outerContext: ParserRuleContext,
+    outerContext: ParserRuleContext?,
     complete: Boolean,
   ): BitSet {
     val predictions = BitSet()
@@ -2162,7 +2162,7 @@ public open class ParserATNSimulator(
 
   protected open fun noViableAlt(
     input: TokenStream,
-    outerContext: ParserRuleContext,
+    outerContext: ParserRuleContext?,
     configs: ATNConfigSet,
     startIndex: Int,
   ): NoViableAltException =
@@ -2250,8 +2250,8 @@ public open class ParserATNSimulator(
       return D
     }
 
-    synchronized(dfa.states) {
-      val existing = dfa.states[D]
+    synchronized(dfa.getStatesMap()) {
+      val existing = dfa.getStatesMap()[D]
 
       if (existing != null) {
         if (trace_atn_sim) {
@@ -2261,7 +2261,7 @@ public open class ParserATNSimulator(
         return existing
       }
 
-      D.stateNumber = dfa.states.size
+      D.stateNumber = dfa.getStatesMap().size
 
       if (!D.configs.isReadonly) {
         D.configs.optimizeConfigs(this)
@@ -2272,7 +2272,7 @@ public open class ParserATNSimulator(
         System.out.println("addDFAState new $D")
       }
 
-      dfa.states[D] = D
+      dfa.getStatesMap()[D] = D
       return D
     }
   }

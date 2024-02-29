@@ -509,7 +509,7 @@ public open class IntervalSet : IntSet {
           buf.append("<EOF>")
         } else if (elemAreChar) {
           buf.append("'")
-          buf.appendCodePoint(a)
+          buf.append(CharSupport.getPrintable(a, false))
           buf.append("'")
         } else {
           buf.append(a)
@@ -517,9 +517,9 @@ public open class IntervalSet : IntSet {
       } else {
         if (elemAreChar) {
           buf.append("'")
-          buf.appendCodePoint(a)
+          buf.append(CharSupport.getPrintable(a, false))
           buf.append("'..'")
-          buf.appendCodePoint(b)
+          buf.append(CharSupport.getPrintable(b, false))
           buf.append("'")
         } else {
           buf.append(a)

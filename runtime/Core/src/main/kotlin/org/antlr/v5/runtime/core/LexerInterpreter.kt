@@ -22,9 +22,9 @@ public open class LexerInterpreter : Lexer {
   private val _ruleNames: Array<String>
   private val _channelNames: Array<String>
   private val _modeNames: Array<String>
-  private var _interpreter: LexerATNSimulator
+  private var _interpreter: LexerATNSimulator?
 
-  override var interpreter: LexerATNSimulator
+  override var interpreter: LexerATNSimulator?
     get() = _interpreter
     set(value) {
       _interpreter = value

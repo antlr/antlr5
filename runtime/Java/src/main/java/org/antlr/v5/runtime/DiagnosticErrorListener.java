@@ -6,10 +6,11 @@
 
 package org.antlr.v5.runtime;
 
-import org.antlr.v5.runtime.atn.ATNConfig;
-import org.antlr.v5.runtime.atn.ATNConfigSet;
-import org.antlr.v5.runtime.dfa.DFA;
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.Parser;
+import org.antlr.v5.runtime.core.atn.ATNConfig;
+import org.antlr.v5.runtime.core.atn.ATNConfigSet;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.misc.Interval;
 
 import java.util.BitSet;
 
@@ -75,7 +76,7 @@ public class DiagnosticErrorListener extends BaseErrorListener {
 		String format = "reportAmbiguity d=%s: ambigAlts=%s, input='%s'";
 		String decision = getDecisionDescription(recognizer, dfa);
 		BitSet conflictingAlts = getConflictingAlts(ambigAlts, configs);
-		String text = recognizer.getTokenStream().getText(Interval.of(startIndex, stopIndex));
+		String text = recognizer.getTokenStream().getText(Interval.Companion.of(startIndex, stopIndex));
 		String message = String.format(format, decision, conflictingAlts, text);
 		recognizer.notifyErrorListeners(message);
 	}
@@ -90,7 +91,7 @@ public class DiagnosticErrorListener extends BaseErrorListener {
 	{
 		String format = "reportAttemptingFullContext d=%s, input='%s'";
 		String decision = getDecisionDescription(recognizer, dfa);
-		String text = recognizer.getTokenStream().getText(Interval.of(startIndex, stopIndex));
+		String text = recognizer.getTokenStream().getText(Interval.Companion.of(startIndex, stopIndex));
 		String message = String.format(format, decision, text);
 		recognizer.notifyErrorListeners(message);
 	}
@@ -105,14 +106,14 @@ public class DiagnosticErrorListener extends BaseErrorListener {
 	{
 		String format = "reportContextSensitivity d=%s, input='%s'";
 		String decision = getDecisionDescription(recognizer, dfa);
-		String text = recognizer.getTokenStream().getText(Interval.of(startIndex, stopIndex));
+		String text = recognizer.getTokenStream().getText(Interval.Companion.of(startIndex, stopIndex));
 		String message = String.format(format, decision, text);
 		recognizer.notifyErrorListeners(message);
 	}
 
 	protected String getDecisionDescription(Parser recognizer, DFA dfa) {
-		int decision = dfa.decision;
-		int ruleIndex = dfa.atnStartState.ruleIndex;
+		int decision = dfa.getDecision();
+		int ruleIndex = dfa.getAtnStartState().getRuleIndex();
 
 		String[] ruleNames = recognizer.getRuleNames();
 		if (ruleIndex < 0 || ruleIndex >= ruleNames.length) {
@@ -145,7 +146,7 @@ public class DiagnosticErrorListener extends BaseErrorListener {
 
 		BitSet result = new BitSet();
 		for (ATNConfig config : configs) {
-			result.set(config.alt);
+			result.set(config.getAlt());
 		}
 
 		return result;

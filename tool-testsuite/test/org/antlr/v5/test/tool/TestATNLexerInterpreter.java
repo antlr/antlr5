@@ -7,11 +7,15 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.LexerATNSimulator;
-import org.antlr.v5.runtime.dfa.DFA;
-import org.antlr.v5.runtime.misc.Utils;
+import org.antlr.v5.runtime.core.CharStream;
+import org.antlr.v5.runtime.core.IntStream;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.Token;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.atn.LexerATNSimulator;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.misc.Utils;
 import org.antlr.v5.test.runtime.states.ExecutedState;
 import org.antlr.v5.tool.DOTGenerator;
 import org.antlr.v5.tool.LexerGrammar;
@@ -404,7 +408,7 @@ public class TestATNLexerInterpreter {
 			"A0bcDE93\n" +
 			"АБВабв\n";
 
-		String expecting = Utils.join(new String[] {
+		String expecting = String.join(", WS, ",
 			"SIMPLE_TOKEN", "SIMPLE_TOKEN", "SIMPLE_TOKEN",
 			"TOKEN_WITH_SPACES", "TOKEN_WITH_SPACES",
 			"TOKEN_WITH_DIGITS",
@@ -413,9 +417,7 @@ public class TestATNLexerInterpreter {
 			"SPECIAL",
 			"SET",
 			"RANGE",
-			"EOF"
-		},
-		", WS, ");
+			"EOF");
 
 		checkLexerMatches(lg, inputString, expecting);
 	}
@@ -474,17 +476,16 @@ public class TestATNLexerInterpreter {
 
 		String inputString = "abcXYZ äéöüßÄÉÖÜß àâæçÙÛÜŸ ćčđĐŠŽ àèéÌÒÙ áéÚÜ¡¿ αβγΧΨΩ абвЭЮЯ ";
 
-		String expecting = Utils.join(new String[] {
-				"ENGLISH_TOKEN",
-				"GERMAN_TOKEN",
-				"FRENCH_TOKEN",
-				"CROATIAN_TOKEN",
-				"ITALIAN_TOKEN",
-				"SPANISH_TOKEN",
-				"GREEK_TOKEN",
-				"RUSSIAN_TOKEN",
-				"EOF" },
-				", WS, ");
+		String expecting = String.join(", WS, ",
+                "ENGLISH_TOKEN",
+                "GERMAN_TOKEN",
+                "FRENCH_TOKEN",
+                "CROATIAN_TOKEN",
+                "ITALIAN_TOKEN",
+                "SPANISH_TOKEN",
+                "GREEK_TOKEN",
+                "RUSSIAN_TOKEN",
+                "EOF");
 
 		checkLexerMatches(lg, inputString, expecting);
 	}
@@ -524,19 +525,19 @@ public class TestATNLexerInterpreter {
 	private void checkLexerMatches(LexerGrammar lg, String inputString, String expecting) {
 		ATN atn = createATN(lg, true);
 		CharStream input = CharStreams.fromString(inputString);
-		ATNState startState = atn.modeNameToStartState.get("DEFAULT_MODE");
+		ATNState startState = atn.getModeNameToStartState().get("DEFAULT_MODE");
 		DOTGenerator dot = new DOTGenerator(lg);
 //		System.out.println(dot.getDOT(startState, true));
 
 		List<String> tokenTypes = getTokenTypes(lg, atn, input);
 
-		String result = Utils.join(tokenTypes.iterator(), ", ");
+		String result = String.join(", ", tokenTypes );
 //		System.out.println(tokenTypes);
 		assertEquals(expecting, result);
 	}
 
 	private static List<String> getTokenTypes(LexerGrammar lg, ATN atn, CharStream input) {
-		LexerATNSimulator interp = new LexerATNSimulator(atn, new DFA[]{new DFA(atn.modeToStartState.get(Lexer.DEFAULT_MODE))}, null);
+		LexerATNSimulator interp = new LexerATNSimulator(atn, new DFA[]{new DFA(atn.getModeToStartState().get(Lexer.DEFAULT_MODE), 0)}, null);
 		List<String> tokenTypes = new ArrayList<>();
 		int ttype;
 		boolean hitEOF = false;

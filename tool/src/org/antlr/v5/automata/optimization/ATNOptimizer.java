@@ -6,7 +6,7 @@
 
 package org.antlr.v5.automata.optimization;
 
-import org.antlr.v5.runtime.atn.ATN;
+import org.antlr.v5.runtime.core.atn.ATN;
 import org.antlr.v5.tool.Grammar;
 
 public class ATNOptimizer {

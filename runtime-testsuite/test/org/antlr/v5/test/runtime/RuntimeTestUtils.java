@@ -7,7 +7,7 @@
 package org.antlr.v5.test.runtime;
 
 import org.antlr.v5.automata.ATNPrinter;
-import org.antlr.v5.runtime.atn.ATNState;
+import org.antlr.v5.runtime.core.state.ATNState;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.Rule;
 
@@ -97,7 +97,7 @@ public abstract class RuntimeTestUtils {
 
 	public static void checkRuleATN(Grammar g, String ruleName, String expecting) {
 		Rule r = g.getRule(ruleName);
-		ATNState startState = g.getATN().ruleToStartState[r.index];
+		ATNState startState = g.getATN().getRuleToStartState()[r.index];
 		ATNPrinter serializer = new ATNPrinter(g, startState);
 		String result = serializer.asString();
 

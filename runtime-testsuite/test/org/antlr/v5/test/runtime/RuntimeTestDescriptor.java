@@ -6,7 +6,7 @@
 
 package org.antlr.v5.test.runtime;
 
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 
 import java.net.URI;
 import java.util.Arrays;

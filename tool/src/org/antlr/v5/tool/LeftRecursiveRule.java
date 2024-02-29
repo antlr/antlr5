@@ -9,7 +9,7 @@ package org.antlr.v5.tool;
 import org.antlr.v5.analysis.LeftRecursiveRuleAltInfo;
 import org.antlr.v5.analysis.RuleInfo;
 import org.antlr.v5.misc.OrderedHashMap;
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 import org.antlr.v5.tool.ast.AltAST;
 import org.antlr.v5.tool.ast.GrammarAST;
 import org.antlr.v5.tool.ast.RuleAST;

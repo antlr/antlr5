@@ -6,8 +6,8 @@
 
 package org.antlr.v5.automata.optimization;
 
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.Transition;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.transition.Transition;
 
 import java.util.Objects;
 
@@ -27,7 +27,7 @@ class InTransition {
 
 	@Override
 	public String toString() {
-		return previousState + " -> " + transition.target;
+		return previousState + " -> " + transition.getTarget();
 	}
 
 	@Override

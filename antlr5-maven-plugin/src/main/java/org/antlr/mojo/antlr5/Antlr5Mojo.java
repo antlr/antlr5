@@ -8,8 +8,7 @@ package org.antlr.mojo.antlr5;
 
 import org.antlr.v5.Tool;
 import org.antlr.v5.codegen.CodeGenerator;
-import org.antlr.v5.runtime.misc.MultiMap;
-import org.antlr.v5.runtime.misc.Utils;
+import org.antlr.v5.runtime._unused.misc.MultiMap;
 import org.antlr.v5.tool.Grammar;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -485,7 +484,7 @@ public class Antlr5Mojo extends AbstractMojo {
 			// intentionally blank
 		}
 
-		return Utils.join(parts.iterator(), ".");
+		return String.join(".", parts);
 	}
 
     public Set<String> getIncludesPatterns() {

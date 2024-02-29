@@ -7,15 +7,15 @@
 package org.antlr.v5.test.tool;
 
 import org.antlr.v5.automata.ParserATNFactory;
-import org.antlr.v5.runtime.Lexer;
-import org.antlr.v5.runtime.NoViableAltException;
-import org.antlr.v5.runtime.TokenStream;
-import org.antlr.v5.runtime.atn.ATN;
-import org.antlr.v5.runtime.atn.ATNState;
-import org.antlr.v5.runtime.atn.BlockStartState;
-import org.antlr.v5.runtime.atn.LexerATNSimulator;
-import org.antlr.v5.runtime.dfa.DFA;
-import org.antlr.v5.runtime.misc.IntegerList;
+import org.antlr.v5.runtime.core.Lexer;
+import org.antlr.v5.runtime.core.TokenStream;
+import org.antlr.v5.runtime.core.atn.ATN;
+import org.antlr.v5.runtime.core.atn.LexerATNSimulator;
+import org.antlr.v5.runtime.core.dfa.DFA;
+import org.antlr.v5.runtime.core.error.NoViableAltException;
+import org.antlr.v5.runtime.core.misc.IntegerList;
+import org.antlr.v5.runtime.core.state.ATNState;
+import org.antlr.v5.runtime.core.state.BlockStartState;
 import org.antlr.v5.tool.DOTGenerator;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LexerGrammar;
@@ -27,9 +27,7 @@ import static org.antlr.v5.test.tool.ToolTestUtils.getTokenTypesViaATN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-	// NOTICE: TOKENS IN LEXER, PARSER MUST BE SAME OR TOKEN TYPE MISMATCH
-	// NOTICE: TOKENS IN LEXER, PARSER MUST BE SAME OR TOKEN TYPE MISMATCH
-	// NOTICE: TOKENS IN LEXER, PARSER MUST BE SAME OR TOKEN TYPE MISMATCH
+// NOTICE: TOKENS IN LEXER, PARSER MUST BE SAME OR TOKEN TYPE MISMATCH
 
 public class TestATNInterpreter {
 	@Test public void testSimpleNoBlock() throws Exception {
@@ -361,7 +359,7 @@ public class TestATNInterpreter {
 								int expected)
 	{
 		ATN lexatn = createATN(lg, true);
-		LexerATNSimulator lexInterp = new LexerATNSimulator(lexatn,new DFA[] { new DFA(lexatn.modeToStartState.get(Lexer.DEFAULT_MODE)) },null);
+		LexerATNSimulator lexInterp = new LexerATNSimulator(lexatn, new DFA[] { new DFA(lexatn.getModeToStartState().get(Lexer.DEFAULT_MODE), 0) },null);
 		IntegerList types = getTokenTypesViaATN(inputString, lexInterp);
 //		System.out.println(types);
 
@@ -373,9 +371,9 @@ public class TestATNInterpreter {
 		TokenStream input = new MockIntTokenStream(types);
 //		System.out.println("input="+input.types);
 		ParserInterpreterForTesting interp = new ParserInterpreterForTesting(g, input);
-		ATNState startState = atn.ruleToStartState[g.getRule("a").index];
-		if ( startState.transition(0).target instanceof BlockStartState ) {
-			startState = startState.transition(0).target;
+		ATNState startState = atn.getRuleToStartState()[g.getRule("a").index];
+		if ( startState.transition(0).getTarget() instanceof BlockStartState) {
+			startState = startState.transition(0).getTarget();
 		}
 
 		DOTGenerator dot = new DOTGenerator(g);

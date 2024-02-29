@@ -146,7 +146,7 @@ tokens { SEMPRED; TOKEN_REF; RULE_REF; LEXER_CHAR_SET; ARG_ACTION; }
 */
 package org.antlr.v5.parse;
 import org.antlr.v5.tool.*;
-import org.antlr.v5.runtime.misc.Interval;
+import org.antlr.v5.runtime.core.misc.Interval;
 }
 
 
@@ -696,13 +696,13 @@ UNICODE_ESC
     	//
     	{
     		if (hCount < 4) {
-				Interval badRange = Interval.of(getCharIndex()-2-hCount, getCharIndex());
-				String lastChar = input.substring(badRange.b, badRange.b);
+				Interval badRange = Interval.Companion.of(getCharIndex()-2-hCount, getCharIndex());
+				String lastChar = input.substring(badRange.getB(), badRange.getB());
 				if ( lastChar.codePointAt(0)=='\'' ) {
-					badRange.b--;
+					badRange.setB(badRange.getB() -1);
 				}
-				String bad = input.substring(badRange.a, badRange.b);
-				Token t = new CommonToken(input, state.type, state.channel, badRange.a, badRange.b);
+				String bad = input.substring(badRange.getA(), badRange.getB());
+				Token t = new CommonToken(input, state.type, state.channel, badRange.getA(), badRange.getB());
 				t.setLine(input.getLine());
 				t.setCharPositionInLine(input.getCharPositionInLine()-hCount-2);
 				grammarError(ErrorType.INVALID_ESCAPE_SEQUENCE, t, bad);

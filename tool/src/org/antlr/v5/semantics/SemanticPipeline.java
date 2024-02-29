@@ -9,8 +9,8 @@ package org.antlr.v5.semantics;
 import org.antlr.v5.analysis.LeftRecursiveRuleTransformer;
 import org.antlr.v5.automata.LexerATNFactory;
 import org.antlr.v5.parse.ANTLRParser;
-import org.antlr.v5.runtime.Token;
-import org.antlr.v5.runtime.misc.Pair;
+import org.antlr.v5.runtime.core.Token;
+import kotlin.Pair;
 import org.antlr.v5.tool.ErrorType;
 import org.antlr.v5.tool.Grammar;
 import org.antlr.v5.tool.LexerGrammar;
@@ -158,8 +158,8 @@ public class SemanticPipeline {
 		Set<String> conflictingLiterals = new HashSet<String>();
 		if ( litAliases!=null ) {
 			for (Pair<GrammarAST,GrammarAST> pair : litAliases) {
-				GrammarAST nameAST = pair.a;
-				GrammarAST litAST = pair.b;
+				GrammarAST nameAST = pair.getFirst();
+				GrammarAST litAST = pair.getSecond();
 				if ( !G.stringLiteralToTypeMap.containsKey(litAST.getText()) ) {
 					G.defineTokenAlias(nameAST.getText(), litAST.getText());
 				}

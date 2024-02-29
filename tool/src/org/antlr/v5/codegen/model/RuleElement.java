@@ -15,7 +15,7 @@ public class RuleElement extends SrcOp {
 
 	public RuleElement(OutputModelFactory factory, GrammarAST ast) {
 		super(factory, ast);
-		if ( ast != null && ast.atnState!=null ) stateNumber = ast.atnState.stateNumber;
+		if ( ast != null && ast.atnState!=null ) stateNumber = ast.atnState.getStateNumber();
 	}
 
 }

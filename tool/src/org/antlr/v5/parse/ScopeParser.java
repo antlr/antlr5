@@ -8,7 +8,7 @@ package org.antlr.v5.parse;
 
 import org.antlr.runtime.BaseRecognizer;
 import org.antlr.runtime.CommonToken;
-import org.antlr.v5.runtime.misc.Pair;
+import kotlin.Pair;
 import org.antlr.v5.tool.Attribute;
 import org.antlr.v5.tool.AttributeDict;
 import org.antlr.v5.tool.ErrorType;
@@ -51,7 +51,7 @@ public class ScopeParser {
 		AttributeDict dict = new AttributeDict();
 		List<Pair<String, Integer>> decls = splitDecls(s, separator);
 		for (Pair<String, Integer> decl : decls) {
-			if (decl.a.trim().length() > 0) {
+			if (decl.getFirst().trim().length() > 0) {
 				Attribute a = parseAttributeDef(action, decl, g);
 				dict.add(a);
 			}
@@ -66,20 +66,20 @@ public class ScopeParser {
 	 * unless you escape use "\," escape.
 	 */
 	public static Attribute parseAttributeDef(ActionAST action, Pair<String, Integer> decl, Grammar g) {
-		if (decl.a == null) return null;
+		if (decl.getFirst() == null) return null;
 
 		Attribute attr = new Attribute();
-		int rightEdgeOfDeclarator = decl.a.length() - 1;
-		int equalsIndex = decl.a.indexOf('=');
+		int rightEdgeOfDeclarator = decl.getFirst().length() - 1;
+		int equalsIndex = decl.getFirst().indexOf('=');
 		if (equalsIndex > 0) {
 			// everything after the '=' is the init value
-			attr.initValue = decl.a.substring(equalsIndex + 1, decl.a.length()).trim();
+			attr.initValue = decl.getFirst().substring(equalsIndex + 1, decl.getFirst().length()).trim();
 			rightEdgeOfDeclarator = equalsIndex - 1;
 		}
 
-		String declarator = decl.a.substring(0, rightEdgeOfDeclarator + 1);
+		String declarator = decl.getFirst().substring(0, rightEdgeOfDeclarator + 1);
 		Pair<Integer, Integer> p;
-		String text = decl.a;
+		String text = decl.getFirst();
 		text = text.replaceAll("::","");
 		if ( text.contains(":") ) {
 			// declarator has type appearing after the name like "x:T"
@@ -89,10 +89,10 @@ public class ScopeParser {
 			// declarator has type appearing before the name like "T x"
 			p = _parsePrefixDecl(attr, declarator, action, g);
 		}
-		int idStart = p.a;
-		int idStop = p.b;
+		int idStart = p.getFirst();
+		int idStop = p.getSecond();
 
-		attr.decl = decl.a;
+		attr.decl = decl.getFirst();
 
 		if (action != null) {
 			String actionText = action.getText();
@@ -118,7 +118,7 @@ public class ScopeParser {
 				}
 			}
 
-			int declOffset = charIndexes[decl.b];
+			int declOffset = charIndexes[decl.getSecond()];
 			int declLine = lines[declOffset + idStart];
 
 			int line = action.getToken().getLine() + declLine;
