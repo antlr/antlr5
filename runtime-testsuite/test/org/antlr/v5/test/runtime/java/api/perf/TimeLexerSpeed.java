@@ -6,7 +6,7 @@
 
 package org.antlr.v5.test.runtime.java.api.perf;
 
-import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.runtime.core.CharStream;
 import org.antlr.v5.runtime.core.CommonTokenStream;
 import org.antlr.v5.runtime.core.Lexer;

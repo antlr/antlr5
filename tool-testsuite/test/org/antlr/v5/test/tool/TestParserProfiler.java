@@ -6,8 +6,7 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.runtime.RecognitionException;
-import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.runtime.core.CommonTokenStream;
 import org.antlr.v5.runtime.core.LexerInterpreter;
 import org.antlr.v5.runtime.core.ParserInterpreter;

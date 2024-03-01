@@ -5,14 +5,15 @@
  */
 package org.antlr.v5.test.runtime.java.api;
 
-import org.antlr.v5.runtime.BaseErrorListener;
-import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.java.BaseErrorListener;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.runtime.core.CommonTokenStream;
 import org.antlr.v5.runtime.core.Recognizer;
 import org.antlr.v5.runtime.core.error.RecognitionException;
 import org.antlr.v5.runtime.core.tree.ErrorNode;
 import org.antlr.v5.runtime.core.tree.RuleNode;
 import org.antlr.v5.runtime.core.tree.TerminalNode;
+import org.antlr.v5.runtime.java.tree.AbstractParseTreeVisitor;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class TestVisitors {
 	/**
 	 * This test verifies that {@link AbstractParseTreeVisitor#visitChildren} does not call
 	 * {@link org.antlr.v5.runtime.tree.ParseTreeVisitor#visit} after
-	 * {@link org.antlr.v5.runtime.tree.AbstractParseTreeVisitor#shouldVisitNextChild} returns
+	 * {@link AbstractParseTreeVisitor#shouldVisitNextChild} returns
 	 * {@code false}.
 	 */
 	@Test

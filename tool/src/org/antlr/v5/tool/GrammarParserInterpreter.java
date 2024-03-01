@@ -5,7 +5,7 @@
  */
 package org.antlr.v5.tool;
 
-import org.antlr.v5.runtime.BailErrorStrategy;
+import org.antlr.v5.runtime.java.BailErrorStrategy;
 import org.antlr.v5.runtime.core.*;
 import org.antlr.v5.runtime.core.atn.ATN;
 import org.antlr.v5.runtime.core.atn.PredictionMode;

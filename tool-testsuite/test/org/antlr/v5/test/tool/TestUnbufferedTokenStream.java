@@ -6,12 +6,11 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.core.*;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.tool.LexerGrammar;
 import org.junit.jupiter.api.Test;
 
-import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
