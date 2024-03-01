@@ -74,6 +74,13 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
+        <developer>
+            <name>Edoardo Luppi</name>
+            <url>https://github.com/lppedd</url>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
 	</developers>
 
 	<modules>
