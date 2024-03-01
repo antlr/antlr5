@@ -6,7 +6,6 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.core.*;
 import org.antlr.v5.runtime.core.atn.*;
 import org.antlr.v5.runtime.core.atn.PredictionMode;
@@ -22,7 +21,10 @@ import org.antlr.v5.runtime.core.tree.ParseTree;
 import org.antlr.v5.runtime.core.tree.ParseTreeListener;
 import org.antlr.v5.runtime.core.tree.TerminalNode;
 import org.antlr.v5.runtime.core.error.DefaultErrorStrategy;
-import org.antlr.v5.runtime.tree.ParseTreeWalker;
+import org.antlr.v5.runtime.java.BailErrorStrategy;
+import org.antlr.v5.runtime.java.BaseErrorListener;
+import org.antlr.v5.runtime.java.DiagnosticErrorListener;
+import org.antlr.v5.runtime.java.tree.ParseTreeWalker;
 
 import org.antlr.v5.test.runtime.*;
 import org.antlr.v5.test.runtime.java.JavaRunner;

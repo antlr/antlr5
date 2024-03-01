@@ -7,7 +7,7 @@
 package org.antlr.v5.tool;
 
 import org.antlr.v5.Tool;
-import org.antlr.v5.runtime._unused.misc.MultiMap;
+import org.antlr.v5.runtime.java._unused.misc.MultiMap;
 import org.antlr.v5.runtime.core.error.RecognitionException;
 import org.antlr.v5.tool.ast.GrammarRootAST;
 

@@ -9,7 +9,7 @@ package org.antlr.v5.test.tool;
 import org.antlr.v5.Tool;
 import org.antlr.v5.automata.LexerATNFactory;
 import org.antlr.v5.automata.ParserATNFactory;
-import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.runtime.core.CharStream;
 import org.antlr.v5.runtime.core.Lexer;
 import org.antlr.v5.runtime.core.Token;

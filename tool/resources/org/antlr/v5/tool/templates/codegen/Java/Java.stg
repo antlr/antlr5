@@ -56,8 +56,8 @@ import org.antlr.v5.runtime.core.error.*;
 import org.antlr.v5.runtime.core.dfa.*;
 import org.antlr.v5.runtime.core.misc.*;
 import org.antlr.v5.runtime.core.tree.*;
-import org.antlr.v5.runtime.*;
-import org.antlr.v5.runtime.tree.*;
+import org.antlr.v5.runtime.java.*;
+import org.antlr.v5.runtime.java.tree.*;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -199,7 +199,7 @@ BaseVisitorFile(file, header, namedActions) ::= <<
 package <file.genPackage>;
 <endif>
 <header>
-import org.antlr.v5.runtime.tree.AbstractParseTreeVisitor;
+import org.antlr.v5.runtime.java.tree.AbstractParseTreeVisitor;
 
 /**
  * This class provides an empty implementation of {@link <file.grammarName>Visitor},

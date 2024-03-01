@@ -1,7 +1,7 @@
 package org.antlr.v5.test.runtime.states.jvm;
 
 import kotlin.Pair;
-import org.antlr.v5.runtime.CharStreams;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.runtime.core.CharStream;
 import org.antlr.v5.runtime.core.TokenStream;
 import org.antlr.v5.runtime.core.CommonTokenStream;

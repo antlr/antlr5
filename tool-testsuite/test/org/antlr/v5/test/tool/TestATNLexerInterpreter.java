@@ -6,7 +6,6 @@
 
 package org.antlr.v5.test.tool;
 
-import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.core.CharStream;
 import org.antlr.v5.runtime.core.IntStream;
 import org.antlr.v5.runtime.core.Lexer;
@@ -15,7 +14,7 @@ import org.antlr.v5.runtime.core.atn.ATN;
 import org.antlr.v5.runtime.core.state.ATNState;
 import org.antlr.v5.runtime.core.atn.LexerATNSimulator;
 import org.antlr.v5.runtime.core.dfa.DFA;
-import org.antlr.v5.runtime.core.misc.Utils;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.test.runtime.states.ExecutedState;
 import org.antlr.v5.tool.DOTGenerator;
 import org.antlr.v5.tool.LexerGrammar;

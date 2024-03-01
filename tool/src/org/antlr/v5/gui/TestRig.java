@@ -6,8 +6,8 @@
 
 package org.antlr.v5.gui;
 
-import org.antlr.v5.runtime.CharStreams;
-import org.antlr.v5.runtime.DiagnosticErrorListener;
+import org.antlr.v5.runtime.java.CharStreams;
+import org.antlr.v5.runtime.java.DiagnosticErrorListener;
 import org.antlr.v5.runtime.core.*;
 import org.antlr.v5.runtime.core.atn.PredictionMode;
 import org.antlr.v5.runtime.core.context.ParserRuleContext;

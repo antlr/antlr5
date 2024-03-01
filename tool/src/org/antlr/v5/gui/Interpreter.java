@@ -2,11 +2,11 @@ package org.antlr.v5.gui;
 
 import org.antlr.runtime.RecognitionException;
 import org.antlr.v5.Tool;
-import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.core.*;
 import org.antlr.v5.runtime.core.info.DecisionInfo;
 import org.antlr.v5.runtime.core.info.ParseInfo;
 import org.antlr.v5.runtime.core.tree.ParseTree;
+import org.antlr.v5.runtime.java.CharStreams;
 import org.antlr.v5.tool.*;
 
 import java.io.FileWriter;

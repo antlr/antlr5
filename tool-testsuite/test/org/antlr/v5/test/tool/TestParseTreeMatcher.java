@@ -7,10 +7,10 @@
 package org.antlr.v5.test.tool;
 
 import kotlin.Pair;
-import org.antlr.v5.runtime._unused.tree.pattern.ParseTreeMatch;
-import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePattern;
-import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePatternCompiler;
-import org.antlr.v5.runtime._unused.tree.pattern.ParseTreePatternMatcher;
+import org.antlr.v5.runtime.java._unused.tree.pattern.ParseTreeMatch;
+import org.antlr.v5.runtime.java._unused.tree.pattern.ParseTreePattern;
+import org.antlr.v5.runtime.java._unused.tree.pattern.ParseTreePatternCompiler;
+import org.antlr.v5.runtime.java._unused.tree.pattern.ParseTreePatternMatcher;
 import org.antlr.v5.runtime.core.Lexer;
 import org.antlr.v5.runtime.core.Parser;
 import org.antlr.v5.runtime.core.Token;
@@ -18,7 +18,6 @@ import org.antlr.v5.runtime.core.error.InputMismatchException;
 import org.antlr.v5.runtime.core.error.NoViableAltException;
 import org.antlr.v5.test.runtime.RunOptions;
 import org.antlr.v5.test.runtime.java.JavaRunner;
-import org.antlr.v5.test.runtime.states.CompiledState;
 import org.antlr.v5.test.runtime.states.State;
 import org.antlr.v5.test.runtime.states.jvm.JavaCompiledState;
 import org.antlr.v5.test.runtime.states.jvm.JavaExecutedState;

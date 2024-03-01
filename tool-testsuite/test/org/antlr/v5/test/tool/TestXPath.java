@@ -7,7 +7,7 @@
 package org.antlr.v5.test.tool;
 
 import kotlin.Pair;
-import org.antlr.v5.runtime._unused.tree.xpath.XPath;
+import org.antlr.v5.runtime.java._unused.tree.xpath.XPath;
 import org.antlr.v5.runtime.core.Parser;
 import org.antlr.v5.runtime.core.context.RuleContext;
 import org.antlr.v5.runtime.core.tree.ParseTree;

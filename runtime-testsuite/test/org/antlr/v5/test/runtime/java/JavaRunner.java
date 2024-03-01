@@ -5,7 +5,6 @@
  */
 package org.antlr.v5.test.runtime.java;
 
-import org.antlr.v5.runtime.*;
 import org.antlr.v5.runtime.core.CommonTokenStream;
 import org.antlr.v5.runtime.core.Lexer;
 import org.antlr.v5.runtime.core.Parser;
@@ -14,7 +13,8 @@ import org.antlr.v5.runtime.core.atn.ParserATNSimulator;
 import org.antlr.v5.runtime.core.atn.ProfilingATNSimulator;
 import org.antlr.v5.runtime.core.context.ParserRuleContext;
 import org.antlr.v5.runtime.core.tree.ParseTree;
-import org.antlr.v5.runtime.tree.ParseTreeWalker;
+import org.antlr.v5.runtime.java.DiagnosticErrorListener;
+import org.antlr.v5.runtime.java.tree.ParseTreeWalker;
 import org.antlr.v5.test.runtime.*;
 import org.antlr.v5.test.runtime.java.helpers.CustomStreamErrorListener;
 import org.antlr.v5.test.runtime.java.helpers.RuntimeTestLexer;
