@@ -12,6 +12,9 @@ import org.antlr.v5.runtime.core.state.DecisionState
 import org.antlr.v5.runtime.core.state.StarLoopEntryState
 import kotlin.concurrent.Volatile
 
+/** DFA stands for Deterministic Finite Automaton, see https://en.wikipedia.org/wiki/Deterministic_finite_automaton
+ */
+
 public open class DFA(
     /**
    * From which ATN state did we create this DFA?
