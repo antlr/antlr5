@@ -8,7 +8,8 @@ import org.antlr.v5.runtime.core.state.*
 import org.antlr.v5.runtime.core.transition.RuleTransition
 
 /**
- * Used for runtime deserialization of ATNs from strings.
+ * ATN stands for Augmented Transition Network, see https://en.wikipedia.org/wiki/Augmented_transition_network
+ * Used for runtime deserialization of ATNs from literals.
  *
  * @param grammarType The type of the ATN
  * @param maxTokenType The maximum value for any symbol recognized
