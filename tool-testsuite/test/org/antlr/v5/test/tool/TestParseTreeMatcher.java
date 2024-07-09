@@ -386,7 +386,7 @@ public class TestParseTreeMatcher {
 		throws Exception
 	{
 		RunOptions runOptions = createExecOptionsForJavaToolTests(grammar,
-				false, false, startRule, input, false, false);
+				false, false, startRule, input, null, null, false, false);
 		try (JavaRunner runner = new JavaRunner()) {
 			State state = runner.run(runOptions);
 			if(!(state instanceof JavaExecutedState))

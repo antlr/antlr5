@@ -79,6 +79,15 @@ public class Generator {
 			options.add("-DsuperClass=" + superClass);
 		}
 
+		if (runOptions.libDir != null && !runOptions.libDir.isEmpty()) {
+			options.add("-lib");
+			options.add(runOptions.libDir);
+		}
+
+		if (runOptions.actionTemplates != null && !runOptions.actionTemplates.isEmpty()) {
+			options.add("-DactionTemplates=" + runOptions.actionTemplates);
+		}
+
 		if (extraOptions != null) {
 			options.addAll(Arrays.asList(extraOptions));
 		}

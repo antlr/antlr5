@@ -21,6 +21,8 @@ public class RunOptions {
 	public final String superClass;
 	public final PredictionMode predictionMode;
 	public final boolean buildParseTree;
+	public final String libDir;
+	public final String actionTemplates;
 	public final String[] extraGenerationOptions;
 
 	public static RunOptions createGenerationOptions(String[] grammars, String[] slaveGrammars, boolean useListener, boolean useVisitor,
@@ -39,6 +41,8 @@ public class RunOptions {
 				false,
 				Stage.Generate,
 				superClass,
+				null,
+				null,
 				PredictionMode.LL,
 				false,
 				extraGenerationOptions
@@ -60,6 +64,8 @@ public class RunOptions {
 				false,
 				Stage.Compile,
 				superClass,
+				null,
+				null,
 				PredictionMode.LL,
 				false,
 				extraGenerationOptions
@@ -70,7 +76,8 @@ public class RunOptions {
 					  boolean useListener, boolean useVisitor, String startRuleName,
 					  String input, boolean profile, boolean showDiagnosticErrors,
 					  boolean traceATN, boolean showDFA, Stage endStage,
-					  String superClass, PredictionMode predictionMode, boolean buildParseTree,
+					  String superClass, String libDir, String actionTemplates,
+					  PredictionMode predictionMode, boolean buildParseTree,
 					  String[] extraGenerationOptions) {
 		this.grammars = grammars;
 		this.slaveGrammars = slaveGrammars;
@@ -84,6 +91,8 @@ public class RunOptions {
 		this.showDFA = showDFA;
 		this.endStage = endStage;
 		this.superClass = superClass;
+		this.libDir = libDir;
+		this.actionTemplates = actionTemplates;
 		this.predictionMode = predictionMode;
 		this.buildParseTree = buildParseTree;
 		this.extraGenerationOptions = extraGenerationOptions;

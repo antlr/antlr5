@@ -64,6 +64,7 @@ public class ToolTestUtils {
 										 Path workingDir, boolean saveTestDir, boolean profile) {
 		RunOptions runOptions = createExecOptionsForJavaToolTests(grammarStr,
 				false, true, startRuleName, input,
+				null, null,
 				profile, showDiagnosticErrors);
 		try (JavaRunner runner = new JavaRunner(workingDir, saveTestDir)) {
 			State result = runner.run(runOptions);
@@ -77,11 +78,11 @@ public class ToolTestUtils {
 	public static RunOptions createExecOptionsForJavaToolTests(
 			String grammarStr,
 			boolean useListener, boolean useVisitor, String startRuleName,
-			String input, boolean profile, boolean showDiagnosticErrors
+			String input, String libDir, String actionTemplates, boolean profile, boolean showDiagnosticErrors
 	) {
 		return new RunOptions(new String[] {grammarStr}, null, useListener, useVisitor, startRuleName,
 				input, profile, showDiagnosticErrors, false, false, Stage.Execute,
-				null, PredictionMode.LL, true, null);
+				null, libDir, actionTemplates, PredictionMode.LL, true, null);
 	}
 
 	public static void testErrors(String[] pairs, boolean printTree) {

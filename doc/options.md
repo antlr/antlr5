@@ -20,7 +20,7 @@ Set the superclass of the generated parser or lexer. For combined grammars, it s
 $ cat Hi.g4
 grammar Hi;
 a : 'hi' ;
-$ antlr4 -DsuperClass=XX Hi.g4
+$ antlr5 -DsuperClass=XX Hi.g4
 $ grep 'public class' HiParser.java
 public class HiParser extends XX {
 $ grep 'public class' HiLexer.java
@@ -32,8 +32,88 @@ public class HiLexer extends Lexer {
 Generate code in the indicated language, if ANTLR is able to do so. Otherwise, you will see an error message like this:
 
 ```
-$ antlr4 -Dlanguage=C MyGrammar.g4
+$ antlr5 -Dlanguage=C MyGrammar.g4
 error(31):  ANTLR cannot generate C code as of version 4.0
+```
+
+### `actionTemplates`
+
+This option uses the provided [StringTemplate](https://www.stringtemplate.org/) group file (`*.stg`) to render templates inside the action blocks of an ANTLR grammar.
+
+This enables you to provide target-specific action logic by providing different `.stg` files for each target language.
+
+The syntax of group files is [described](https://github.com/antlr/stringtemplate4/blob/master/doc/groups.md) in the StringTemplate documentation.
+
+For example, if you provide the following group file when generating Java code:
+
+`ActionTemplates.stg`:
+```string-template
+normalize(s) ::= <<Normalizer.normalize(<s>, Form.NFKC)>>
+setText(s) ::= <<setText(<s>);>>
+getText() ::= <<getText()>>
+normalizerImports ::= <<
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+>>
+```
+
+You can use the templates like so in your ANTLR grammar:
+
+```antlrv4
+ID:
+    (ID_START ID_CONTINUE* | '_' ID_CONTINUE+) {
+        <setText(normalize(getText())>
+    };
+```
+
+The ANTLR tool must be invoked by providing the target language and StringTemplate group file:
+
+```bash
+$ antlr5 -Dlanguage=Java -DactionTemplates=ActionTemplates.stg MyGrammar.g4
+```
+
+The templates will be expanded into the following before the grammar is used to generate the target code:
+
+```antlrv4
+ID:
+    (ID_START ID_CONTINUE* | '_' ID_CONTINUE+) {
+        setText(Normalizer.normalize(getText(), Form.NFKC));
+    };
+```
+
+Templates can also be used in named actions, such as the `@header` or `@members` block, for example:
+
+```antlrv4
+@lexer::header {
+  <normalizerImports()>
+}
+```
+
+To use the same grammar to generate a different target language, you can provide a different StringTemplate group file.
+
+For example, to generate JavaScript code equivalent to the previous example the following group file could be used instead:
+
+`ActionTemplates.stg`:
+```string-template
+normalize(s) ::= <<<s>.normalize("NFKC")>>
+setText(s) ::= <<this.text = <s>;>>
+getText() ::= <<this.text>>
+normalizerImports ::= ""
+```
+
+Now you can invoke the ANTLR tool with the new target language and your alternate StringTemplate group file:
+
+```bash
+$ antlr5 -Dlanguage=JavaScript -DactionTemplates=ActionTemplates.stg MyGrammar.g4
+```
+
+These templates will expand into the following before the grammar is used to generate the target code:
+
+```antlrv4
+ID:
+    (ID_START ID_CONTINUE* | '_' ID_CONTINUE+) {
+        this.text = this.text.normalize("NFKC");
+    };
 ```
 
 ### `tokenVocab`
@@ -49,10 +129,10 @@ parser grammar R;
 options {tokenVocab=SomeLexer;}
 tokens {A,B,C} // normally, these would be token types 1, 2, 3
 a : ID ;
-$ antlr4 SomeLexer.g4
+$ antlr5 SomeLexer.g4
 $ cat SomeLexer.tokens 
 ID=1
-$ antlr4 R.g4
+$ antlr5 R.g4
 $ cat R.tokens
 A=2
 B=3
@@ -69,7 +149,7 @@ $ cat T2.g4
 grammar T2;
 options {TokenLabelType=MyToken;}
 a : x=ID ;
-$ antlr4 T2.g4
+$ antlr5 T2.g4
 $ grep MyToken T2Parser.java
     public MyToken x;
 ```

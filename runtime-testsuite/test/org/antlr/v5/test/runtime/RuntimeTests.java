@@ -133,6 +133,8 @@ public abstract class RuntimeTests {
 				descriptor.showDFA,
 				Stage.Execute,
 				null,
+				null,
+				null,
 				descriptor.predictionMode,
 				descriptor.buildParseTree,
 				null

@@ -197,7 +197,7 @@ public class TestXPath {
 																	String input, String xpath, String startRuleName
 	) throws Exception {
 		RunOptions runOptions = createExecOptionsForJavaToolTests(grammar,
-				false, false, startRuleName, input, false, false);
+				false, false, startRuleName, input, null, null, false, false);
 		try (JavaRunner runner = new JavaRunner()) {
 			JavaExecutedState executedState = (JavaExecutedState)runner.run(runOptions);
 			JavaCompiledState compiledState = (JavaCompiledState)executedState.previousState;
